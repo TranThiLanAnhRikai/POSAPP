@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AddShiftsFragment">
+    <data>
+        <variable
+            name="addMenuFragment"
+            type="com.example.pos_admin.AddMenuFragment" />
+        <variable
+            name="menuViewModel"
+            type="com.example.pos_admin.model.MenuViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/add_item_background">
+        <TextView
+            android:id="@+id/add_new_item_text"
+            android:text="ADD NEW MENU ITEM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="70dp"
+            android:paddingLeft="100dp"
+            android:textSize="50sp"
+            android:textColor="@color/dark_blue"
+            android:textStyle="italic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+        <LinearLayout
+            android:id="@+id/new_item_info"
+            android:layout_width="550dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/add_new_item_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:orientation="vertical"
+            android:layout_marginTop="60dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Item Name"
+                android:layout_margin="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:background="@color/light_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40dp"
+                    android:textColor="@color/black"
+                    android:text="@={menuViewModel.name}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/type_pick_container"
+                android:background="@color/light_blue"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/type_pick"
+                    android:layout_width="match_parent"
+                    android:textSize="40sp"
+                    android:padding="15dp"
+                    android:textColor="@color/black"
+                    android:layout_height="match_parent"
+                    android:text="Choose the type"/>
+            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/price_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Item Price "
+                android:layout_margin="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:background="@color/light_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:textColor="@color/black"
+                    android:text="@={menuViewModel._price}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <LinearLayout
+                android:id="@+id/img_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/image_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_baseline_add_photo_alternate_24"/>
+                <TextView
+                    android:id="@+id/add_img_text"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="35sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Capture image or upload here"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/item_img"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_new_item_btn"
+                android:layout_width="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp"
+                android:onClick="@{() -> addMenuFragment.addNewItem()}"
+                android:text="Add to Item List"
+                android:padding="10dp"
+                android:drawableRight="@drawable/ic_baseline_arrow_forward_24"
+                android:textColor="@color/dark_blue"
+                android:drawablePadding="5dp"
+                android:layout_marginRight="60dp"
+                android:textSize="30sp" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

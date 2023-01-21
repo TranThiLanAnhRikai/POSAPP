@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AddUsersFragment">
+
+    <data>
+
+        <variable
+            name="addUsersFragment"
+            type="com.example.pos_admin.AddUsersFragment" />
+
+        <variable
+            name="usersViewModel"
+            type="com.example.pos_admin.model.UsersViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/add_user_background">
+
+        <TextView
+            android:id="@+id/add_new_user_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:paddingLeft="100dp"
+            android:paddingTop="70dp"
+            android:text="ADD NEW USER"
+            android:textColor="@color/dark_blue"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/new_user_info"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
+            android:background="@drawable/login_round_corner_drawable"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_new_user_text">
+            <RadioGroup
+                android:id="@+id/role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp">
+                <RadioButton
+                    android:id="@+id/admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Admin"
+                    android:textSize="30sp"/>
+                <Space
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/staff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Staff"
+                    android:textSize="30sp"/>
+            </RadioGroup>
+            <EditText
+                android:id="@+id/name_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Name"
+                android:paddingLeft="10dp"
+                android:text="@={usersViewModel.inputName}"
+                android:textSize="40sp" />
+
+            <EditText
+                android:id="@+id/first_code_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Code"
+                android:paddingLeft="10dp"
+                android:text="@={usersViewModel.firstCode}"
+                android:textSize="40sp" />
+            <EditText
+                android:id="@+id/second_code_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Code"
+                android:paddingLeft="10dp"
+                android:visibility="invisible"
+                android:text="@={usersViewModel.secondCode}"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_new_user_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> addUsersFragment.addNewUser()}"
+                android:text="Add to List of Users"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="70dp"
+                android:layout_marginRight="80dp"
+                android:textColor="@color/dark_blue"
+                android:textSize="30sp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

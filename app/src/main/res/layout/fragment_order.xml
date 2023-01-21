@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ShiftsFragment">
+    <data>
+        <variable
+            name="menuViewModel"
+            type="com.example.pos_admin.model.MenuViewModel" />
+        <variable
+            name="orderFragment"
+            type="com.example.pos.OrderFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/to_orders"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Orders"
+                android:textColor="@color/dark_blue"
+                android:textSize="30sp" />
+            <Space
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/menu_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu"
+                android:textSize="50sp"
+                android:textColor="@color/dark_blue" />
+            <Space
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/to_cart"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Cart"
+                android:textColor="@color/dark_blue"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_items"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="LinearLayoutManager" />
+        <LinearLayout
+            android:id="@+id/btns_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/food_selected"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="FOOD"
+                android:tag="Food"
+                android:textSize="30sp"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/drink_selected"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:tag="Drink"
+                android:text="DRINK"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/dessert_selected"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:tag="Dessert"
+                android:text="DESSERT"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ShiftsFragment">
+    <data>
+        <variable
+            name="menuViewModel"
+            type="com.example.pos_admin.model.MenuViewModel" />
+        <variable
+            name="menuFragment"
+            type="com.example.pos_admin.MenuFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/menu_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="List Of Menu Items"
+            android:textSize="50sp"
+            android:textColor="@color/dark_blue"
+            android:layout_marginLeft="80dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/menu_items"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="LinearLayoutManager" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="400dp"
+            android:padding="8dp"
+            android:layout_marginBottom="80dp"
+            android:onClick="@{() -> menuFragment.goToAddMenuFragment()}"
+            android:text="Add New Item"
+            android:background="@color/white"
+            android:textColor="@color/dark_blue"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+</layout>

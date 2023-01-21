@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ShiftsFragment">
+    <data>
+        <variable
+            name="shiftsViewModel"
+            type="com.example.pos_admin.model.ShiftsViewModel" />
+        <variable
+            name="shiftsFragment"
+            type="com.example.pos_admin.ShiftsFragment" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/add_user_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/shifts_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="LIST OF SHIFTS"
+            android:textSize="50sp"
+            android:textColor="@color/dark_blue"
+            android:layout_marginLeft="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/shifts_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="CLICK TO PICK A DATE"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/shifts_text"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        <RadioGroup
+            android:id="@+id/shifts_time"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/morning_shift"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Morning"/>
+            <RadioButton
+                android:id="@+id/afternoon_shift"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Afternoon"/>
+            <RadioButton
+                android:id="@+id/noon_shift"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Noon"/>
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shifts"
+            android:scrollbars="vertical"
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:layoutManager="LinearLayoutManager" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="350dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="60dp"
+            android:onClick="@{() -> shiftsFragment.goToNextScreen()}"
+            android:text="Add New Shift"
+            android:padding="10dp"
+            android:textColor="@color/dark_blue"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+</layout>
