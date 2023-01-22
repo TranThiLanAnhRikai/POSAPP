@@ -7,8 +7,9 @@ import com.example.pos_admin.data.entity.User
 /*Repository for user class */
 
 class UserRepository(private val userDao: UserDao) {
-
-        val users = userDao.getAllUsers()
+        fun getAllUsers(): LiveData<List<User>> {
+            return userDao.getAllUsers()
+        }
 
     fun getUser(code: String): LiveData<User> {
         return userDao.getUser(code)

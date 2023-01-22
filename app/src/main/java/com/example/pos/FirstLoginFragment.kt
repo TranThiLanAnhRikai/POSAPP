@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
 import com.example.pos_admin.const.Destination
@@ -19,6 +20,8 @@ import com.example.pos_admin.data.repository.UserRepository
 import com.example.pos_admin.databinding.FragmentFirstLoginBinding
 import com.example.pos_admin.model.LoginViewModel
 import com.example.pos_admin.model.LoginViewModelFactory
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 class FirstLoginFragment : Fragment() {
@@ -46,11 +49,6 @@ class FirstLoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.firstLoginFragment = this
         binding?.loginViewModel = loginViewModel
-        val firstCode = binding?.loginEditText
-        loginViewModel.firstLoginCode.observe(viewLifecycleOwner, Observer {
-            loginViewModel.firstLoginCode.value = firstCode.toString()
-        })
-
     }
 
     override fun onDestroyView() {
@@ -59,20 +57,31 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        if (!loginViewModel.isFirstLoginValid()) {
-            Toast.makeText(
-                requireContext(),
-                "The login code is invalid. Please try again.",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            val destination = loginViewModel.nextFragment()
-            Log.d(TAG, "destination $destination")
-            if (destination == Destination.STAFF) {
-                findNavController().navigate(R.id.action_firstLoginFragment_to_orderFragment)
-            } else {
-                findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
-            }
+        if (loginViewModel.firstLoginCode.value == null) {
+            Log.d(TAG, "login ${loginViewModel.firstLoginCode.value}")
+            Toast.makeText(requireContext(), "Please fill in your login code.", Toast.LENGTH_SHORT).show()
         }
+        else {
+            loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
+                loginViewModel.user.value = person
+                if (!loginViewModel.isFirstLoginCodeValid()) {
+                Toast.makeText(requireContext(), "Your login code is invalid. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val destination = loginViewModel.nextFragment()
+                if (destination == Destination.NON_STAFF) {
+                    findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                }
+                else {
+                    findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+                }
+
+            }
+
+        })
+
+
+
     }
+}
 }

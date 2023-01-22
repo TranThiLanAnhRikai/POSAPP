@@ -56,8 +56,8 @@
                 android:hint="Login Code"
                 android:padding="10dp"
                 android:textSize="40dp"
-                android:layout_margin="8dp"/>
-               <!-- android:text="@={loginViewModel.firstLoginCode}"-->
+                android:layout_margin="8dp"
+                android:text="@={loginViewModel.firstLoginCode}"/>
 
 
             <androidx.appcompat.widget.AppCompatButton

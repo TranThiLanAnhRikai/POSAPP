@@ -19,7 +19,7 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
     }*/
 
     fun getAllUsers(): LiveData<List<User>> {
-        return userRepository.users
+        return userRepository.getAllUsers()
     }
 
     fun insertNewUser() {

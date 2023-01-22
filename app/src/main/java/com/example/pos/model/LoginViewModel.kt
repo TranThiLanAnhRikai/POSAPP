@@ -2,34 +2,40 @@ package com.example.pos_admin.model
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.pos_admin.const.Destination
 import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.UserRepository
+import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     val firstLoginCode = MutableLiveData<String>()
-    val user = firstLoginCode.value?.let { userRepository.getUser(it) }
-    fun isFirstLoginValid(): Boolean {
-        if (user != null) {
-            return true
+    val user = MutableLiveData<User>()
+
+    fun getUser(): LiveData<User> {
+        return userRepository.getUser(firstLoginCode.value!!)
+    }
+
+    fun isFirstLoginCodeValid(): Boolean {
+        if (user.value == null) {
+            Log.d(TAG, "user ${user.value}")
+            return false
         }
-        return false
+        return true
     }
 
 
+
     fun nextFragment(): Destination {
-        return if (user != null && user?.value?.role == Role.STAFF.roleName) {
+        return if (user.value != null && user?.value?.role == Role.STAFF.roleName) {
             Destination.STAFF
         } else {
             Destination.NON_STAFF
         }
     }
 }
+
 
 class LoginViewModelFactory(private val userRepository: UserRepository) :
     ViewModelProvider.Factory {
