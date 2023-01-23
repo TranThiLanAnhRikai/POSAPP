@@ -7,32 +7,42 @@ import com.example.pos_admin.const.Destination
 import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.UserRepository
-import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
-    val firstLoginCode = MutableLiveData<String>()
+    val inputFirstCode = MutableLiveData<String>()
+    val inputSecondCode = MutableLiveData<String>()
+    var userSecondLoginCode = MutableLiveData<String>()
     val user = MutableLiveData<User>()
 
+    //Use the value of the first login code user fills in to get user(?) from database
     fun getUser(): LiveData<User> {
-        return userRepository.getUser(firstLoginCode.value!!)
+        return userRepository.getUser(inputFirstCode.value!!)
     }
 
+    //Check whether the user that is achieved from getUser() function exists in the database
     fun isFirstLoginCodeValid(): Boolean {
         if (user.value == null) {
-            Log.d(TAG, "user ${user.value}")
             return false
         }
         return true
     }
 
 
-
+    // Decide the next view based on the type of user
     fun nextFragment(): Destination {
-        return if (user.value != null && user?.value?.role == Role.STAFF.roleName) {
+        return if (user.value != null && user.value?.role == Role.STAFF.roleName) {
             Destination.STAFF
         } else {
             Destination.NON_STAFF
         }
+    }
+
+    // Check whether the second login code is valid
+    fun isSecondLoginCodeValid(): Boolean {
+        if (user.value?.secondCode != inputSecondCode.value ) {
+            return false
+        }
+        return true
     }
 }
 

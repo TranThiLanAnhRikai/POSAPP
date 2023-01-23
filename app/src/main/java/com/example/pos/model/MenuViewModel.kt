@@ -1,4 +1,4 @@
-package com.example.pos_admin.model
+package com.example.pos.model
 
 import androidx.lifecycle.*
 import com.example.pos.data.entity.MenuItem
@@ -12,6 +12,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
+    val selectedOption = MutableLiveData<String>()
     val price: LiveData<String> = Transformations.map(_price) {
         NumberFormat.getCurrencyInstance().format(it.toDouble())
     }
@@ -31,8 +32,8 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         return menuItemRepository.items
     }
 
-    fun getMenuItems(type: String): LiveData<List<MenuItem>> {
-        return menuItemRepository.getMenuItems(type)
+    fun getMenuItems(): LiveData<List<MenuItem>> {
+        return menuItemRepository.getMenuItems(selectedOption.value!!)
     }
 
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="menuViewModel"
-            type="com.example.pos_admin.model.MenuViewModel" />
+            type="com.example.pos.model.MenuViewModel" />
         <variable
             name="menuFragment"
             type="com.example.pos_admin.MenuFragment" />

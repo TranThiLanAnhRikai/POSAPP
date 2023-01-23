@@ -13,11 +13,8 @@ import android.util.Base64.encodeToString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -25,8 +22,8 @@ import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentAddMenuBinding
-import com.example.pos_admin.model.MenuViewModel
-import com.example.pos_admin.model.MenuViewModelFactory
+import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
 import java.io.ByteArrayOutputStream
 
 
@@ -210,7 +207,7 @@ class AddMenuFragment : Fragment() {
         val uploadedPhoto = binding?.itemImg
         var isFormValid = true
 
-        var isOptionSelected = false
+       /* var isOptionSelected = false
         for (i in 0 until typeContainer!!.childCount) {
             val child = typeContainer.getChildAt(i)
             if (child is RadioButton) {
@@ -250,9 +247,9 @@ class AddMenuFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        } else {
+        } else {*/
             menuViewModel.insertItem()
-        }
+
 
     }
 

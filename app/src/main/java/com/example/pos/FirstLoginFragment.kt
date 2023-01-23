@@ -9,26 +9,29 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import androidx.room.Room
 import com.example.pos_admin.const.Destination
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
 import com.example.pos_admin.databinding.FragmentFirstLoginBinding
 import com.example.pos_admin.model.LoginViewModel
 import com.example.pos_admin.model.LoginViewModelFactory
-import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 class FirstLoginFragment : Fragment() {
 
     private var binding: FragmentFirstLoginBinding? = null
-    private lateinit var loginViewModel: LoginViewModel
-
+    private val loginViewModel: LoginViewModel by activityViewModels {
+        LoginViewModelFactory(
+            UserRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
+            )
+        )
+    }
 
 
     override fun onCreateView(
@@ -37,10 +40,6 @@ class FirstLoginFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentFirstLoginBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val dao = PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
-        val repository = UserRepository(dao)
-        val factory = LoginViewModelFactory(repository)
-        loginViewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return fragmentBinding.root
     }
@@ -57,31 +56,33 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        if (loginViewModel.firstLoginCode.value == null) {
-            Log.d(TAG, "login ${loginViewModel.firstLoginCode.value}")
-            Toast.makeText(requireContext(), "Please fill in your login code.", Toast.LENGTH_SHORT).show()
-        }
-        else {
+        if (loginViewModel.inputFirstCode.value == null) {
+            Log.d(TAG, "login ${loginViewModel.inputFirstCode.value}")
+            Toast.makeText(requireContext(), "Please fill in your login code.", Toast.LENGTH_SHORT)
+                .show()
+        } else {
             loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
                 loginViewModel.user.value = person
+                loginViewModel.userSecondLoginCode.value = person.secondCode
                 if (!loginViewModel.isFirstLoginCodeValid()) {
-                Toast.makeText(requireContext(), "Your login code is invalid. Please try again.", Toast.LENGTH_SHORT).show()
-                }
-                else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Your login code is invalid. Please try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
                     val destination = loginViewModel.nextFragment()
-                if (destination == Destination.NON_STAFF) {
-                    findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                    Log.d(TAG, "1user ${loginViewModel.user.value}")
+                    if (destination == Destination.NON_STAFF) {
+                        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                    } else {
+                        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+                    }
                 }
-                else {
-                    findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
-                }
+            })
 
-            }
-
-        })
-
-
-
+        }
     }
 }
-}
+
+

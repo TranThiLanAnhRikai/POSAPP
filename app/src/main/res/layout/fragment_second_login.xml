@@ -5,8 +5,8 @@
     tools:context=".StartFragment">
     <data>
         <variable
-            name="viewModel"
-            type="com.example.pos_admin.model.ShiftsViewModel" />
+            name="loginViewModel"
+            type="com.example.pos_admin.model.LoginViewModel" />
         <variable
             name="secondLoginFragment"
             type="com.example.pos_admin.SecondLoginFragment" />
@@ -71,7 +71,9 @@
                 android:background="@drawable/login_edit_text"
                 android:hint="Login Code"
                 android:paddingStart="15dp"
-                android:textSize="40dp" />
+                android:textSize="40dp"
+                android:inputType="textPassword"
+                android:text="@={loginViewModel.inputSecondCode}"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit_button"
@@ -92,4 +94,3 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-

@@ -9,7 +9,7 @@
             type="com.example.pos_admin.AddMenuFragment" />
         <variable
             name="menuViewModel"
-            type="com.example.pos_admin.model.MenuViewModel" />
+            type="com.example.pos.model.MenuViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

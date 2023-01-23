@@ -12,8 +12,8 @@ import com.example.pos_admin.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentMenuBinding
-import com.example.pos_admin.model.MenuViewModel
-import com.example.pos_admin.model.MenuViewModelFactory
+import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
 
 class MenuFragment : Fragment() {
     private lateinit var menuViewModel: MenuViewModel

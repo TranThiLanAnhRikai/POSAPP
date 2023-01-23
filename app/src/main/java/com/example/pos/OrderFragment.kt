@@ -8,23 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.forEach
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.pos.data.entity.MenuItem
 import com.example.pos_admin.R
 import com.example.pos_admin.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
-import com.example.pos_admin.databinding.FragmentMenuBinding
 import com.example.pos_admin.databinding.FragmentOrderBinding
-import com.example.pos_admin.model.MenuViewModel
-import com.example.pos_admin.model.MenuViewModelFactory
+import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
 
 
 class OrderFragment : Fragment() {
     private var binding: FragmentOrderBinding? = null
     private lateinit var menuViewModel: MenuViewModel
-    private lateinit var selectedItems: List<MenuItem>
     private lateinit var adapter: MenuItemsAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,10 +45,14 @@ class OrderFragment : Fragment() {
         val btnsContainer = binding?.btnsContainer
         btnsContainer?.forEach { it ->
             it.setOnClickListener{
-                when(it.id) {
+                menuViewModel.selectedOption.value = it.tag.toString()
+
+
+   /*             when(it.id) {
                     R.id.food_selected -> {
-                        Log.d(TAG, "tag ${it.tag.toString()}")
+                        menuViewModel.getMenuItems().
                         selectedItems = (menuViewModel.getMenuItems(it.tag.toString())).value!!
+                        Log.d(TAG, "food $selectedItems")
                         adapter = MenuItemsAdapter(requireContext(), selectedItems!!)
                     }
                     R.id.dessert_selected -> {
@@ -61,10 +63,20 @@ class OrderFragment : Fragment() {
                         selectedItems = (menuViewModel.getMenuItems(it.tag.toString())).value!!
                         adapter = MenuItemsAdapter(requireContext(), selectedItems!!)
                     }
-                }
-                recyclerView?.adapter = adapter
+                }*/
+               /* recyclerView?.adapter = adapter*/
+
             }
-        }
+
+
+            }
+        Log.d(TAG, " selectedOp ${menuViewModel.selectedOption.value}")
+        menuViewModel.getMenuItems().observe(viewLifecycleOwner, Observer{selectedItems ->
+            Log.d(TAG, "selectedItems $selectedItems")
+            adapter = MenuItemsAdapter(requireContext(), selectedItems!!)
+            recyclerView?.adapter = adapter
+
+        })
 
     }
 
