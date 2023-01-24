@@ -8,7 +8,7 @@ import com.example.pos.data.entity.CartItem
 
 class CartItemRepository(private val cartItemDao: CartItemDao) {
 
-    fun getCart(orderNumber: Int): LiveData<List<CartItem>> {
+    fun getCartItems(orderNumber: Int): LiveData<List<CartItem>> {
         return cartItemDao.getCart(orderNumber)
     }
 

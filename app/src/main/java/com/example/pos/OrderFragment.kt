@@ -1,5 +1,4 @@
 package com.example.pos
-
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -36,13 +35,12 @@ class OrderFragment : Fragment() {
         binding = fragmentBinding
         val dao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
         val repository = MenuItemRepository(dao)
-        val factory = MenuViewModelFactory(repository)
+        val factory = MenuViewModelFactory(repository, requireContext())
         menuViewModel = ViewModelProvider(this, factory)[MenuViewModel::class.java]
         recyclerView = binding?.orderItems!!
         menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{items ->
-            adapter = OrderItemsAdapter(requireContext(), items!!)
+            adapter = OrderItemsAdapter(requireContext(), items)
             recyclerView.adapter = adapter
-            Log.d(TAG, "items ${items}")
         })
 
 
@@ -59,6 +57,7 @@ class OrderFragment : Fragment() {
             it.setOnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
+                        val itemsIds = selectedItems.map { it.id.toString() }
                         adapter = OrderItemsAdapter(requireContext(), selectedItems)
                         recyclerView?.adapter = adapter
                     })

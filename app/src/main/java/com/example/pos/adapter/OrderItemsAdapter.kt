@@ -15,12 +15,12 @@ import com.example.pos_admin.R
 
 class OrderItemsAdapter(private val context: Context, private val items: List<MenuItem> )
     :RecyclerView.Adapter<OrderItemsAdapter.OrderItemViewHolder>(){
-        class OrderItemViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
-            val image: ImageView = view.findViewById(R.id.item_img)
-            val name: TextView = view.findViewById(R.id.item_name)
-            val price: TextView = view.findViewById(R.id.item_price)
+    class OrderItemViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+        val image: ImageView = view.findViewById(R.id.item_img)
+        val name: TextView = view.findViewById(R.id.item_name)
+        val price: TextView = view.findViewById(R.id.item_price)
 
-        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderItemViewHolder {
         val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.order_item, parent, false)

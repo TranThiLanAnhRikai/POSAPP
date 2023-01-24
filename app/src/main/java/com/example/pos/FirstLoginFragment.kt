@@ -56,12 +56,12 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        if (loginViewModel.inputFirstCode.value == null) {
+        /*if (loginViewModel.inputFirstCode.value == null) {
             Log.d(TAG, "login ${loginViewModel.inputFirstCode.value}")
             Toast.makeText(requireContext(), "Please fill in your login code.", Toast.LENGTH_SHORT)
                 .show()
-        } else {
-            loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
+        } else {*/
+/*            loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
                 loginViewModel.user.value = person
 
                 if (!loginViewModel.isFirstLoginCodeValid()) {
@@ -81,13 +81,13 @@ class FirstLoginFragment : Fragment() {
                     if (destination == Destination.NON_STAFF) {
 
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
-                    } else {
+                    } else {*/
                         findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
-                    }
+                   /* }
                 }
             })
 
-        }
+        }*/
     }
 }
 

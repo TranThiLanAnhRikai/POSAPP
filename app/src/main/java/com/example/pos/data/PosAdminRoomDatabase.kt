@@ -17,7 +17,6 @@ import com.example.pos_admin.data.entity.User
 abstract class PosAdminRoomDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun shiftDao(): ShiftDao
-
     abstract fun notificationDao(): NotificationDao
     abstract fun menuItemDao(): MenuItemDao
 

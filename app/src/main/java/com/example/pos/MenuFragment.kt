@@ -27,7 +27,7 @@ class MenuFragment : Fragment() {
         binding = fragmentBinding
         val dao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
         val repository = MenuItemRepository(dao)
-        val factory = MenuViewModelFactory(repository)
+        val factory = MenuViewModelFactory(repository, requireContext())
         menuViewModel = ViewModelProvider(this, factory)[MenuViewModel::class.java]
         return fragmentBinding.root
     }
