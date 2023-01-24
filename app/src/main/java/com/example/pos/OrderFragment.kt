@@ -10,19 +10,24 @@ import android.view.ViewGroup
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.pos_admin.adapter.MenuItemsAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pos.adapter.MenuItemsAdapter
+import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentOrderBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
+import com.example.pos_admin.const.ItemType
 
 //Fragment for staff to make orders//
 
 class OrderFragment : Fragment() {
     private var binding: FragmentOrderBinding? = null
     private lateinit var menuViewModel: MenuViewModel
-    private lateinit var myadapter: MenuItemsAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: OrderItemsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,28 +38,36 @@ class OrderFragment : Fragment() {
         val repository = MenuItemRepository(dao)
         val factory = MenuViewModelFactory(repository)
         menuViewModel = ViewModelProvider(this, factory)[MenuViewModel::class.java]
+        recyclerView = binding?.orderItems!!
+        menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{items ->
+            adapter = OrderItemsAdapter(requireContext(), items!!)
+            recyclerView.adapter = adapter
+            Log.d(TAG, "items ${items}")
+        })
+
+
         return fragmentBinding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderFragment = this
         binding?.menuViewModel = menuViewModel
-        val recyclerView = binding?.orderItems
         val btnsContainer = binding?.btnsContainer
         btnsContainer?.forEach { it ->
             it.setOnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
-                        Log.d(TAG, "selectedItems $selectedItems")
-                        myadapter = MenuItemsAdapter(requireContext(), selectedItems!!)
-                        Log.d(TAG, "adapter $myadapter")
-                        recyclerView?.adapter = myadapter
+                        adapter = OrderItemsAdapter(requireContext(), selectedItems)
+                        recyclerView?.adapter = adapter
                     })
-
             }
+
         }
+
     }
+
 
 
 

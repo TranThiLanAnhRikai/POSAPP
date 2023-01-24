@@ -12,7 +12,8 @@
             type="com.example.pos.OrderFragment" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -54,46 +55,52 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_items"
-            android:scrollbars="vertical"
+            android:orientation="vertical"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:layoutManager="LinearLayoutManager" />
-        <LinearLayout
+            app:spanCount="2"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+        <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/btns_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center"
+            app:checkedButton="@+id/food_selected"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="50dp">
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/food_selected"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FOOD"
                 android:tag="Food"
+                android:clickable="false"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textSize="30sp"/>
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/drink_selected"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:tag="Drink"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="DRINK"/>
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/dessert_selected"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:tag="Dessert"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="DESSERT"/>
-        </LinearLayout>
-    </RelativeLayout>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
 
 </layout>

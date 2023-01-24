@@ -12,10 +12,10 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
-    val selectedOption = MutableLiveData<String>()
     val price: LiveData<String> = Transformations.map(_price) {
         NumberFormat.getCurrencyInstance().format(it.toDouble())
     }
+
 
     fun insertItem() {
         viewModelScope.launch {

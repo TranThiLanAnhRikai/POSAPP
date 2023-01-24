@@ -205,7 +205,6 @@ class AddMenuFragment : Fragment() {
         val typeContainer = binding?.typePickContainer
         val inputPrice = binding?.priceEdttxt
         val uploadedPhoto = binding?.itemImg
-        var isFormValid = true
 
        /* var isOptionSelected = false
         for (i in 0 until typeContainer!!.childCount) {
@@ -248,7 +247,7 @@ class AddMenuFragment : Fragment() {
                 ).show()
             }
         } else {*/
-            menuViewModel.insertItem()
+        menuViewModel.insertItem()
 
 
     }

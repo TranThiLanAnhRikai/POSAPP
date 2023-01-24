@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.pos_admin.adapter.MenuItemsAdapter
+import com.example.pos.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentMenuBinding

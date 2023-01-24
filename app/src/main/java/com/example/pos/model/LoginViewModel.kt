@@ -39,6 +39,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     // Check whether the second login code is valid
     fun isSecondLoginCodeValid(): Boolean {
+        Log.d(TAG, "vm code ${user.value?.secondCode}")
         if (user.value?.secondCode != inputSecondCode.value ) {
             return false
         }

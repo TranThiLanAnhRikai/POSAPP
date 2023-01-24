@@ -63,17 +63,23 @@ class FirstLoginFragment : Fragment() {
         } else {
             loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
                 loginViewModel.user.value = person
-                loginViewModel.userSecondLoginCode.value = person.secondCode
+
                 if (!loginViewModel.isFirstLoginCodeValid()) {
+                    loginViewModel.inputFirstCode.value = ""
                     Toast.makeText(
                         requireContext(),
                         "Your login code is invalid. Please try again.",
                         Toast.LENGTH_SHORT
                     ).show()
+
                 } else {
+                    loginViewModel.userSecondLoginCode.value = person.secondCode
+                    Log.d(TAG,"2code ${loginViewModel.userSecondLoginCode.value}" )
                     val destination = loginViewModel.nextFragment()
                     Log.d(TAG, "1user ${loginViewModel.user.value}")
+                    loginViewModel.inputFirstCode.value = ""
                     if (destination == Destination.NON_STAFF) {
+
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
                     } else {
                         findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))

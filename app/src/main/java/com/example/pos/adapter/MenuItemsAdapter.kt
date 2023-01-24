@@ -1,4 +1,4 @@
-package com.example.pos_admin.adapter
+package com.example.pos.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
