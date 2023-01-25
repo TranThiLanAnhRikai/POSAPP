@@ -15,7 +15,7 @@ import com.example.pos_admin.databinding.FragmentFirstLoginBinding
 import com.example.pos_admin.model.LoginViewModel
 import com.example.pos_admin.model.LoginViewModelFactory
 
-/* Firs Fragment for user to fill in code
+/** Firs Fragment for user to fill in code
 - Bind with LoginViewModel
 - Display messages if user doesn't fill in any code or the code user filled in doesn't match any user
 - if user is staff, navigate to order fragment
@@ -81,6 +81,7 @@ class FirstLoginFragment : Fragment() {
 
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
                     } else {*/
+
                         findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
                    /* }
                 }

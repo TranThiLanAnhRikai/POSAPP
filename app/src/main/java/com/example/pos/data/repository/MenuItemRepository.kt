@@ -1,7 +1,9 @@
 package com.example.pos_admin.data.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.pos_admin.data.dao.MenuItemDao
+import com.example.pos.data.dao.MenuItemDao
 import com.example.pos.data.entity.MenuItem
 
 
@@ -16,6 +18,7 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao) {
     }
 
     fun getMenuItem(id: Int): LiveData<MenuItem> {
+
         return menuItemDao.getMenuItem(id)
     }
 

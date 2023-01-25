@@ -1,16 +1,23 @@
 package com.example.pos
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.pos_admin.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pos.adapter.CartItemsAdapter
+import com.example.pos.data.entity.MenuItem
+import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
+import com.example.pos_admin.data.PosAdminRoomDatabase
+import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos_admin.databinding.FragmentCartBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -18,43 +25,68 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CartFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private var binding: FragmentCartBinding? = null
+    private val menuViewModel: MenuViewModel by activityViewModels {
+        MenuViewModelFactory(
+            MenuItemRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+            )
+        )
     }
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var adapter: CartItemsAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        val fragmentBinding = FragmentCartBinding.inflate(inflater, container, false)
+        binding = fragmentBinding
+        recyclerView = binding?.orderReview!!
+        /*recyclerView = binding?.orderItems!!
+            menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{ items ->
+                adapter = OrderItemsAdapter(requireContext(), items, this)
+                recyclerView.adapter = adapter
+            })
+*/
+        Log.d(TAG, "list ${menuViewModel.selectedItems}")
+        return fragmentBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CartFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CartFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.cartFragment = this
+        binding?.menuViewModel = menuViewModel
+        val menuItemDao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+        val menuItemRepository = MenuItemRepository(menuItemDao)
+        adapter = CartItemsAdapter(requireContext(), menuViewModel.selectedItems)
+        recyclerView.adapter = adapter
+    /*val btnsContainer = binding?.btnsContainer
+            btnsContainer?.forEach { it ->
+                it.setOnClickListener {
+                    menuViewModel.getMenuItems(it.tag.toString())
+                        .observe(viewLifecycleOwner, Observer { selectedItems ->
+                            val itemsIds = selectedItems.map { it.id.toString() }
+                            adapter = OrderItemsAdapter(requireContext(), selectedItems, this)
+                            recyclerView?.adapter = adapter
+                        })
+                }*/
+
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+
+
+
+
 }
+
+

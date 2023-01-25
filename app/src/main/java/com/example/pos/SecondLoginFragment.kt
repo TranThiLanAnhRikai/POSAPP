@@ -57,17 +57,17 @@ class SecondLoginFragment : Fragment() {
 
     // If the second login code is valid, log the user in as admin. Otherwise display a toast message.
     fun nextFragment() {
-        if (!loginViewModel.isSecondLoginCodeValid()) {
+/*        if (!loginViewModel.isSecondLoginCodeValid()) {
             Toast.makeText(
                 requireContext(),
                 "Login code is invalid. Please try again.",
                 Toast.LENGTH_SHORT
             ).show()
             loginViewModel.inputFirstCode.value = ""
-        } else {
+        } else {*/
             findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
-        }
-    }
+        }/**/
+
 
     override fun onDestroyView() {
         super.onDestroyView()

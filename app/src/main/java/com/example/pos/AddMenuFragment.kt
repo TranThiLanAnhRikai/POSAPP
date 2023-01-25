@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pos_admin.const.ItemType
@@ -31,7 +32,13 @@ class AddMenuFragment : Fragment() {
     private val cameraRequestId = 1
     private val uploadRequestId = 2
     private val itemTypes =  arrayOf(ItemType.FOOD, ItemType.DESERT, ItemType.DRINK)
-    private lateinit var menuViewModel: MenuViewModel
+    private val menuViewModel: MenuViewModel by activityViewModels {
+        MenuViewModelFactory(
+            MenuItemRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+            )
+        )
+    }
     private var binding: FragmentAddMenuBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +46,6 @@ class AddMenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentAddMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val dao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
-        val repository = MenuItemRepository(dao)
-        val factory = MenuViewModelFactory(repository, requireContext())
-        menuViewModel = ViewModelProvider(this, factory)[MenuViewModel::class.java]
         return fragmentBinding.root
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,8 +17,14 @@ import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 
 class MenuFragment : Fragment() {
-    private lateinit var menuViewModel: MenuViewModel
-   private var binding: FragmentMenuBinding? = null
+    private val menuViewModel: MenuViewModel by activityViewModels {
+        MenuViewModelFactory(
+            MenuItemRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+            )
+        )
+    }
+    private var binding: FragmentMenuBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,10 +32,6 @@ class MenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val dao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
-        val repository = MenuItemRepository(dao)
-        val factory = MenuViewModelFactory(repository, requireContext())
-        menuViewModel = ViewModelProvider(this, factory)[MenuViewModel::class.java]
         return fragmentBinding.root
     }
 
