@@ -9,7 +9,7 @@
             type="com.example.pos_admin.model.LoginViewModel" />
         <variable
             name="firstLoginFragment"
-            type="com.example.pos_admin.FirstLoginFragment" />
+            type="com.example.pos.FirstLoginFragment" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

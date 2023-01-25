@@ -3,7 +3,7 @@ package com.example.pos_admin.model
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.pos_admin.const.Destination
+import com.example.pos.const.Destination
 import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.UserRepository

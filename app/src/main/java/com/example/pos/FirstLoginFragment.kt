@@ -1,27 +1,26 @@
-package com.example.pos_admin
+package com.example.pos
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.pos_admin.const.Destination
+import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
 import com.example.pos_admin.databinding.FragmentFirstLoginBinding
 import com.example.pos_admin.model.LoginViewModel
 import com.example.pos_admin.model.LoginViewModelFactory
 
-
+/* Firs Fragment for user to fill in code
+- Bind with LoginViewModel
+- Display messages if user doesn't fill in any code or the code user filled in doesn't match any user
+- if user is staff, navigate to order fragment
+- if user is admin, navigate to second login fragment where user has to fill in another code
+ */
 class FirstLoginFragment : Fragment() {
 
     private var binding: FragmentFirstLoginBinding? = null
