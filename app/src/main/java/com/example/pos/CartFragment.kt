@@ -1,5 +1,6 @@
 package com.example.pos
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CartItemsAdapter
 import com.example.pos.data.entity.Item
-import com.example.pos.data.entity.MenuItem
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
@@ -49,34 +48,27 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
         val fragmentBinding = FragmentCartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         recyclerView = binding?.orderReview!!
-        /*recyclerView = binding?.orderItems!!
-            menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{ items ->
-                adapter = OrderItemsAdapter(requireContext(), items, this)
-                recyclerView.adapter = adapter
-            })
-*/
-
         return fragmentBinding.root
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.cartFragment = this
         binding?.menuViewModel = menuViewModel
-        Log.d(TAG, "list ${menuViewModel.selectedItems}")
-        adapter = CartItemsAdapter(requireContext(), menuViewModel.selectedItems, this)
-        recyclerView.adapter = adapter
-    /*val btnsContainer = binding?.btnsContainer
-            btnsContainer?.forEach { it ->
-                it.setOnClickListener {
-                    menuViewModel.getMenuItems(it.tag.toString())
-                        .observe(viewLifecycleOwner, Observer { selectedItems ->
-                            val itemsIds = selectedItems.map { it.id.toString() }
-                            adapter = OrderItemsAdapter(requireContext(), selectedItems, this)
-                            recyclerView?.adapter = adapter
-                        })
-                }*/
+        Log.d(TAG, "list ${menuViewModel.selectedItems.value}")
+        menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
+            adapter = CartItemsAdapter(requireContext(), selectedItems, this)
+            recyclerView.adapter = adapter
+            val items = selectedItems.values.toList()
+            menuViewModel.total = 0.0
+            items.forEach{ item ->
+                menuViewModel.total += item.subTotal
+            }
+            binding?.total?.text = "TOTAL: $" + menuViewModel.total.toString()
+
+        })
 
     }
 

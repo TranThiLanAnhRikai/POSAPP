@@ -4,5 +4,6 @@ data class Item (
     val name: String,
     val quantity: Int?,
     val price: String,
-    val image: String
+    val image: String,
+    val subTotal: Double
 )

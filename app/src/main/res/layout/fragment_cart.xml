@@ -47,8 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="500dp"
             android:layout_marginRight="40dp"
-            android:layout_marginBottom="10dp"
-            android:text="@{@string/total_amount(menuViewModel.total)}"/>
+            android:layout_marginBottom="10dp"/>
+           <!-- android:text="@{@string/total_amount(menuViewModel.total)}"-->/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/btns_container"
@@ -61,9 +61,9 @@
             app:layout_constraintTop_toBottomOf="@+id/order_review"
             app:checkedButton="@+id/food_selected"
             android:layout_alignParentBottom="true"
-            android:weightSum="3"
+            android:weightSum="2"
             android:layout_marginBottom="50dp">
-            <Button
+<!--            <Button
                 android:id="@+id/cancel_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
                 android:textSize="30sp"
-                android:onClick="@{() -> cartFragment.cancelOrder()}"/>
+                android:onClick="@{() -> cartFragment.cancelOrder()}"/>-->
             <Button
                 android:id="@+id/delete_btn"
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                 android:textSize="30sp"
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
-                android:text="PAY"
+                android:text="CHECKOUT"
                 android:onClick="@{() -> cartFragment.payOrder()}"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>

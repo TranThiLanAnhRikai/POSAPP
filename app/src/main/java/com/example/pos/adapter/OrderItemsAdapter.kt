@@ -49,13 +49,13 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             holder.quantity.text = currentQuantity.toString()
             holder.addToCart.visibility = View.GONE
             holder.addMoreLayout.visibility = View.VISIBLE
-            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image))
+            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
 
         }
         holder.imageAdd.setOnClickListener {
             holder.quantity.text = (currentQuantity++).toString()
             listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                item.price, item.image))
+                item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
         }
         holder.imageMinus.setOnClickListener {
             currentQuantity--
@@ -69,7 +69,7 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             else {
                 holder.quantity.text = currentQuantity.toString()
                 listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                    item.price, item.image))
+                    item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
             }
 
         }

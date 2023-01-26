@@ -15,11 +15,11 @@ import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos.data.entity.Item
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
-import com.example.pos_admin.databinding.FragmentOrderBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.const.ItemType
+import com.example.pos_admin.databinding.FragmentOrderBinding
 
 //Fragment for staff to make orders//
 
@@ -69,9 +69,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
             }
 
         }
-        if (menuViewModel.selectedItems.isNotEmpty()) {
 
-        }
 
 
     }
@@ -91,8 +89,8 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     }
 
     fun toCart() {
-         Log.d(TAG, "list in order frag ${menuViewModel.selectedItems}")
-        menuViewModel.calculateTotal()
+         Log.d(TAG, "list in order frag ${menuViewModel.selectedItems.value}")
+        /*menuViewModel.calculateTotal()*/
         findNavController().navigate(R.id.action_orderFragment_to_cartFragment)
     }
 

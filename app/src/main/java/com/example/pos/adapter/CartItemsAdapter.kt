@@ -62,7 +62,7 @@ RecyclerView.Adapter<CartItemsAdapter.CartItemViewHolder>(){
             }
             else {
                 holder.quantity.text = currentQuantity.toString()
-                listener.decreaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image))
+                listener.decreaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
             }
 
         }
@@ -74,7 +74,7 @@ RecyclerView.Adapter<CartItemsAdapter.CartItemViewHolder>(){
         holder.plusLayout.setOnClickListener {
             currentQuantity = currentQuantity!!.plus(1)
             holder.quantity.text = currentQuantity.toString()
-            listener.increaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image))
+            listener.increaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
         }
     }
 

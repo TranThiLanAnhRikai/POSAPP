@@ -13,10 +13,9 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
-    var subTotal: Double = 0.0
-    var total: String = ""
+    var total: Double = 0.0
     val orderNumber = System.currentTimeMillis().toString()
-    val selectedItems = mutableMapOf<Int, Item>()
+    val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
 
 /*    fun calculateTotal() {
         val items = selectedItems.values
@@ -47,23 +46,38 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
 
     fun decreaseQuantity(id: Int, item: Item) {
-        selectedItems[id] = item
+        val currentMap = selectedItems.value ?: mutableMapOf()
+        currentMap[id] = item
+        selectedItems.postValue(currentMap)
+        /*selectedItems.value?.set(id, item)*/
     }
     fun increaseQuantity(id: Int, item: Item) {
-        selectedItems[id] = item
+        val currentMap = selectedItems.value ?: mutableMapOf()
+        currentMap[id] = item
+        selectedItems.postValue(currentMap)
+        /*selectedItems.value?.set(id, item)*/
     }
 
 
     fun addToCart(id: Int, item: Item) {
-        selectedItems[id] = item
+        val currentMap = selectedItems.value ?: mutableMapOf()
+        currentMap[id] = item
+        selectedItems.postValue(currentMap)
+   /*     selectedItems.value?.set(id, item)*/
     }
 
     fun removeFromCart(id: Int) {
-        selectedItems.remove(id)
+        val currentMap = selectedItems.value ?: mutableMapOf()
+        currentMap.remove(id)
+        selectedItems.postValue(currentMap)
+/*        selectedItems.value?.remove(id)*/
     }
 
     fun deleteOrder() {
-        selectedItems.clear()
+        val currentMap = selectedItems.value ?: mutableMapOf()
+        currentMap.clear()
+        selectedItems.postValue(currentMap)
+/*        selectedItems.value?.clear()*/
     }
 
 
