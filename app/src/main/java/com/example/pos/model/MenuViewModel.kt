@@ -1,16 +1,11 @@
 package com.example.pos.model
 
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.util.Log
-import androidx.databinding.Bindable
 import androidx.lifecycle.*
-import com.example.pos.data.entity.CartItem
 import com.example.pos.data.entity.Item
 import com.example.pos.data.entity.MenuItem
 import com.example.pos_admin.data.repository.MenuItemRepository
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
+import java.util.*
 
 
 class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewModel() {
@@ -18,10 +13,18 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
-
-
+    var subTotal: Double = 0.0
+    var total: String = ""
+    val orderNumber = System.currentTimeMillis().toString()
     val selectedItems = mutableMapOf<Int, Item>()
 
+/*    fun calculateTotal() {
+        val items = selectedItems.values
+        items.forEach{ item ->
+            subTotal += (item.price.toDouble() * item.quantity!!)
+        }
+        total = subTotal.toString()
+    }*/
 
     fun insertItem() {
         viewModelScope.launch {
@@ -43,16 +46,26 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     }
 
 
-
-
-
-    fun addToMap(id: Int, item: Item) {
+    fun decreaseQuantity(id: Int, item: Item) {
+        selectedItems[id] = item
+    }
+    fun increaseQuantity(id: Int, item: Item) {
         selectedItems[id] = item
     }
 
-    fun removeFromMap(id: Int) {
+
+    fun addToCart(id: Int, item: Item) {
+        selectedItems[id] = item
+    }
+
+    fun removeFromCart(id: Int) {
         selectedItems.remove(id)
     }
+
+    fun deleteOrder() {
+        selectedItems.clear()
+    }
+
 
 }
 

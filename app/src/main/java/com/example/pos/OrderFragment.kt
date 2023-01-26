@@ -9,15 +9,10 @@ import android.view.ViewGroup
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pos.adapter.CartItemsAdapter
-import com.example.pos.adapter.MenuItemsAdapter
 import com.example.pos.adapter.OrderItemsAdapter
-import com.example.pos.data.entity.CartItem
 import com.example.pos.data.entity.Item
-import com.example.pos.data.entity.MenuItem
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentOrderBinding
@@ -68,11 +63,13 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
             it.setOnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
-                        val itemsIds = selectedItems.map { it.id.toString() }
                         adapter = OrderItemsAdapter(requireContext(), selectedItems, this)
                         recyclerView?.adapter = adapter
                     })
             }
+
+        }
+        if (menuViewModel.selectedItems.isNotEmpty()) {
 
         }
 
@@ -85,19 +82,17 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     }
 
 
-    override fun addToMap(id: Int, item: Item) {
-        Log.d(TAG, "added")
-        menuViewModel.addToMap(id, item)
+    override fun addToCart(id: Int, item: Item) {
+        menuViewModel.addToCart(id, item)
     }
 
-    override fun removeFromMap(id: Int) {
-        menuViewModel.removeFromMap(id)
+    override fun removeFromCart(id: Int) {
+        menuViewModel.removeFromCart(id)
     }
 
     fun toCart() {
-
-
-/*        Log.d(TAG, "list in order frag ${menuViewModel.selectedItems}")*/
+         Log.d(TAG, "list in order frag ${menuViewModel.selectedItems}")
+        menuViewModel.calculateTotal()
         findNavController().navigate(R.id.action_orderFragment_to_cartFragment)
     }
 

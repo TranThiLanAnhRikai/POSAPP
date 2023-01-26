@@ -9,4 +9,6 @@
     <string name="afternoon_shift">Afternoon: %s</string>
     <string name="noon_shift">Noon: %s</string>
     <string name="price">Price: $%s</string>
+    <string name="order_number">Order number: %s</string>
+    <string name="total_amount">Total: $%s</string>
 </resources>

@@ -10,21 +10,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CartItemsAdapter
+import com.example.pos.data.entity.Item
 import com.example.pos.data.entity.MenuItem
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
+import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentCartBinding
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [CartFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CartFragment : Fragment() {
+class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
@@ -51,7 +55,7 @@ class CartFragment : Fragment() {
                 recyclerView.adapter = adapter
             })
 */
-        Log.d(TAG, "list ${menuViewModel.selectedItems}")
+
         return fragmentBinding.root
     }
 
@@ -60,9 +64,8 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.cartFragment = this
         binding?.menuViewModel = menuViewModel
-        val menuItemDao = PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
-        val menuItemRepository = MenuItemRepository(menuItemDao)
-        adapter = CartItemsAdapter(requireContext(), menuViewModel.selectedItems)
+        Log.d(TAG, "list ${menuViewModel.selectedItems}")
+        adapter = CartItemsAdapter(requireContext(), menuViewModel.selectedItems, this)
         recyclerView.adapter = adapter
     /*val btnsContainer = binding?.btnsContainer
             btnsContainer?.forEach { it ->
@@ -83,9 +86,30 @@ class CartFragment : Fragment() {
         binding = null
     }
 
+    override fun increaseQuantity(id: Int, item: Item) {
+        menuViewModel.increaseQuantity(id, item)
+    }
 
+    override fun decreaseQuantity(id: Int, item: Item) {
+        menuViewModel.decreaseQuantity(id, item)
+    }
 
+    override fun removeFromCart(id: Int) {
+        menuViewModel.removeFromCart(id)
+    }
 
+    fun cancelOrder() {
+        findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
+    }
+
+    fun deleteOrder() {
+        menuViewModel.deleteOrder()
+        findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
+    }
+
+    fun payOrder() {
+        findNavController().navigate(R.id.action_cartFragment_to_paymentFragment)
+    }
 
 }
 

@@ -13,42 +13,42 @@
             type="com.example.pos.CartFragment" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView15"
-            android:layout_width="0dp"
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="28dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Order number"
+            android:text="@{@string/order_number(menuViewModel.orderNumber)}"
             android:textColor="@color/dark_blue"
-            android:textSize="21dp"
+            android:textSize="40dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-
-            android:textColor="@color/black"
-            android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="@+id/textView15" />
-<!--        android:text="@{order.orderId}"-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_review"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
            android:orientation="vertical"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <TextView
+            android:id="@+id/total"
+            android:textSize="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="500dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
+            android:text="@{@string/total_amount(menuViewModel.total)}"/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/btns_container"
@@ -71,7 +71,8 @@
                 android:clickable="false"
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
-                android:textSize="30sp"/>
+                android:textSize="30sp"
+                android:onClick="@{() -> cartFragment.cancelOrder()}"/>
             <Button
                 android:id="@+id/delete_btn"
                 android:layout_width="wrap_content"
@@ -79,7 +80,9 @@
                 android:textSize="30sp"
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
-                android:text="DELETE"/>
+                android:text="DELETE"
+                android:onClick="@{() -> cartFragment.deleteOrder()}"
+                />
             <Button
                 android:id="@+id/pay_btn"
                 android:layout_width="wrap_content"
@@ -87,7 +90,8 @@
                 android:textSize="30sp"
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
-                android:text="PAY"/>
+                android:text="PAY"
+                android:onClick="@{() -> cartFragment.payOrder()}"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

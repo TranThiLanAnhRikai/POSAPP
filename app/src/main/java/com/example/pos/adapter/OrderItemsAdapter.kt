@@ -49,13 +49,13 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             holder.quantity.text = currentQuantity.toString()
             holder.addToCart.visibility = View.GONE
             holder.addMoreLayout.visibility = View.VISIBLE
-            listener.addToMap(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, decodedString))
+            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image))
 
         }
         holder.imageAdd.setOnClickListener {
             holder.quantity.text = (currentQuantity++).toString()
-            listener.addToMap(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                item.price, decodedString))
+            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
+                item.price, item.image))
         }
         holder.imageMinus.setOnClickListener {
             currentQuantity--
@@ -63,13 +63,13 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
                 holder.addMoreLayout.visibility = View.GONE
                 holder.addToCart.visibility = View.VISIBLE
                 holder.quantity.text = "0"
-                listener.removeFromMap(id)
+                listener.removeFromCart(id)
                 currentQuantity == 1
             }
             else {
                 holder.quantity.text = currentQuantity.toString()
-                listener.addToMap(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                    item.price, decodedString))
+                listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
+                    item.price, item.image))
             }
 
         }
@@ -79,7 +79,7 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
     override fun getItemCount() = items.size
 
     interface OnClickListener {
-        fun addToMap(id: Int, item: Item)
-        fun removeFromMap(id: Int)
+        fun addToCart(id: Int, item: Item)
+        fun removeFromCart(id: Int)
     }
 }
