@@ -1,0 +1,61 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.pos.PaymentStatusFragment">
+    <data>
+        <variable
+            name="orderStatusFragment"
+            type="com.example.pos.OrderStatusFragment" />
+        <variable
+            name="menuViewModel"
+            type="com.example.pos.model.MenuViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/order_placed_img"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/order_placed"
+            android:layout_marginTop="200dp"/>
+        <TextView
+            android:id="@+id/order_placed_text"
+            android:text="Order has been successfully placed"
+            android:layout_width="match_parent"
+            android:textSize="35sp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/order_placed_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/to_orders_list_btn"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/order_placed_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="30dp"
+            android:text="View All Orders"
+            android:padding="10dp"
+            android:textSize="35sp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/to_order_btn"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content" app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="30dp"
+            android:text="Place Another Order"
+            android:padding="10dp"
+            android:textSize="35sp"
+            app:layout_constraintTop_toBottomOf="@+id/to_orders_list_btn"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

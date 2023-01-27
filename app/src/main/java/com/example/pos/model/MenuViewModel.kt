@@ -16,14 +16,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     var total: Double = 0.0
     val orderNumber = System.currentTimeMillis().toString()
     val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
-
-/*    fun calculateTotal() {
-        val items = selectedItems.values
-        items.forEach{ item ->
-            subTotal += (item.price.toDouble() * item.quantity!!)
-        }
-        total = subTotal.toString()
-    }*/
+    var totalQuantity: Int = 0
 
     fun insertItem() {
         viewModelScope.launch {

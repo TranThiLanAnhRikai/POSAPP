@@ -12,4 +12,12 @@
     <string name="order_number">Order number: %s</string>
     <string name="total_amount">Total: $%s</string>
     <string name="customer_name">Customer Name</string>
+    <string-array name="payment_options">
+        <item>Payment Method</item>
+        <item>Cash</item>
+        <item>Bank Transfer</item>
+        <item>Credit Card</item>
+        <item>Coupon</item>
+    </string-array>
 </resources>
+

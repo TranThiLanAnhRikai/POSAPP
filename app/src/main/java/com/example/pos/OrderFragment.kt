@@ -69,6 +69,14 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
             }
 
         }
+        menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { items ->
+            val values = items.values
+            menuViewModel.totalQuantity = 0
+            values.forEach{item ->
+                menuViewModel.totalQuantity += item.quantity!!
+            }
+            binding?.totalQuantity?.text = menuViewModel.totalQuantity.toString()
+        })
 
 
 
@@ -89,8 +97,6 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     }
 
     fun toCart() {
-         Log.d(TAG, "list in order frag ${menuViewModel.selectedItems.value}")
-        /*menuViewModel.calculateTotal()*/
         findNavController().navigate(R.id.action_orderFragment_to_cartFragment)
     }
 

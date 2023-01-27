@@ -143,11 +143,11 @@
             android:id="@+id/action_cartFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
         <action
-            android:id="@+id/action_cartFragment_to_paymentFragment"
-            app:destination="@id/paymentFragment" />
-        <action
-            android:id="@+id/action_cartFragment_to_paymentFragment2"
-            app:destination="@id/paymentFragment" />
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+<!--        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/ordersListFragment"
@@ -159,19 +159,19 @@
             app:destination="@id/orderFragment" />
     </fragment>
     <fragment
-        android:id="@+id/paymentFragment"
-        android:name="com.example.pos.PaymentFragment"
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.pos.CheckoutFragment"
         android:label="Payment"
-        tools:layout="@layout/fragment_payment">
+        tools:layout="@layout/fragment_checkout">
         <action
-            android:id="@+id/action_paymentFragment_to_paymentStatusFragment"
-            app:destination="@id/paymentStatusFragment" />
+            android:id="@+id/action_checkoutFragment_to_orderStatusFragment"
+            app:destination="@id/orderStatusFragment" />
     </fragment>
     <fragment
-        android:id="@+id/paymentStatusFragment"
-        android:name="com.example.pos.PaymentStatusFragment"
-        android:label="Payment Status"
-        tools:layout="@layout/fragment_payment_status">
+        android:id="@+id/orderStatusFragment"
+        android:name="com.example.pos.OrderStatusFragment"
+        android:label="Order Status"
+        tools:layout="@layout/fragment_order_status">
         <action
             android:id="@+id/action_paymentStatusFragment_to_ordersListFragment"
             app:destination="@id/ordersListFragment" />

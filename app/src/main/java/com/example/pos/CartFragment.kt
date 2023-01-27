@@ -100,7 +100,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     }
 
     fun payOrder() {
-        findNavController().navigate(R.id.action_cartFragment_to_paymentFragment)
+        findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
     }
 
 }
