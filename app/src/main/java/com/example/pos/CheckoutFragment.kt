@@ -20,7 +20,6 @@ import com.example.pos_admin.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentCheckoutBinding
 
 
-
 /**
  * A simple [Fragment] subclass.
  * Use the [CheckoutFragment.newInstance] factory method to
@@ -88,7 +87,8 @@ class CheckoutFragment : Fragment() {
         })
     }
 
-    fun toOrdersList() {
+    fun toOrderStatus() {
+        menuViewModel.insertToOrderList()
         findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
     }
 

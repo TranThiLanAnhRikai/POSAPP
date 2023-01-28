@@ -173,10 +173,10 @@
         android:label="Order Status"
         tools:layout="@layout/fragment_order_status">
         <action
-            android:id="@+id/action_paymentStatusFragment_to_ordersListFragment"
+            android:id="@+id/action_orderStatusFragment_to_ordersListFragment"
             app:destination="@id/ordersListFragment" />
         <action
-            android:id="@+id/action_paymentStatusFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
+            android:id="@+id/action_orderStatusFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
     </fragment>
 </navigation>

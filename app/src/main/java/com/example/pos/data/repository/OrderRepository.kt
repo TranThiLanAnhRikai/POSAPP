@@ -18,4 +18,7 @@ class OrderRepository(private val orderDao: OrderDao) {
     suspend fun update(order: Order) {
         return orderDao.update(order)
     }
+    suspend fun insert(order: Order) {
+        return orderDao.insert(order)
+    }
 }

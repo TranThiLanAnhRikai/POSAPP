@@ -279,7 +279,7 @@
             android:textColor="@color/black"
             android:padding="10dp"
             android:layout_margin="10dp"
-            android:onClick="@{() -> checkoutFragment.toOrdersList()}"
+            android:onClick="@{() -> checkoutFragment.toOrderStatus()}"
             />
 
 

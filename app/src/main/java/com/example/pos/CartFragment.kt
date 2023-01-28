@@ -57,7 +57,6 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding?.cartFragment = this
         binding?.menuViewModel = menuViewModel
-        Log.d(TAG, "list ${menuViewModel.selectedItems.value}")
         menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
             adapter = CartItemsAdapter(requireContext(), selectedItems, this)
             recyclerView.adapter = adapter

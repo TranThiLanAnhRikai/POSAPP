@@ -10,12 +10,8 @@ data class CartItem (
     val id: Int = 0,
     @ColumnInfo(name = "oder_number")
     val orderNumber: String,
-    @ColumnInfo(name="img_path")
-    val image: String,
     @ColumnInfo(name = "price")
     val price: String,
     @ColumnInfo(name = "quantity")
     val quantity: String,
-    @ColumnInfo(name = "sub_total")
-    val subTotal: String
     )

@@ -57,6 +57,14 @@ class OrderStatusFragment : Fragment() {
 
     }
 
+    fun toOrderList() {
+        findNavController().navigate(R.id.action_orderStatusFragment_to_ordersListFragment)
+    }
+
+    fun toPlaceOrder() {
+        findNavController().navigate(R.id.action_orderStatusFragment_to_orderFragment)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

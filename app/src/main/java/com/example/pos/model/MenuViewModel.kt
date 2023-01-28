@@ -42,13 +42,13 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap[id] = item
         selectedItems.postValue(currentMap)
-        /*selectedItems.value?.set(id, item)*/
+
     }
     fun increaseQuantity(id: Int, item: Item) {
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap[id] = item
         selectedItems.postValue(currentMap)
-        /*selectedItems.value?.set(id, item)*/
+
     }
 
 
@@ -56,22 +56,26 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap[id] = item
         selectedItems.postValue(currentMap)
-   /*     selectedItems.value?.set(id, item)*/
+
     }
 
     fun removeFromCart(id: Int) {
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap.remove(id)
         selectedItems.postValue(currentMap)
-/*        selectedItems.value?.remove(id)*/
+
     }
 
     fun deleteOrder() {
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap.clear()
         selectedItems.postValue(currentMap)
-/*        selectedItems.value?.clear()*/
+
     }
+
+    fun insertToOrderList() {
+    }
+
 
 
 }
