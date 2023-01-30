@@ -13,7 +13,8 @@ class OrderRepository(private val orderDao: OrderDao) {
         return orderDao.getOrders(status)
     }
     fun getTodayOrders(date: String): LiveData<List<Order>> {
-        return orderDao.getTodayOrders(date)
+        val constructedDate = "%$date%"
+        return orderDao.getTodayOrders(constructedDate)
     }
     suspend fun delete(order: Order) {
         return orderDao.delete(order)

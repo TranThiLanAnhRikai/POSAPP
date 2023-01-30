@@ -78,10 +78,10 @@ class FirstLoginFragment : Fragment() {
                     Log.d(TAG, "1user ${loginViewModel.user.value}")
                     loginViewModel.inputFirstCode.value = ""
                     if (destination == Destination.NON_STAFF) {
-
+  findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
                     } else {*/
-        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
 
                    /* }
                 }

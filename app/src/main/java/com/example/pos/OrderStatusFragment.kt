@@ -25,6 +25,15 @@ import com.example.pos_admin.databinding.FragmentOrderStatusBinding
 class OrderStatusFragment : Fragment() {
 
     private var binding: FragmentOrderStatusBinding? = null
+    private val menuViewModel: MenuViewModel by activityViewModels {
+        MenuViewModelFactory(
+            MenuItemRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+            )
+        )
+    }
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: OrderItemsAdapter
 
@@ -43,6 +52,7 @@ class OrderStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderStatusFragment = this
+        binding?.menuViewModel = menuViewModel
 
     }
 
@@ -51,6 +61,7 @@ class OrderStatusFragment : Fragment() {
     }
 
     fun toPlaceOrder() {
+        menuViewModel.selectedItems.value = mutableMapOf()
         findNavController().navigate(R.id.action_orderStatusFragment_to_orderFragment)
     }
 

@@ -33,6 +33,8 @@ class MainMenuViewModel(private val orderRepository: OrderRepository): ViewModel
 
 
     fun getTodayOrders(): LiveData<List<Order>> {
+        Log.d(TAG, "currrentDate $currentDate")
+        Log.d(TAG, "today orders ${orderRepository.getTodayOrders(currentDate).value}")
             return orderRepository.getTodayOrders(currentDate)
     }
     fun getWeatherInfo(): MutableLiveData<WeatherInfo> {

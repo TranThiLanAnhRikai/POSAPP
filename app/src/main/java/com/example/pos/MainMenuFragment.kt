@@ -78,7 +78,15 @@ class MainMenuFragment : Fragment() {
         }
         binding?.bottomNavigationView?.selectedItemId = R.id.bottom_navigation_view
         mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner, Observer { orders ->
-          Log.d(TAG, "orders $orders")
+            binding?.totalNumberOfOrders?.text = "TOTAL NUMBER OF ORDERS: ${orders.size}"
+            var totalRevenue = 0.0
+            var totalNoOfItems = 0
+            orders.forEach { order ->
+                totalRevenue += order.total
+                totalNoOfItems += order.quantity
+            }
+            binding?.totalRevenue?.text = "TOTAL REVENUES: $${String.format("%.2f", totalRevenue)}"
+            binding?.totalNumberOfItems?.text = "TOTAL NUMBER OF ITEMS: $totalNoOfItems"
         })
     }
 
