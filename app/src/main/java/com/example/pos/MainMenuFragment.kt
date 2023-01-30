@@ -11,10 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MainMenuViewModel
+import com.example.pos.model.MainMenuViewModelFactory
 import com.example.pos_admin.R
+import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.databinding.FragmentMainMenuBinding
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -26,7 +30,11 @@ import java.util.*
 
 class MainMenuFragment : Fragment() {
     private var binding: FragmentMainMenuBinding? = null
-    val mainMenuViewModel: MainMenuViewModel = MainMenuViewModel()
+    private val mainMenuViewModel: MainMenuViewModel by activityViewModels {
+        MainMenuViewModelFactory(
+            OrderRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao()))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +77,9 @@ class MainMenuFragment : Fragment() {
             )
         }
         binding?.bottomNavigationView?.selectedItemId = R.id.bottom_navigation_view
+        mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner, Observer { orders ->
+          Log.d(TAG, "orders $orders")
+        })
     }
 
     private fun handleBottomNavigation(

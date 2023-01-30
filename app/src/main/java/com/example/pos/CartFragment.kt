@@ -1,7 +1,9 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,6 +70,16 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             }
             binding?.total?.text = "TOTAL: $" + "%.2f".format(menuViewModel.total)
 
+        })
+        menuViewModel.getOrderNumber()?.observe(viewLifecycleOwner, Observer { orders ->
+            Log.d(TAG, "orders $orders")
+            if (orders.isEmpty()) {
+                menuViewModel.orderNumber.value = (menuViewModel.currentDate + "001").toLong()
+            }
+            else {
+                val lastestOrder = orders[0]
+                menuViewModel.orderNumber.value = lastestOrder.orderNumber + 1
+            }
         })
 
     }

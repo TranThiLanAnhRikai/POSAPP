@@ -12,6 +12,9 @@ class OrderRepository(private val orderDao: OrderDao) {
     fun getOrders(status: String): LiveData<List<Order>> {
         return orderDao.getOrders(status)
     }
+    fun getTodayOrders(date: String): LiveData<List<Order>> {
+        return orderDao.getTodayOrders(date)
+    }
     suspend fun delete(order: Order) {
         return orderDao.delete(order)
     }
@@ -21,4 +24,5 @@ class OrderRepository(private val orderDao: OrderDao) {
     suspend fun insert(order: Order) {
         return orderDao.insert(order)
     }
+
 }

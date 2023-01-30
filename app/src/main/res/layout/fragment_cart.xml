@@ -26,7 +26,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="@{@string/order_number(menuViewModel.orderNumber)}"
             android:textColor="@color/dark_blue"
             android:textSize="40dp"
             android:textStyle="bold" />

@@ -255,7 +255,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/today_sales"
+                    android:id="@+id/today_sales_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -267,15 +267,43 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/sales_graph"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:src="@drawable/sales_report"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <LinearLayout
+                    android:id="@+id/today_sales_figures"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/today_sales" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/today_sales_text"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/total_revenue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Total revenue"
+                        android:gravity="center"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:id="@+id/total_number_of_orders"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:text="Total number of orders"/>
+                    <TextView
+                        android:id="@+id/total_number_of_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:gravity="center"
+                        android:text="Total number of items sold"
+                        android:layout_marginTop="20dp"/>
+
+
+
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/go_to_sales_analysis_btn"
@@ -284,7 +312,6 @@
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:background="@color/light_blue"
                     android:onClick="@{() -> mainMenuFragment.toSalesAnalysisFragment()}"
                     android:padding="10dp"
@@ -294,8 +321,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/sales_graph" />
+                    app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -379,7 +405,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/today_shifts" />
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

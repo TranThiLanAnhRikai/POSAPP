@@ -12,9 +12,9 @@ data class Order (
     @ColumnInfo(name = "order_number")
     var orderNumber: Long,
     @ColumnInfo(name = "quantity")
-    var quantity: String,
+    var quantity: Int,
     @ColumnInfo(name = "total")
-    var total: String,
+    var total: Double,
     @ColumnInfo(name = "status")
     var status: String
 )

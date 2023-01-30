@@ -9,7 +9,10 @@ import com.example.pos.data.entity.Item
 import com.example.pos.data.entity.MenuItem
 import com.example.pos.data.entity.Order
 import com.example.pos.data.repository.MenuItemRepository
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -19,9 +22,11 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
     var total: Double = 0.0
-    val orderNumber = System.currentTimeMillis()
     val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
     var totalQuantity: Int = 0
+    val dateFormat = SimpleDateFormat("yyyyMMdd")
+    val currentDate = dateFormat.format(Date())
+    var orderNumber = MutableLiveData<Long>()
 
     fun insertItem() {
         viewModelScope.launch {
@@ -32,6 +37,11 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         image.value = ""
         _price.value = ""
 
+    }
+    fun getOrderNumber(): LiveData<List<Order>>? {
+        Log.d(TAG, "curentDate $currentDate")
+        Log.d(TAG, "order ${menuItemRepository.getMaxOrderNumber(currentDate).value}")
+           return menuItemRepository.getMaxOrderNumber(currentDate)
     }
 
     fun getAllMenuItems(): LiveData<List<MenuItem>> {
@@ -82,12 +92,12 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         val cartItems = selectedItems.value
         val keys = cartItems?.keys?.toList()
         viewModelScope.launch {
-            menuItemRepository.insertToOrderList(Order(0, orderNumber, totalQuantity.toString(), total.toString(), Status.PROCESSING.toString() ))
+            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, totalQuantity, total, Status.PROCESSING.toString() ))
         }
         viewModelScope.launch {
             keys?.forEach {key ->
                 val item = selectedItems.value?.get(key)
-                menuItemRepository.insertToCartItemList(CartItem(0, orderNumber, key, item?.quantity.toString()))
+                menuItemRepository.insertToCartItemList(CartItem(0, orderNumber.value!!, key, item?.quantity.toString()))
             }
 
         }

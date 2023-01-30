@@ -87,6 +87,7 @@ class CheckoutFragment : Fragment() {
             itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
             recyclerView.adapter = itemsAdapter
         })
+
     }
 
     fun toOrderStatus() {

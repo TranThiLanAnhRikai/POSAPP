@@ -1,5 +1,7 @@
 package com.example.pos
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,9 @@ import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.databinding.FragmentOrderBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 //Fragment for staff to make orders//
 
@@ -99,6 +104,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     fun toCart() {
         findNavController().navigate(R.id.action_orderFragment_to_cartFragment)
     }
+
 
 
 }

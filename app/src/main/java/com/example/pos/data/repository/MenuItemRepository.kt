@@ -45,4 +45,12 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao, private val order
         return cartItemDao.insert(cartItem)
     }
 
+    fun getMaxOrderNumber(date: String): LiveData<List<Order>> {
+        Log.d(TAG, "in repository before: ${date}")
+        val constructedDate = "%$date%"
+        Log.d(TAG, "in repository after: ${constructedDate}")
+        Log.d(TAG, "Query: SELECT * FROM orders WHERE order_number LIKE $constructedDate ORDER BY order_number DESC")
+        return orderDao.getMaxOrderNumber(constructedDate)
+    }
+
 }
