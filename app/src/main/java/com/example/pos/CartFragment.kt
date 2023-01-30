@@ -1,9 +1,7 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CartItemsAdapter
 import com.example.pos.data.entity.Item
+import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentCartBinding
 
 
@@ -32,7 +31,9 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
             )
         )
     }
@@ -65,7 +66,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             items.forEach{ item ->
                 menuViewModel.total += item.subTotal
             }
-            binding?.total?.text = "TOTAL: $" + menuViewModel.total.toString()
+            binding?.total?.text = "TOTAL: $" + "%.2f".format(menuViewModel.total)
 
         })
 

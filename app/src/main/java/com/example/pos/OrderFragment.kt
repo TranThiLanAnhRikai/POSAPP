@@ -1,7 +1,5 @@
 package com.example.pos
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos.data.entity.Item
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
@@ -28,7 +26,9 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
             )
         )
     }
@@ -64,7 +64,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
                         adapter = OrderItemsAdapter(requireContext(), selectedItems, this)
-                        recyclerView?.adapter = adapter
+                        recyclerView.adapter = adapter
                     })
             }
 

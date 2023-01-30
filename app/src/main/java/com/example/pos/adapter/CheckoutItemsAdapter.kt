@@ -28,7 +28,7 @@ RecyclerView.Adapter<CheckoutItemsAdapter.CheckoutItemViewHolder>(){
     override fun onBindViewHolder(holder: CheckoutItemViewHolder, position: Int) {
         val values = items.values.toList()
         val item = values[position]
-        val decodedString = Base64.decode(item!!.image, Base64.DEFAULT)
+        val decodedString = Base64.decode(item.image, Base64.DEFAULT)
         val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
         Glide.with(context)
             .load(decodedByte)

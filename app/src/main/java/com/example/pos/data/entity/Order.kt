@@ -8,13 +8,13 @@ import com.example.pos.const.Status
 @Entity(tableName = "orders")
 data class Order (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int = 0,
     @ColumnInfo(name = "order_number")
-    val orderNumber: Long,
+    var orderNumber: Long,
     @ColumnInfo(name = "quantity")
-    val quantity: String,
+    var quantity: String,
     @ColumnInfo(name = "total")
-    val total: String,
+    var total: String,
     @ColumnInfo(name = "status")
-    val status: Status
+    var status: String
 )

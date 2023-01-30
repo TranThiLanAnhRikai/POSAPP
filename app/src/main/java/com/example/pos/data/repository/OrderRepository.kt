@@ -9,7 +9,7 @@ class OrderRepository(private val orderDao: OrderDao) {
     fun getAllOrders(): LiveData<List<Order>> {
         return orderDao.getAllOrders()
     }
-    fun getOrders(status: Status): LiveData<List<Order>> {
+    fun getOrders(status: String): LiveData<List<Order>> {
         return orderDao.getOrders(status)
     }
     suspend fun delete(order: Order) {

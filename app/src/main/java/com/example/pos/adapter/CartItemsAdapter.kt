@@ -48,7 +48,7 @@ RecyclerView.Adapter<CartItemsAdapter.CartItemViewHolder>(){
         holder.pricePerItem.text = "$" + values[position].price
         holder.quantity.text = currentQuantity.toString()
         Log.d(TAG, "image ${item.image}")
-        val decodedString = Base64.decode(item!!.image, Base64.DEFAULT)
+        val decodedString = Base64.decode(item.image, Base64.DEFAULT)
         val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
         Glide.with(context)
             .load(decodedByte)
@@ -62,7 +62,7 @@ RecyclerView.Adapter<CartItemsAdapter.CartItemViewHolder>(){
             }
             else {
                 holder.quantity.text = currentQuantity.toString()
-                listener.decreaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+                listener.decreaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
             }
 
         }
@@ -74,7 +74,7 @@ RecyclerView.Adapter<CartItemsAdapter.CartItemViewHolder>(){
         holder.plusLayout.setOnClickListener {
             currentQuantity = currentQuantity!!.plus(1)
             holder.quantity.text = currentQuantity.toString()
-            listener.increaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item!!.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+            listener.increaseQuantity(id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
         }
     }
 

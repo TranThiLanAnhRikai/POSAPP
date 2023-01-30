@@ -1,4 +1,4 @@
-package com.example.pos_admin
+package com.example.pos
 
 
 import android.Manifest
@@ -17,14 +17,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentAddMenuBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
+import com.example.pos_admin.R
 import java.io.ByteArrayOutputStream
 
 
@@ -35,7 +35,9 @@ class AddMenuFragment : Fragment() {
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
             )
         )
     }

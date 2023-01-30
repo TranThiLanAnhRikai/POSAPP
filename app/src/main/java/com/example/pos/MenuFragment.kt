@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pos.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentMenuBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
@@ -20,7 +19,9 @@ class MenuFragment : Fragment() {
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
             )
         )
     }

@@ -1,15 +1,19 @@
-package com.example.pos_admin.data.repository
+package com.example.pos.data.repository
 
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.pos.data.dao.CartItemDao
 import com.example.pos.data.dao.MenuItemDao
+import com.example.pos.data.dao.OrderDao
+import com.example.pos.data.entity.CartItem
 import com.example.pos.data.entity.MenuItem
+import com.example.pos.data.entity.Order
 
 
 /*Repository for menu_item class */
 
-class MenuItemRepository(private val menuItemDao: MenuItemDao) {
+class MenuItemRepository(private val menuItemDao: MenuItemDao, private val orderDao: OrderDao, private val cartItemDao: CartItemDao) {
 
     val items = menuItemDao.getAllMenuItems()
 
@@ -32,6 +36,13 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao) {
 
     suspend fun delete(menuItem: MenuItem) {
         return menuItemDao.delete(menuItem)
+    }
+
+    suspend fun insertToOrderList(order: Order) {
+        return orderDao.insert(order)
+    }
+    suspend fun insertToCartItemList(cartItem: CartItem) {
+        return cartItemDao.insert(cartItem)
     }
 
 }

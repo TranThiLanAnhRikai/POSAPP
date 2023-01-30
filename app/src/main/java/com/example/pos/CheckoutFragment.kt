@@ -16,7 +16,7 @@ import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentCheckoutBinding
 
 
@@ -31,7 +31,9 @@ class CheckoutFragment : Fragment() {
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
             )
         )
     }
@@ -88,7 +90,7 @@ class CheckoutFragment : Fragment() {
     }
 
     fun toOrderStatus() {
-        menuViewModel.insertToOrderList()
+        menuViewModel.insertToOrderCustomerList()
         findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
     }
 

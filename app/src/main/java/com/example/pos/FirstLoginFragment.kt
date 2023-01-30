@@ -81,8 +81,8 @@ class FirstLoginFragment : Fragment() {
 
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
                     } else {*/
+        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
 
-                        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
                    /* }
                 }
             })

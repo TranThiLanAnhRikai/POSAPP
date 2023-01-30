@@ -97,7 +97,7 @@
     </fragment>
     <fragment
         android:id="@+id/addMenuFragment"
-        android:name="com.example.pos_admin.AddMenuFragment"
+        android:name="com.example.pos.AddMenuFragment"
         android:label="Add New Item "
         tools:layout="@layout/fragment_add_menu">
         <action

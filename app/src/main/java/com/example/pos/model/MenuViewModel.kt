@@ -1,9 +1,14 @@
 package com.example.pos.model
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.*
+import com.example.pos.const.Status
+import com.example.pos.data.entity.CartItem
 import com.example.pos.data.entity.Item
 import com.example.pos.data.entity.MenuItem
-import com.example.pos_admin.data.repository.MenuItemRepository
+import com.example.pos.data.entity.Order
+import com.example.pos.data.repository.MenuItemRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -14,7 +19,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
     var total: Double = 0.0
-    val orderNumber = System.currentTimeMillis().toString()
+    val orderNumber = System.currentTimeMillis()
     val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
     var totalQuantity: Int = 0
 
@@ -73,10 +78,21 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
     }
 
-    fun insertToOrderList() {
+    fun insertToOrderCustomerList() {
+        val cartItems = selectedItems.value
+        val keys = cartItems?.keys?.toList()
+        viewModelScope.launch {
+            menuItemRepository.insertToOrderList(Order(0, orderNumber, totalQuantity.toString(), total.toString(), Status.PROCESSING.toString() ))
+        }
+        viewModelScope.launch {
+            keys?.forEach {key ->
+                val item = selectedItems.value?.get(key)
+                menuItemRepository.insertToCartItemList(CartItem(0, orderNumber, key, item?.quantity.toString()))
+            }
+
+        }
+
     }
-
-
 
 }
 

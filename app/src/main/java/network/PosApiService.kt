@@ -1,5 +1,3 @@
 package network
 
-class PosApiService {
-
-}
+class PosApiService

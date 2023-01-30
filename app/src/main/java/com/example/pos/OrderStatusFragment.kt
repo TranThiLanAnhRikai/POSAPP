@@ -5,19 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderItemsAdapter
-import com.example.pos.data.entity.Item
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
-import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.MenuItemRepository
-import com.example.pos_admin.databinding.FragmentOrderBinding
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentOrderStatusBinding
 
 
@@ -29,13 +25,6 @@ import com.example.pos_admin.databinding.FragmentOrderStatusBinding
 class OrderStatusFragment : Fragment() {
 
     private var binding: FragmentOrderStatusBinding? = null
-    private val menuViewModel: MenuViewModel by activityViewModels {
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao()
-            )
-        )
-    }
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: OrderItemsAdapter
 
