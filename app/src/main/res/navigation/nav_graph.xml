@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.example.pos_admin.MainMenuFragment"
+        android:name="com.example.pos.MainMenuFragment"
         android:label="Main Menu"
         tools:layout="@layout/fragment_main_menu">
         <action
