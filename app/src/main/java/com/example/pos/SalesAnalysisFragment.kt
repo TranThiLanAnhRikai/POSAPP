@@ -49,18 +49,17 @@ class SalesAnalysisFragment : Fragment() {
         binding?.salesAnalysisFragment = this
         binding?.salesViewModel = salesViewModel
         salesViewModel.getLatestOrders().observe(viewLifecycleOwner, Observer { orders ->
+            salesViewModel.numberOfOrders.clear()
             salesViewModel.revenueList.clear()
+            salesViewModel.numberOfItems.clear()
             orders.forEach { order ->
-                Log.d(TAG, "order $order")
                 salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
-                Log.d(TAG, "dates ${salesViewModel.dates}")
             }
             val datesList = salesViewModel.dates.distinct()
-            Log.d(TAG, "datesList $datesList")
             datesList.forEach { date ->
                 var sum = 0.0
                 var orderSum = 0
-                Log.d(TAG, "date $date")
+                var quantitySum = 0
                 orders.filter { order ->
 
                     order.orderNumber.toString().contains(date)
@@ -68,31 +67,32 @@ class SalesAnalysisFragment : Fragment() {
                 }
                     .forEach { order ->
                         orderSum++
+                        quantitySum += order.quantity
                         sum += order.total
                         Log.d(TAG, "sum $sum")
                     }
 
                 salesViewModel.numberOfOrders.add(orderSum.toFloat())
-                salesViewModel.revenueList?.add(sum)
+                salesViewModel.revenueList.add(sum)
+                salesViewModel.numberOfItems.add(quantitySum)
             }
-            Log.d(TAG, "ordersum ${salesViewModel.numberOfOrders}")
+
             val numberOfOrders: List<Float> = salesViewModel.numberOfOrders.reversed()
             val intervalList: List<String> = salesViewModel.dates.distinct().reversed()
-            Log.d(TAG, "intervalList $intervalList")
             val rangeList = listOf("1-100", "100-200", "200-300")
             val mutableList: List<Double> = salesViewModel.revenueList
-            Log.d(TAG, "revenueList ${salesViewModel.revenueList}")
             val revenueFloatList: List<Float> = mutableList.map{it.toFloat()}
-            Log.d(TAG,"revenueFL $revenueFloatList" )
+            val itemsFloatList: List<Float> = (salesViewModel.numberOfItems.map { it.toFloat() }).reversed()
             val lineList = arrayListOf<Line>().apply {
                 add(Line("Total revenue", Color.BLUE, revenueFloatList.reversed()))
                 add(Line("Total number of Orders", Color.RED, numberOfOrders))
+                add(Line("Total number of items", Color.GRAY, itemsFloatList))
             }
             binding?.chainChartView?.setData(lineList, intervalList, rangeList)
             binding?.chainChartView?.apply {
                 setLineSize(5f)
                 setTextSize(20f)
-                setTextColor(Color.GRAY)
+                setTextColor(Color.BLACK)
                 setNodeSize(5F)
             }
         })

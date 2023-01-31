@@ -36,7 +36,6 @@ class FirstLoginFragment : Fragment() {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,34 +58,42 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        val builder = AlertDialog.Builder(requireContext())
+        /*val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputFirstCode.value == null) {
             builder.setMessage("Please fill in your login code.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        } else if (!loginViewModel.isFirstLoginCodeValid()) {
+        } *//*else if (!loginViewModel.isFirstLoginCodeValid()) {
             builder.setMessage("Login code is invalid. Please try again.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
             binding?.loginEditText?.text = null
-        }
+        }*//*
         else {
             loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
                 loginViewModel.user.value = person
-                loginViewModel.userSecondLoginCode.value = person.secondCode
-                val destination = loginViewModel.nextFragment()
-                binding?.loginEditText?.text = null
-                if (destination == Destination.NON_STAFF) {
-                    findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                if (person == null) {
+                    builder.setMessage("Login code is invalid. Please try again.")
+                    builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
+                    binding?.loginEditText?.text = null
                 } else {
-                    findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
-                }
+                    loginViewModel.userSecondLoginCode.value = person.secondCode
+                    val destination = loginViewModel.nextFragment()
+                    binding?.loginEditText?.text = null
+                    if (destination == Destination.NON_STAFF) {
+                        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                    } else {
+                        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+                    }
 
-        })
-        }
-        /*findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)*/
+                }
+            })
+        }*/
+        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
     }
 }

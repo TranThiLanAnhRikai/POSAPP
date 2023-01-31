@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/firstLoginFragment"
-        android:name="com.example.pos.FirstLoginFragment"
+        android:name="com.example.pos_admin.FirstLoginFragment"
         android:label="2-step Login (First)"
         tools:layout="@layout/fragment_first_login">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondLoginFragment"
-        android:name="com.example.pos.SecondLoginFragment"
+        android:name="com.example.pos_admin.SecondLoginFragment"
         android:label="2-step Login (Second)"
         tools:layout="@layout/fragment_second_login">
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.example.pos.MainMenuFragment"
+        android:name="com.example.pos_admin.MainMenuFragment"
         android:label="Main Menu"
         tools:layout="@layout/fragment_main_menu">
         <action

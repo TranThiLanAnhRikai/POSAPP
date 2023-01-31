@@ -13,6 +13,7 @@ class SalesViewModel(private val orderRepository: OrderRepository): ViewModel() 
     var revenueList = mutableListOf<Double>()
     var dates = mutableListOf<String>()
     var numberOfOrders = mutableListOf<Float>()
+    var numberOfItems = mutableListOf<Int>()
     val latestDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Calendar.getInstance().apply {
         set(Calendar.DAY_OF_MONTH, 1)
     }.time)

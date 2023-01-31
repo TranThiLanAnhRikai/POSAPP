@@ -37,6 +37,7 @@ class SecondLoginFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentSecondLoginBinding.inflate(inflater, container, false)
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        binding = fragmentBinding
         return fragmentBinding.root
     }
 
@@ -44,6 +45,7 @@ class SecondLoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.secondLoginFragment = this
         binding?.loginViewModel = loginViewModel
+
 
 
     }
@@ -70,13 +72,18 @@ class SecondLoginFragment : Fragment() {
             dialog.show()
             binding?.loginEditText?.text = null
         } else {
-            val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+
+
+      val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
             prefs?.edit()?.putString("username", "${loginViewModel.user.value?.name}")?.apply()
-            findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
+
+
         }
-    }
-}
-/*  findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)*//*
+
+
+        findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
+
+
 
     }
 
@@ -85,4 +92,5 @@ class SecondLoginFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
-}*/
+}
+

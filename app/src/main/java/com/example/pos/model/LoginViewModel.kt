@@ -19,14 +19,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         return userRepository.getUser(inputFirstCode.value!!)
     }
 
-    //Check whether the user that is achieved from getUser() function exists in the database
-    fun isFirstLoginCodeValid(): Boolean {
-        if (user.value == null) {
-            return false
-        }
-        return true
-    }
-
 
     // Decide the next view based on the type of user
     fun nextFragment(): Destination {
@@ -39,7 +31,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     // Check whether the second login code is valid
     fun isSecondLoginCodeValid(): Boolean {
-        Log.d(TAG, "vm code ${user.value?.secondCode}")
         if (user.value?.secondCode != inputSecondCode.value ) {
             return false
         }

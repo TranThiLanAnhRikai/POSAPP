@@ -43,12 +43,14 @@
                     android:textSize="20sp"
                     android:layout_column="1"
                     android:padding="10dp"
+                    android:gravity="center"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="NAME"
                     android:textSize="20sp"
                     android:layout_column="2"
                     android:padding="10dp"
+                    android:gravity="center"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="ROLE"

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:stretchColumns="1, 2, 3, 4, 5">
+    <TableRow>
+        <TextView
+            android:id="@+id/order_id"
+            android:textSize="25sp"
+            android:layout_column="1"
+            android:gravity="center"
+            android:textColor="#0e7d82"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/order_number"
+            android:textSize="25sp"
+            android:layout_column="2"
+            android:gravity="center"
+            android:textColor="#0e7d82"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/quantity"
+            android:textSize="25sp"
+            android:layout_column="3"
+            android:textColor="#0e7d82"
+            android:gravity="center"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/total"
+            android:textSize="25sp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="#0e7d82"
+            android:layout_column="4" />
+        <TextView
+            android:id="@+id/status"
+            android:textSize="25sp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="#0e7d82"
+            android:layout_column="5" />
+
+
+    </TableRow>
+</TableLayout>

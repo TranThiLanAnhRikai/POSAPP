@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream
 class AddMenuFragment : Fragment() {
     private val cameraRequestId = 1
     private val uploadRequestId = 2
-    private val itemTypes =  arrayOf(ItemType.FOOD, ItemType.DESERT, ItemType.DRINK)
+    private val itemTypes =  arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(

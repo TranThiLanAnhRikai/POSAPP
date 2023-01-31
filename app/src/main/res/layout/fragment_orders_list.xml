@@ -1,13 +1,119 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.pos.OrdersListFragment">
+    tools:context=".OrdersListFragment">
+    <data>
+        <variable
+            name="menuViewModel"
+            type="com.example.pos.model.MenuViewModel" />
+        <variable
+            name="ordersListFragment"
+            type="com.example.pos.OrdersListFragment" />
+    </data>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <TableLayout
+            android:id="@+id/table_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1, 2, 3, 4, 5"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="40dp">
+            <TableRow>
+                <TextView
+                    android:text="ID"
+                    android:textSize="20sp"
+                    android:layout_column="1"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="ORDER NUMBER"
+                    android:textSize="20sp"
+                    android:layout_column="2"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="QUANTITY"
+                    android:textSize="20sp"
+                    android:layout_column="3"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="TOTAL"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_column="4"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="STATUS"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_column="5"
+                    android:textStyle="bold"/>
 
-</FrameLayout>
+
+            </TableRow>
+        </TableLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orders"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="LinearLayoutManager" />
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/btns_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            app:checkedButton="@+id/food_selected"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp">
+            <Button
+                android:id="@+id/cancelled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCELLED"
+                android:tag="Food"
+                style="?attr/materialButtonOutlinedStyle"
+                android:textSize="30sp"/>
+            <Button
+                android:id="@+id/processing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:tag="Drink"
+                style="?attr/materialButtonOutlinedStyle"
+                android:text="PROCESSING"/>
+            <Button
+                android:id="@+id/DELIVERED"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:tag="Dessert"
+                style="?attr/materialButtonOutlinedStyle"
+                android:text="DELIVERED"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+    </LinearLayout>
+
+</layout>

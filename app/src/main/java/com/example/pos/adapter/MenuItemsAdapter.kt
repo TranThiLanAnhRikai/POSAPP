@@ -34,7 +34,7 @@ class MenuItemsAdapter(private val context: Context, private val listOfItems: Li
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MenuItemViewHolder, position: Int) {
         val item = listOfItems[position]
-        holder.itemName.text = "Name: " + item.name
+        holder.itemName.text = item.name
         holder.itemType.text = "Type: " + item.type
         holder.itemPrice.text = "Price: $" + item.price
         val decodedString = Base64.decode(item.image, Base64.DEFAULT)

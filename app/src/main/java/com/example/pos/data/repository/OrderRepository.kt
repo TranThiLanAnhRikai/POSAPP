@@ -28,5 +28,4 @@ class OrderRepository(private val orderDao: OrderDao) {
     suspend fun insert(order: Order) {
         return orderDao.insert(order)
     }
-
 }

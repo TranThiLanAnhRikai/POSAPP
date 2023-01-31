@@ -51,9 +51,9 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
-        val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+       val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val username = prefs?.getString("username", "")
-        binding?.
+        binding?.welcomeText?.text = "Welcome back, $username"
         mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer {weatherInfo ->
             Log.d(TAG, "result ${mainMenuViewModel.result.value}")
             val tempMax = weatherInfo.main.temp_max
@@ -82,15 +82,15 @@ class MainMenuFragment : Fragment() {
         }
         binding?.bottomNavigationView?.selectedItemId = R.id.bottom_navigation_view
         mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner, Observer { orders ->
-            binding?.totalNumberOfOrders?.text = "TOTAL NUMBER OF ORDERS: ${orders.size}"
+            binding?.totalNumberOfOrders?.text = "Total number of orders: ${orders.size}"
             var totalRevenue = 0.0
             var totalNoOfItems = 0
             orders.forEach { order ->
                 totalRevenue += order.total
                 totalNoOfItems += order.quantity
             }
-            binding?.totalRevenue?.text = "TOTAL REVENUES: $${String.format("%.2f", totalRevenue)}"
-            binding?.totalNumberOfItems?.text = "TOTAL NUMBER OF ITEMS: $totalNoOfItems"
+            binding?.totalRevenue?.text = "Total revenue: $${String.format("%.2f", totalRevenue)}"
+            binding?.totalNumberOfItems?.text = "Total number of items: $totalNoOfItems"
         })
     }
 
