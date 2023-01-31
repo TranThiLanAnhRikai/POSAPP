@@ -12,6 +12,9 @@ class OrderRepository(private val orderDao: OrderDao) {
     fun getOrders(status: String): LiveData<List<Order>> {
         return orderDao.getOrders(status)
     }
+    fun getLatestOrders(limit: Int, latestDate: String): LiveData<List<Order>> {
+        return orderDao.getLatestOrders(limit, latestDate)
+    }
     fun getTodayOrders(date: String): LiveData<List<Order>> {
         val constructedDate = "%$date%"
         return orderDao.getTodayOrders(constructedDate)

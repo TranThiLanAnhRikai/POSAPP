@@ -1,7 +1,8 @@
-package com.example.pos
+package com.example.pos_admin
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -50,7 +51,10 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
-        mainMenuViewModel.getWeatherInfo().observe(viewLifecycleOwner, Observer {weatherInfo ->
+        val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val username = prefs?.getString("username", "")
+        binding?.
+        mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer {weatherInfo ->
             Log.d(TAG, "result ${mainMenuViewModel.result.value}")
             val tempMax = weatherInfo.main.temp_max
             val tempMin = weatherInfo.main.temp_min

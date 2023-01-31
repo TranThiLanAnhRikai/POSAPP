@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_background2">
+        android:background="@drawable/second_login_background">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/login_edit_text"
                 android:hint="Login Code"
-                android:paddingStart="15dp"
+                android:padding="10dp"
                 android:textSize="40dp"
                 android:inputType="textPassword"
                 android:text="@={loginViewModel.inputSecondCode}"/>
@@ -78,18 +78,20 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit_button"
                 style="@android:style/Widget.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:background="@color/light_blue"
+                android:background="@drawable/login_btn"
                 android:onClick="@{() -> secondLoginFragment.nextFragment()}"
                 android:padding="16dp"
                 android:text="Submit"
                 android:textColor="@color/dark_blue"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondLoginFragment"
-        android:name="com.example.pos_admin.SecondLoginFragment"
+        android:name="com.example.pos.SecondLoginFragment"
         android:label="2-step Login (Second)"
         tools:layout="@layout/fragment_second_login">
         <action
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/salesAnalysisFragment"
-        android:name="com.example.pos_admin.SalesAnalysisFragment"
+        android:name="com.example.pos.SalesAnalysisFragment"
         android:label="Sales Analysis"
         tools:layout="@layout/fragment_sales_analysis">
         <action
@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/addShiftsFragment"
-        android:name="com.example.pos_admin.AddShiftsFragment"
+        android:name="com.example.pos.AddShiftsFragment"
         android:label="Add New Shift"
         tools:layout="@layout/fragment_add_shifts">
         <action

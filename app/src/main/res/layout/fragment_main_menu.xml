@@ -12,7 +12,7 @@
 
         <variable
             name="mainMenuFragment"
-            type="com.example.pos.MainMenuFragment" />
+            type="com.example.pos_admin.MainMenuFragment" />
 
     </data>
 
@@ -29,11 +29,10 @@
             android:layout_marginTop="20dp">
 
             <TextView
-                android:id="@+id/welcom_text"
+                android:id="@+id/welcome_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="Welcome back"
                 android:textColor="@color/dark_blue"
                 android:textSize="50sp"
                 android:textStyle="bold"
@@ -51,7 +50,7 @@
                 android:textSize="30sp"
                 android:textStyle="italic"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/welcom_text" />
+                app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -316,7 +315,7 @@
                     android:onClick="@{() -> mainMenuFragment.toSalesAnalysisFragment()}"
                     android:padding="10dp"
                     android:text="Sales Analysis"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="#0288D1"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -399,13 +398,12 @@
                     android:onClick="@{() -> mainMenuFragment.toShiftsFragment()}"
                     android:padding="10dp"
                     android:text="Shifts"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="#0288D1"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintRight_toRightOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

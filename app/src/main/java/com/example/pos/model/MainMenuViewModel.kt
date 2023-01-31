@@ -33,15 +33,12 @@ class MainMenuViewModel(private val orderRepository: OrderRepository): ViewModel
 
 
     fun getTodayOrders(): LiveData<List<Order>> {
-        Log.d(TAG, "currrentDate $currentDate")
-        Log.d(TAG, "today orders ${orderRepository.getTodayOrders(currentDate).value}")
-            return orderRepository.getTodayOrders(currentDate)
+        return orderRepository.getTodayOrders(currentDate)
     }
     fun getWeatherInfo(): MutableLiveData<WeatherInfo> {
         viewModelScope.launch {
             try {
                 result.value = PosApi.retrofitService.getWeather()
-                Log.d(TAG, "weather $result")
                 _status.value = "Success retrieved"
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"

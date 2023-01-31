@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SalesAnalysisFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context="com.example.pos.SalesAnalysisFragment">
+    <data>
+        <variable
+            name="salesAnalysisFragment"
+            type="com.example.pos.SalesAnalysisFragment" />
+        <variable
+            name="salesViewModel"
+            type="com.example.pos.model.SalesViewModel" />
+    </data>
+    <com.naqdi.chart.ChainChartView
+        android:id="@+id/chainChartView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center" />
+</layout>

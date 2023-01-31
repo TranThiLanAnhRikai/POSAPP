@@ -9,12 +9,14 @@
             type="com.example.pos_admin.model.LoginViewModel" />
         <variable
             name="firstLoginFragment"
-            type="com.example.pos.FirstLoginFragment" />
+            type="com.example.pos_admin.FirstLoginFragment" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_background">
+        android:background="@drawable/first_login_background"
+        >
+
         <ImageView
             android:id="@+id/admin_img"
             android:layout_width="100dp"
@@ -63,20 +65,22 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:padding="10dp"
                 android:textColor="@color/dark_blue"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:onClick="@{() -> firstLoginFragment.nextScreen()}"
                 android:text="Submit"
                 style="@android:style/Widget.Button"
                 android:textStyle="bold"
-                android:background="@color/light_blue"
+                android:background="@drawable/login_btn"
                 android:layout_weight="1"
-                android:textSize="30sp"/>
+                android:textSize="35sp"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

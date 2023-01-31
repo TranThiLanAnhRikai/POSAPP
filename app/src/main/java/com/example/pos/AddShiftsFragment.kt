@@ -1,4 +1,4 @@
-package com.example.pos_admin
+package com.example.pos
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.pos_admin.R
 import com.example.pos_admin.const.ShiftTime
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.ShiftRepository

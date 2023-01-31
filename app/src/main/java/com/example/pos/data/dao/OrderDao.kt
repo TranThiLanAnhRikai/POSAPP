@@ -14,6 +14,8 @@ interface OrderDao {
     fun getMaxOrderNumber(date: String): LiveData<List<Order>>
     @Query("SELECT * FROM orders WHERE order_number LIKE :date")
     fun getTodayOrders(date: String): LiveData<List<Order>>
+    @Query("SELECT * FROM orders WHERE substr(order_number, 1, 8) >= :latestDate ORDER BY order_number DESC LIMIT :limit")
+    fun getLatestOrders(limit: Int, latestDate: String): LiveData<List<Order>>
     @Update
     suspend fun update(order: Order)
     @Delete
