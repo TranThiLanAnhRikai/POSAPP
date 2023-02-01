@@ -55,7 +55,6 @@ class MainMenuFragment : Fragment() {
         val username = prefs?.getString("username", "")
         binding?.welcomeText?.text = "Welcome back, $username"
         mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer {weatherInfo ->
-            Log.d(TAG, "result ${mainMenuViewModel.result.value}")
             val tempMax = weatherInfo.main.temp_max
             val tempMin = weatherInfo.main.temp_min
             val humidity = weatherInfo.main.humidity

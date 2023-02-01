@@ -12,6 +12,8 @@
     <string name="order_number">Order number: %s</string>
     <string name="total_amount">Total: $%s</string>
     <string name="customer_name">Customer Name</string>
+    <string name="add_shifts_spinner_prompt">Choose a Staff</string>
+    <string name="shifts_spinner_prompt">Choose a date</string>
     <string-array name="payment_options">
         <item>Payment Method</item>
         <item>Cash</item>

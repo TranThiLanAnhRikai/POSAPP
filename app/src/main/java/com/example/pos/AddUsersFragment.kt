@@ -44,10 +44,18 @@ class AddUsersFragment : Fragment() {
             when(checkedId) {
                 R.id.admin -> {
                     usersViewModel.inputRole.value = Role.ADMIN.roleName
-                    binding?.secondCodeEdttxt?.visibility = View.VISIBLE
+                    val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    val randomString = (1..8).map { characters.random() }.joinToString("")
+                        usersViewModel.secondCode.value  = randomString
+                        binding?.secondCodeEdttxt?.text = "Second Code: $randomString"
+                        binding?.secondCodeEdttxt?.visibility = View.VISIBLE
+
                 }
 
-                else -> usersViewModel.inputRole.value = Role.STAFF.roleName
+                else -> {
+                    usersViewModel.inputRole.value = Role.STAFF.roleName
+                    binding?.secondCodeEdttxt?.visibility = View.GONE
+                }
             }
         }
 
@@ -59,10 +67,7 @@ class AddUsersFragment : Fragment() {
 
     fun addNewUser() {
         usersViewModel.insertNewUser()
-
-    }
-
-    fun backToUsers() {
         findNavController().navigate(R.id.action_addUsersFragment_to_usersFragment)
+
     }
 }

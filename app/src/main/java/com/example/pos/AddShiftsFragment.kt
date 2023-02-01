@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -35,8 +36,9 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val fragmentBinding = FragmentAddShiftsBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         //Get shiftsViewModel
-        val dao = PosAdminRoomDatabase.getDatabase(requireContext()).shiftDao()
-        val repository = ShiftRepository(dao)
+        val shiftDao = PosAdminRoomDatabase.getDatabase(requireContext()).shiftDao()
+        val userDao = PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
+        val repository = ShiftRepository(shiftDao, userDao)
         val factory = ShiftsViewModelFactory(repository)
         shiftsViewModel = ViewModelProvider(this, factory)[ShiftsViewModel::class.java]
         return fragmentBinding.root
@@ -66,10 +68,22 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 
         val dialog = builder.create()
-        val container = binding?.shiftPickContainer
+        val container = binding?.shiftText
         container?.setOnClickListener {
             dialog.show()
         }
+
+        shiftsViewModel.getAllUsers().observe(viewLifecycleOwner, androidx.lifecycle.Observer { users ->
+            val nameList = mutableListOf<String>()
+            users.forEach {
+                nameList.add(it.name)
+            }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nameList)
+            val autocompleteName = binding?.inputName
+            autocompleteName?.setAdapter(adapter)
+
+        })
+
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

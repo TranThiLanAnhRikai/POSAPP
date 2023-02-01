@@ -59,7 +59,7 @@ class CheckoutFragment : Fragment() {
         binding?.menuViewModel = menuViewModel
         val spinner = binding?.spinnerInner
         val options = resources.getStringArray(R.array.payment_options)
-        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_item, options)
+        val adapter = ArrayAdapter(requireContext(), R.layout.payment_spinner_item, options)
         spinner?.adapter = adapter
         binding?.switchDelivery?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

@@ -8,6 +8,7 @@ import com.example.pos_admin.data.entity.Shift
 import kotlinx.coroutines.launch
 import java.util.*
 import androidx.lifecycle.MutableLiveData
+import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.ShiftRepository
 
 class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel() {
@@ -25,12 +26,15 @@ class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel()
         viewModelScope.launch {
             shiftRepository.insert(Shift(0, name, _date.value!!, _shift.value!!))
         }
-       inputName.value = ""
 
     }
 
     fun getShifts(date: String, shift: Int): LiveData<List<Shift>> {
         return shiftRepository.getShifts(date, shift)
+    }
+
+    fun getAllUsers(): LiveData<List<User>> {
+        return shiftRepository.getAllUsers()
     }
 
 

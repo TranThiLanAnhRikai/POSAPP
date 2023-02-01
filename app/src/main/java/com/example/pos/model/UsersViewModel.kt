@@ -14,19 +14,12 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
     val firstCode = MutableLiveData<String>()
     val secondCode = MutableLiveData<String>()
 
-/*    fun getAllUsers(): LiveData<List<User>> {
-        return userRepository.users
-    }*/
 
     fun getAllUsers(): LiveData<List<User>> {
         return userRepository.getAllUsers()
     }
 
     fun insertNewUser() {
-        Log.d(TAG, "name ${inputName.value}")
-        Log.d(TAG, "1code ${firstCode.value}")
-
-
         viewModelScope.launch {
             if (secondCode.value != null) {
                 userRepository.insert(User(0, inputName.value!!, inputRole.value!!, firstCode.value!!, secondCode.value!!))
@@ -34,9 +27,6 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
             else {
                 userRepository.insert(User(0, inputName.value!!, inputRole.value!!, firstCode.value!!, "0"))
             }
-
-            inputName.value = ""
-            firstCode.value = ""
         }
     }
 
