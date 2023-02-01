@@ -9,8 +9,6 @@ import com.example.pos.data.entity.Item
 import com.example.pos.data.entity.MenuItem
 import com.example.pos.data.entity.Order
 import com.example.pos.data.repository.MenuItemRepository
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +26,19 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val currentDate = dateFormat.format(Date())
     var orderNumber = MutableLiveData<Long>()
 
+    fun getAllOrders(): LiveData<List<Order>> {
+        return menuItemRepository.getAllOrders()
+    }
+    fun updateOrder(order: Order) {
+        viewModelScope.launch {
+            menuItemRepository.update(order)
+        }
+
+    }
+    fun getOrders(status: String): LiveData<List<Order>> {
+        return menuItemRepository.getOrders(status)
+    }
+
     fun insertItem() {
         viewModelScope.launch {
             menuItemRepository.insert(MenuItem(0, name.value!!, type.value!!, _price.value!!, image.value!!))
@@ -39,8 +50,6 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
     }
     fun getOrderNumber(): LiveData<List<Order>>? {
-        Log.d(TAG, "curentDate $currentDate")
-        Log.d(TAG, "order ${menuItemRepository.getMaxOrderNumber(currentDate).value}")
            return menuItemRepository.getMaxOrderNumber(currentDate)
     }
 
@@ -92,7 +101,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         val cartItems = selectedItems.value
         val keys = cartItems?.keys?.toList()
         viewModelScope.launch {
-            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, totalQuantity, total, Status.PROCESSING.toString() ))
+            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, totalQuantity, total, Status.PROCESSING.toString(), null ))
         }
         viewModelScope.launch {
             keys?.forEach {key ->

@@ -72,7 +72,6 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
 
         })
         menuViewModel.getOrderNumber()?.observe(viewLifecycleOwner, Observer { orders ->
-            Log.d(TAG, "orders $orders")
             if (orders.isEmpty()) {
                 menuViewModel.orderNumber.value = (menuViewModel.currentDate + "001").toLong()
             }

@@ -15,7 +15,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/orders_list_background">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="List Of Orders"
+            android:layout_marginTop="40dp"
+            android:textSize="50sp"
+            android:textColor="@color/white"
+            android:gravity="center"/>
         <TableLayout
             android:id="@+id/table_head"
             android:layout_width="match_parent"
@@ -27,37 +36,41 @@
             <TableRow>
                 <TextView
                     android:text="ID"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="1"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:layout_gravity="center"
+
+                    android:textColor="@color/white"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="ORDER NUMBER"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="2"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:layout_gravity="center"
+
+                    android:textColor="@color/white"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="QUANTITY"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="3"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:layout_gravity="center"
+
+                    android:textColor="@color/white"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="TOTAL"
-                    android:textSize="20sp"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:textSize="25sp"
+
+                    android:textColor="@color/white"
                     android:layout_column="4"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="STATUS"
-                    android:textSize="20sp"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:textSize="25sp"
+
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
                     android:layout_column="5"
                     android:textStyle="bold"/>
 
@@ -80,11 +93,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            app:checkedButton="@+id/food_selected"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@+id/processing"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="50dp">
             <Button
@@ -92,15 +107,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CANCELLED"
-                android:tag="Food"
-                style="?attr/materialButtonOutlinedStyle"
+                android:tag="CANCELLED"
+                android:textColor="#120b57"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:textSize="30sp"/>
             <Button
                 android:id="@+id/processing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:tag="Drink"
+                android:tag="PROCESSING"
+                android:textColor="#120b57"
                 style="?attr/materialButtonOutlinedStyle"
                 android:text="PROCESSING"/>
             <Button
@@ -108,7 +125,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:tag="Dessert"
+                android:tag="DELIVERED"
+                android:textColor="#120b57"
                 style="?attr/materialButtonOutlinedStyle"
                 android:text="DELIVERED"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>

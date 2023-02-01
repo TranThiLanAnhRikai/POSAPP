@@ -81,8 +81,8 @@ class CheckoutFragment : Fragment() {
             }
 
         }
-        binding?.tvSubtotalAmount?.text = "$" + menuViewModel.total.toString()
-        binding?.tvTotalAmount?.text = "$" + (menuViewModel.total + 5).toString()
+        binding?.tvSubtotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
+        binding?.tvTotalAmount?.text = "$" + "%.2f".format((menuViewModel.total + 5))
         menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
             itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
             recyclerView.adapter = itemsAdapter

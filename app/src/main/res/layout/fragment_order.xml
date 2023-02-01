@@ -14,6 +14,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:background="@drawable/order_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -23,25 +24,28 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/to_orders"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Orders"
-                android:textColor="@color/dark_blue"
-                android:textSize="30sp" />
-            <Space
                 android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="See All Orders"
+                android:textColor="@color/dark_blue"
+                android:textSize="30sp"
+                android:backgroundTint="@color/white"
+                android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+                android:onClick="@{() -> orderFragment.toOrdersList()}"/>
+            <Space
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/menu_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Menu"
-                android:textSize="50sp"
+                android:text="MENU"
+                android:textSize="70sp"
                 android:textColor="@color/dark_blue" />
             <Space
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"/>
 
             <LinearLayout
@@ -57,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="25sp"/>
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_shopping_cart_24"/>
             </LinearLayout>
@@ -82,9 +86,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:gravity="center"
+            app:selectionRequired="true"
+            app:singleSelection="true"
+            android:weightSum="3"
             app:checkedButton="@+id/food_selected"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="50dp">
@@ -94,6 +101,8 @@
                 android:layout_height="wrap_content"
                 android:text="FOOD"
                 android:tag="Food"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:clickable="false"
                 style="?attr/materialButtonOutlinedStyle"
                 android:textSize="30sp"/>
@@ -103,6 +112,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:tag="Drink"
+                android:layout_weight="1"
+                android:gravity="center"
                 style="?attr/materialButtonOutlinedStyle"
                 android:text="DRINK"/>
             <Button
@@ -111,6 +122,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:tag="Dessert"
+                android:layout_weight="1"
+                android:gravity="center"
                 style="?attr/materialButtonOutlinedStyle"
                 android:text="DESSERT"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>

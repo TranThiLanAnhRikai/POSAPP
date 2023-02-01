@@ -105,6 +105,10 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
         findNavController().navigate(R.id.action_orderFragment_to_cartFragment)
     }
 
+    fun toOrdersList() {
+        findNavController().navigate(R.id.action_orderFragment_to_ordersListFragment)
+    }
+
 
 
 }
