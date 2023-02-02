@@ -48,14 +48,16 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding?.addShiftsFragment = this
         binding?.shiftsViewModel = shiftsViewModel
         binding?.datePick?.setOnClickListener {
-            DatePickerDialog(
+            val today = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))
+            val datePicker = DatePickerDialog(
                 requireContext(),
                 this,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
             )
-                .show()
+            datePicker.datePicker.minDate = today.timeInMillis
+            datePicker.show()
         }
         val options = shiftOptions.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(requireContext())

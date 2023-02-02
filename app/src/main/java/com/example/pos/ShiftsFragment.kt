@@ -25,7 +25,7 @@ import com.example.pos_admin.model.*
 class ShiftsFragment : Fragment() {
     private lateinit var shiftsViewModel: ShiftsViewModel
     private val calendar = Calendar.getInstance()
-    private val formatter = SimpleDateFormat("yyyy, MM, dd, EEEE", Locale.US)
+    private val formatter = SimpleDateFormat("yyyy, MM, dd, EEEE", Locale.JAPAN)
     private var binding: FragmentShiftsBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

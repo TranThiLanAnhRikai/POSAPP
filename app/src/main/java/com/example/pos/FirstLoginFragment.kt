@@ -94,6 +94,6 @@ class FirstLoginFragment : Fragment() {
                 }
             })
         }*/
-        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+        findNavController().navigate(R.id.action_firstLoginFragment_to_orderFragment)
     }
 }

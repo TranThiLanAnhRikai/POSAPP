@@ -56,27 +56,29 @@ class SalesAnalysisFragment : Fragment() {
                 salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
             }
             val datesList = salesViewModel.dates.distinct()
+            Log.d(TAG, "dateList $datesList")
             datesList.forEach { date ->
+                Log.d(TAG, "date $date")
                 var sum = 0.0
                 var orderSum = 0
                 var quantitySum = 0
                 orders.filter { order ->
-
-                    order.orderNumber.toString().contains(date)
+                    Log.d(TAG, "order $order")
+                    order.orderNumber.toString().substring(6,8) == date
 
                 }
                     .forEach { order ->
                         orderSum++
                         quantitySum += order.quantity
                         sum += order.total
-                        Log.d(TAG, "sum $sum")
+                        Log.d(TAG, "order $orderSum, $quantitySum, $sum")
                     }
 
                 salesViewModel.numberOfOrders.add(orderSum.toFloat())
                 salesViewModel.revenueList.add(sum)
                 salesViewModel.numberOfItems.add(quantitySum)
             }
-
+            Log.d(TAG, "orders ${salesViewModel.numberOfOrders}, ${salesViewModel.revenueList}, ${salesViewModel.numberOfItems}")
             val numberOfOrders: List<Float> = salesViewModel.numberOfOrders.reversed()
             val intervalList: List<String> = salesViewModel.dates.distinct().reversed()
             val rangeList = listOf("1-100", "100-200", "200-300")

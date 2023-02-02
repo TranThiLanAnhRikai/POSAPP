@@ -99,7 +99,12 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
     fun insertToOrderCustomerList() {
         val cartItems = selectedItems.value
+        Log.d(TAG, "cartItems $cartItems")
         val keys = cartItems?.keys?.toList()
+        Log.d(TAG, "keys $keys")
+        cartItems?.forEach{
+
+        }
         viewModelScope.launch {
             menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, totalQuantity, total, Status.PROCESSING.toString(), null ))
         }

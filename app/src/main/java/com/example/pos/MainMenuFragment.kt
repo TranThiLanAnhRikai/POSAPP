@@ -51,6 +51,7 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
+        mainMenuViewModel.getCurrentDate()
        val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val username = prefs?.getString("username", "")
         binding?.welcomeText?.text = "Welcome back, $username"

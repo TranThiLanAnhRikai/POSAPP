@@ -52,9 +52,6 @@ class OrdersAdapter(
                     statusOptions, -1, DialogInterface.OnClickListener { _, which ->
                         val selectedStatus = statusOptions[which]
                         holder.status.text = selectedStatus
-                        {
-
-                        }
                         setListener.updateOrder(
                             Order(
                                 order.id,

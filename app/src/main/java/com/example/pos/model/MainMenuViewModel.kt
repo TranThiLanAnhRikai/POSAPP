@@ -14,13 +14,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainMenuViewModel(private val orderRepository: OrderRepository): ViewModel() {
+    lateinit var formattedDateTime: String
 
-    private val calendar: Calendar = Calendar.getInstance()
-    private val currentDateTime: Date = calendar.time
+    fun getCurrentDate() {
+        val calendar: Calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))
+        val currentDateTime: Date = calendar.time
+        val dateFormat = SimpleDateFormat("EEEE, yyyy/MM/dd")
+        @SuppressLint("SimpleDateFormat")
+        formattedDateTime = dateFormat.format(currentDateTime)
+    }
 
-    @SuppressLint("SimpleDateFormat")
-    private val dateFormat = SimpleDateFormat("EEEE, yyyy/MM/dd")
-    val formattedDateTime: String = dateFormat.format(currentDateTime)
+
+
+
+
     @SuppressLint("SimpleDateFormat")
     val currentDateFormat = SimpleDateFormat("yyyyMMdd")
     val currentDate = currentDateFormat.format(Date())
