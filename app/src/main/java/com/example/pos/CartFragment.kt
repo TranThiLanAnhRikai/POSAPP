@@ -78,7 +78,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             val items = selectedItems.values.toList()
             menuViewModel.total = 0.0
             items.forEach{ item ->
-                menuViewModel.total += item.subTotal
+                menuViewModel.total +=  item.subTotal
             }
             binding?.total?.text = "TOTAL: $" + "%.2f".format(menuViewModel.total)
 

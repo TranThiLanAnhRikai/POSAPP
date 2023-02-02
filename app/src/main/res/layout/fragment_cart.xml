@@ -63,6 +63,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
+            app:singleSelection="true"
             app:layout_constraintTop_toBottomOf="@+id/order_review"
             app:checkedButton="@+id/food_selected"
             android:layout_alignParentBottom="true"

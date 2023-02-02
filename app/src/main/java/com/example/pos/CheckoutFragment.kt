@@ -1,7 +1,9 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,7 @@ class CheckoutFragment : Fragment() {
     private lateinit var itemsAdapter: CheckoutItemsAdapter
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +59,14 @@ class CheckoutFragment : Fragment() {
         val headerContainer = binding?.headerContainer
         headerContainer?.addView(headerBinding.root)
         recyclerView = binding?.cartItems!!
+        binding?.tvSubtotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
+        binding?.tvTotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
+        menuViewModel.totalWithDelivery.observe(viewLifecycleOwner, Observer {
+            menuViewModel.totalWithDelivery.value?.plus(
+                menuViewModel.total)
+            binding?.tvTotalAmount?.text = "$" + "%.2f".format((menuViewModel.totalWithDelivery.value))
+        })
+
         return fragmentBinding.root
     }
 
@@ -77,7 +88,14 @@ class CheckoutFragment : Fragment() {
                     inputZip.visibility = View.VISIBLE
                     inputPickupTime.visibility = View.GONE
                     request.visibility = View.GONE
+                    tvDeliveryCharge.visibility = View.VISIBLE
+                    tvDeliveryChargeAmount.visibility = View.VISIBLE
+                    tvDeliveryChargeAmount.text = "$5"
+                    menuViewModel?.totalWithDelivery?.value = menuViewModel?.total?.plus(5)
+
                 }
+
+
             } else {
                 binding?.apply {
                     inputAddress.visibility = View.GONE
@@ -85,12 +103,21 @@ class CheckoutFragment : Fragment() {
                     inputZip.visibility = View.GONE
                     inputPickupTime.visibility = View.VISIBLE
                     request.visibility = View.VISIBLE
+                    tvDeliveryCharge.visibility = View.GONE
+                    tvDeliveryChargeAmount.visibility = View.GONE
+                    menuViewModel?.totalWithDelivery?.value = menuViewModel?.total
+
                 }
             }
 
+
+
         }
-        binding?.tvSubtotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
-        binding?.tvTotalAmount?.text = "$" + "%.2f".format((menuViewModel.total + 5))
+
+
+
+
+
         menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
             itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
             recyclerView.adapter = itemsAdapter

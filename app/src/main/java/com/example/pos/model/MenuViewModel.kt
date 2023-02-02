@@ -22,7 +22,8 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
-    var total: Double = 0.0
+    var total  = 0.0
+    var totalWithDelivery = MutableLiveData<Double>()
     val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
     var totalQuantity: Int = 0
     val dateFormat = SimpleDateFormat("yyyyMMdd")
@@ -116,7 +117,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
             }
         }
         viewModelScope.launch {
-            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, "%.2f".format(foodRevenue).toDouble(), "%.2f".format(drinkRevenue).toDouble(), "%.2f".format(dessertRevenue).toDouble(), totalQuantity,  "%.2f".format(total).toDouble(), Status.PROCESSING.toString(), null ))
+            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, "%.2f".format(foodRevenue).toDouble(), "%.2f".format(drinkRevenue).toDouble(), "%.2f".format(dessertRevenue).toDouble(), totalQuantity,  "%.2f".format(totalWithDelivery.value).toDouble(), Status.PROCESSING.toString(), null ))
         }
         viewModelScope.launch {
             keys?.forEach {key ->
