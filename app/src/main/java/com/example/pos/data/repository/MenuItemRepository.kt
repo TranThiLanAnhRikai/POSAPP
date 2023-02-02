@@ -7,8 +7,8 @@ import com.example.pos.data.dao.CartItemDao
 import com.example.pos.data.dao.MenuItemDao
 import com.example.pos.data.dao.OrderDao
 import com.example.pos.data.entity.CartItem
-import com.example.pos.data.entity.MenuItem
-import com.example.pos.data.entity.Order
+import com.example.pos_admin.data.entity.MenuItem
+import com.example.pos_admin.data.entity.Order
 
 
 /*Repository for menu_item class */

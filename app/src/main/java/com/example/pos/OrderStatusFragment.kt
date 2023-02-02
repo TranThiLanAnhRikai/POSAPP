@@ -1,5 +1,6 @@
 package com.example.pos
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +15,9 @@ import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.helper.CommonHeaderHelper
 import com.example.pos_admin.databinding.FragmentOrderStatusBinding
+import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
@@ -25,6 +28,7 @@ import com.example.pos_admin.databinding.FragmentOrderStatusBinding
 class OrderStatusFragment : Fragment() {
 
     private var binding: FragmentOrderStatusBinding? = null
+    private lateinit var headerHelper: CommonHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
@@ -44,16 +48,21 @@ class OrderStatusFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentOrderStatusBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-
+        val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderStatusFragment = this
         binding?.menuViewModel = menuViewModel
-
+        binding?.orderPlacedText?.text = "Order ${menuViewModel.orderNumber.value} has been placed successfully."
     }
 
     fun toOrderList() {

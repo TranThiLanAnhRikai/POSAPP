@@ -133,6 +133,9 @@
         <action
             android:id="@+id/action_orderFragment_to_ordersListFragment"
             app:destination="@id/ordersListFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_firstLoginFragment"
+            app:destination="@id/firstLoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"

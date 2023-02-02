@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos.adapter.OrdersAdapter
 import com.example.pos.const.Status
-import com.example.pos.data.entity.Order
 import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.adapter.ShiftsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
+import com.example.pos_admin.data.entity.Order
 import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentOrdersListBinding
 import com.example.pos_admin.databinding.FragmentShiftsBinding

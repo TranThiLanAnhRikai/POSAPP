@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.const.Status
-import com.example.pos.data.entity.Order
 import com.example.pos_admin.R
 import android.app.AlertDialog
 import android.app.ProgressDialog.show
@@ -15,6 +14,7 @@ import android.view.View
 import android.content.DialogInterface
 import android.util.Log
 import android.widget.EditText
+import com.example.pos_admin.data.entity.Order
 
 
 class OrdersAdapter(
@@ -56,6 +56,9 @@ class OrdersAdapter(
                             Order(
                                 order.id,
                                 order.orderNumber,
+                                order.foodRevenue,
+                                order.drinkRevenue,
+                                order.dessertRevenue,
                                 order.quantity,
                                 order.total,
                                 selectedStatus,

@@ -60,7 +60,7 @@ class AddMenuFragment : Fragment() {
         builder.setTitle("Choose the type")
         builder.setItems(options) { _, which ->
             val selectedItemType = itemTypes[which]
-            binding?.typePick?.text = selectedItemType.typeName
+            binding?.typePick?.text = selectedItemType.toString()
             menuViewModel.type.value = selectedItemType.typeName
         }
 

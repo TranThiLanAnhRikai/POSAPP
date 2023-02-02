@@ -1,4 +1,4 @@
-package com.example.pos.data.entity
+package com.example.pos_admin.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,6 +10,12 @@ data class Order(
     var id: Int = 0,
     @ColumnInfo(name = "order_number")
     var orderNumber: Long,
+    @ColumnInfo(name = "food_revenue")
+    var foodRevenue: Double?,
+    @ColumnInfo(name = "drink_revenue")
+    var drinkRevenue: Double?,
+    @ColumnInfo(name = "dessert_revenue")
+    var dessertRevenue: Double?,
     @ColumnInfo(name = "quantity")
     var quantity: Int,
     @ColumnInfo(name = "total")

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.pos.data.entity.Order
 import com.example.pos.data.repository.OrderRepository
+import com.example.pos_admin.data.entity.Order
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -14,6 +14,9 @@ class SalesViewModel(private val orderRepository: OrderRepository): ViewModel() 
     var dates = mutableListOf<String>()
     var numberOfOrders = mutableListOf<Float>()
     var numberOfItems = mutableListOf<Int>()
+    var foodRevenueList = mutableListOf<Double>()
+    var drinkRevenueList = mutableListOf<Double>()
+    var dessertRevenueList = mutableListOf<Double>()
     val latestDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Calendar.getInstance().apply {
         set(Calendar.DAY_OF_MONTH, 1)
     }.time)

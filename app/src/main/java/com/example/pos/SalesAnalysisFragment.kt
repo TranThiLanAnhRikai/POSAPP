@@ -52,6 +52,9 @@ class SalesAnalysisFragment : Fragment() {
             salesViewModel.numberOfOrders.clear()
             salesViewModel.revenueList.clear()
             salesViewModel.numberOfItems.clear()
+            salesViewModel.dessertRevenueList.clear()
+            salesViewModel.drinkRevenueList.clear()
+            salesViewModel.foodRevenueList.clear()
             orders.forEach { order ->
                 salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
             }
@@ -62,6 +65,9 @@ class SalesAnalysisFragment : Fragment() {
                 var sum = 0.0
                 var orderSum = 0
                 var quantitySum = 0
+                var foodSales = 0.0
+                var drinkSales = 0.0
+                var dessertSales = 0.0
                 orders.filter { order ->
                     Log.d(TAG, "order $order")
                     order.orderNumber.toString().substring(6,8) == date
@@ -71,12 +77,17 @@ class SalesAnalysisFragment : Fragment() {
                         orderSum++
                         quantitySum += order.quantity
                         sum += order.total
-                        Log.d(TAG, "order $orderSum, $quantitySum, $sum")
+                        foodSales += order.foodRevenue ?: 0.0
+                        drinkSales += order.drinkRevenue ?: 0.0
+                        dessertSales += order.dessertRevenue ?: 0.0
                     }
 
                 salesViewModel.numberOfOrders.add(orderSum.toFloat())
                 salesViewModel.revenueList.add(sum)
                 salesViewModel.numberOfItems.add(quantitySum)
+                salesViewModel.foodRevenueList.add(foodSales)
+                salesViewModel.drinkRevenueList.add(drinkSales)
+                salesViewModel.dessertRevenueList.add(dessertSales)
             }
             Log.d(TAG, "orders ${salesViewModel.numberOfOrders}, ${salesViewModel.revenueList}, ${salesViewModel.numberOfItems}")
             val numberOfOrders: List<Float> = salesViewModel.numberOfOrders.reversed()
@@ -84,11 +95,15 @@ class SalesAnalysisFragment : Fragment() {
             val rangeList = listOf("1-100", "100-200", "200-300")
             val mutableList: List<Double> = salesViewModel.revenueList
             val revenueFloatList: List<Float> = mutableList.map{it.toFloat()}
+            val foodRevenueFloatList: List<Float> = salesViewModel.foodRevenueList.map { it.toFloat() }
+            val drinkRevenueFloatList: List<Float> = salesViewModel.drinkRevenueList.map { it.toFloat() }
+            val dessertRevenueFloatList: List<Float> = salesViewModel.dessertRevenueList.map { it.toFloat() }
             val itemsFloatList: List<Float> = (salesViewModel.numberOfItems.map { it.toFloat() }).reversed()
             val lineList = arrayListOf<Line>().apply {
                 add(Line("Total revenue", Color.BLUE, revenueFloatList.reversed()))
-                add(Line("Total number of Orders", Color.RED, numberOfOrders))
-                add(Line("Total number of items", Color.GRAY, itemsFloatList))
+                add(Line("Food", Color.RED, foodRevenueFloatList))
+                add(Line("Drink", Color.GRAY, drinkRevenueFloatList))
+                add(Line("Dessert", Color.CYAN, dessertRevenueFloatList))
             }
             binding?.chainChartView?.setData(lineList, intervalList, rangeList)
             binding?.chainChartView?.apply {

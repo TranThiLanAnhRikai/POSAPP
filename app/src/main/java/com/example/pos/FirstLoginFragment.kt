@@ -1,6 +1,9 @@
 package com.example.pos_admin
 
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,20 +61,14 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        /*val builder = AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputFirstCode.value == null) {
             builder.setMessage("Please fill in your login code.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        } *//*else if (!loginViewModel.isFirstLoginCodeValid()) {
-            builder.setMessage("Login code is invalid. Please try again.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-            binding?.loginEditText?.text = null
-        }*//*
+        }
         else {
             loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
                 loginViewModel.user.value = person
@@ -82,8 +79,11 @@ class FirstLoginFragment : Fragment() {
                     dialog.show()
                     binding?.loginEditText?.text = null
                 } else {
+                    val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                    prefs?.edit()?.putString("username", "${loginViewModel.user.value?.name}")?.apply()
                     loginViewModel.userSecondLoginCode.value = person.secondCode
                     val destination = loginViewModel.nextFragment()
+                    Log.d(TAG, "des $destination")
                     binding?.loginEditText?.text = null
                     if (destination == Destination.NON_STAFF) {
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
@@ -93,7 +93,6 @@ class FirstLoginFragment : Fragment() {
 
                 }
             })
-        }*/
-        findNavController().navigate(R.id.action_firstLoginFragment_to_orderFragment)
+        }
     }
 }

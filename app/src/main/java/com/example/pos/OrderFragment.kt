@@ -1,4 +1,5 @@
 package com.example.pos
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -6,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -15,11 +18,13 @@ import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos.data.entity.Item
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.helper.CommonHeaderHelper
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.databinding.FragmentOrderBinding
+import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,6 +33,8 @@ import kotlinx.coroutines.launch
 
 class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     private var binding: FragmentOrderBinding? = null
+    private lateinit var headerHelper: CommonHeaderHelper
+
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
@@ -46,8 +53,17 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
         val fragmentBinding = FragmentOrderBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
+
         recyclerView = binding?.orderItems!!
         menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{items ->
             adapter = OrderItemsAdapter(requireContext(), items, this)
@@ -63,6 +79,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderFragment = this
         binding?.menuViewModel = menuViewModel
+
         val btnsContainer = binding?.btnsContainer
         btnsContainer?.forEach { it ->
             it.setOnClickListener {
@@ -82,6 +99,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
             }
             binding?.totalQuantity?.text = menuViewModel.totalQuantity.toString()
         })
+
 
 
 
@@ -108,6 +126,8 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     fun toOrdersList() {
         findNavController().navigate(R.id.action_orderFragment_to_ordersListFragment)
     }
+
+
 
 
 

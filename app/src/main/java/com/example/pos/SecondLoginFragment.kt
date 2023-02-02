@@ -72,16 +72,13 @@ class SecondLoginFragment : Fragment() {
             dialog.show()
             binding?.loginEditText?.text = null
         } else {
-
-
-      val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            prefs?.edit()?.putString("username", "${loginViewModel.user.value?.name}")?.apply()
-
+            binding?.loginEditText?.text = null
+            findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
 
         }
 
 
-        findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
+
 
 
 

@@ -12,8 +12,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pos.data.entity.Item
-import com.example.pos.data.entity.MenuItem
 import com.example.pos_admin.R
+import com.example.pos_admin.data.entity.MenuItem
 
 class OrderItemsAdapter(private val context: Context, private val items: List<MenuItem>, private val listener: OnClickListener )
     :RecyclerView.Adapter<OrderItemsAdapter.OrderItemViewHolder>(){
@@ -49,13 +49,13 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             holder.quantity.text = currentQuantity.toString()
             holder.addToCart.visibility = View.GONE
             holder.addMoreLayout.visibility = View.VISIBLE
-            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(), item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+            listener.addToCart(item.id, Item(holder.name.text.toString(), item.type, holder.quantity.text.toString().toIntOrNull(), item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
 
         }
         holder.imageAdd.setOnClickListener {
             holder.quantity.text = (currentQuantity++).toString()
-            listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+            listener.addToCart(item.id, Item(holder.name.text.toString(), item.type, holder.quantity.text.toString().toIntOrNull(),
+                item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
         }
         holder.imageMinus.setOnClickListener {
             currentQuantity--
@@ -68,8 +68,8 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             }
             else {
                 holder.quantity.text = currentQuantity.toString()
-                listener.addToCart(item.id, Item(holder.name.text.toString(), holder.quantity.text.toString().toIntOrNull(),
-                    item.price, item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+                listener.addToCart(item.id, Item(holder.name.text.toString(), item.type,holder.quantity.text.toString().toIntOrNull(),
+                    item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
             }
 
         }

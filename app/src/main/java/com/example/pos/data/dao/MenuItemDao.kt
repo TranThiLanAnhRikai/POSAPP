@@ -2,7 +2,8 @@ package com.example.pos.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.pos.data.entity.MenuItem
+
+import com.example.pos_admin.data.entity.MenuItem
 
 @Dao
 interface MenuItemDao {

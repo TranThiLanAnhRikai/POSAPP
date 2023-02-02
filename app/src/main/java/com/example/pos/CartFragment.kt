@@ -20,7 +20,9 @@ import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.helper.CommonHeaderHelper
 import com.example.pos_admin.databinding.FragmentCartBinding
+import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
@@ -30,6 +32,7 @@ import com.example.pos_admin.databinding.FragmentCartBinding
  */
 class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
+    private lateinit var headerHelper: CommonHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
@@ -50,6 +53,11 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     ): View? {
         val fragmentBinding = FragmentCartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         recyclerView = binding?.orderReview!!
         return fragmentBinding.root
     }
@@ -61,6 +69,10 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
         binding?.cartFragment = this
         binding?.menuViewModel = menuViewModel
         menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
+            if (selectedItems.isEmpty()) {
+                binding?.orderNumber?.visibility = View.GONE
+                binding?.total?.visibility = View.GONE
+            }
             adapter = CartItemsAdapter(requireContext(), selectedItems, this)
             recyclerView.adapter = adapter
             val items = selectedItems.values.toList()
@@ -76,10 +88,12 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
                 menuViewModel.orderNumber.value = (menuViewModel.currentDate + "001").toLong()
             }
             else {
-                val lastestOrder = orders[0]
-                menuViewModel.orderNumber.value = lastestOrder.orderNumber + 1
+                val latestOrder = orders[0]
+                menuViewModel.orderNumber.value = latestOrder.orderNumber + 1
             }
+            binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value.toString()}"
         })
+
 
     }
 

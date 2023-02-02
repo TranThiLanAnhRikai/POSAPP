@@ -17,7 +17,9 @@ import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.helper.CommonHeaderHelper
 import com.example.pos_admin.databinding.FragmentCheckoutBinding
+import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
@@ -28,6 +30,7 @@ import com.example.pos_admin.databinding.FragmentCheckoutBinding
 class CheckoutFragment : Fragment() {
 
     private var binding: FragmentCheckoutBinding? = null
+    private lateinit var headerHelper: CommonHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
@@ -47,6 +50,11 @@ class CheckoutFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentCheckoutBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         recyclerView = binding?.cartItems!!
         return fragmentBinding.root
     }

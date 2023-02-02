@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.view.LayoutInflater
+
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,7 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pos_admin.R
-import com.example.pos.data.entity.MenuItem
+import com.example.pos_admin.data.entity.MenuItem
 
 
 class MenuItemsAdapter(private val context: Context, private val listOfItems: List<MenuItem>):

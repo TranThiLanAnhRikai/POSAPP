@@ -1,8 +1,9 @@
-package com.example.pos.data.entity
+package com.example.pos_admin.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.pos_admin.const.ItemType
 import java.io.File
 
 @Entity(tableName = "menu_items")

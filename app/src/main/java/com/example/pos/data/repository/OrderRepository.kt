@@ -3,7 +3,8 @@ package com.example.pos.data.repository
 import androidx.lifecycle.LiveData
 import com.example.pos.const.Status
 import com.example.pos.data.dao.OrderDao
-import com.example.pos.data.entity.Order
+import com.example.pos_admin.data.entity.Order
+
 
 class OrderRepository(private val orderDao: OrderDao) {
     fun getAllOrders(): LiveData<List<Order>> {
