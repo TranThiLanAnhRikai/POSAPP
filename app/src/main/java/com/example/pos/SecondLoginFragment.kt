@@ -57,7 +57,7 @@ class SecondLoginFragment : Fragment() {
 
     // If the second login code is valid, log the user in as admin. Otherwise display a toast message.
     fun nextFragment() {
-        val builder = AlertDialog.Builder(requireContext())
+       /* val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputSecondCode.value == null) {
             builder.setMessage("You need to fill in your second code.")
@@ -79,8 +79,9 @@ class SecondLoginFragment : Fragment() {
         }
 
 
+*/
 
-
+        findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
 
 
     }

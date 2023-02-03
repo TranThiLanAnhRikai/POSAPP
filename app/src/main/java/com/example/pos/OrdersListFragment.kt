@@ -44,7 +44,8 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
                 PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
                 )
     }

@@ -1,11 +1,11 @@
 package com.example.pos.model
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.pos.const.Status
 import com.example.pos.data.entity.CartItem
+import com.example.pos.data.entity.Customer
 import com.example.pos.data.entity.Item
 
 import com.example.pos.data.repository.MenuItemRepository
@@ -18,7 +18,7 @@ import java.util.*
 
 
 class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewModel() {
-    val name = MutableLiveData<String>()
+    val itemName = MutableLiveData<String>()
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
@@ -29,6 +29,11 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val dateFormat = SimpleDateFormat("yyyyMMdd")
     val currentDate = dateFormat.format(Date())
     var orderNumber = MutableLiveData<Long>()
+    val customerName = MutableLiveData<String>()
+    val customerPhoneNumber = MutableLiveData<String>()
+    val customerAddress = MutableLiveData<String>()
+    val customerZipCode = MutableLiveData<String?>()
+
 
     fun getAllOrders(): LiveData<List<Order>> {
         return menuItemRepository.getAllOrders()
@@ -45,12 +50,8 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
     fun insertItem() {
         viewModelScope.launch {
-            menuItemRepository.insert(MenuItem(0, name.value!!, type.value!!, _price.value!!, image.value!!))
+            menuItemRepository.insertMenuItem(MenuItem(0, itemName.value!!, type.value!!, _price.value!!, image.value!!))
         }
-        name.value = ""
-        type.value = ""
-        image.value = ""
-        _price.value = ""
 
     }
     fun getOrderNumber(): LiveData<List<Order>>? {
@@ -127,6 +128,13 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
         }
 
+    }
+
+    fun insertCustomer() {
+        val address = customerAddress.value + " Zip code: ${customerZipCode.value}"
+        viewModelScope.launch {
+            menuItemRepository.insertCustomer(Customer( 0, customerName.value!!, orderNumber.value!!, customerPhoneNumber.value!!, address))
+        }
     }
 
 

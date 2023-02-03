@@ -37,7 +37,8 @@ class AddMenuFragment : Fragment() {
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
                 PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
         )
     }
@@ -253,7 +254,7 @@ class AddMenuFragment : Fragment() {
             }
         } else {*/
         menuViewModel.insertItem()
-
+        findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
 
     }
 

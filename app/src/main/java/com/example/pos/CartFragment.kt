@@ -2,6 +2,7 @@ package com.example.pos
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -38,7 +39,8 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
                 PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
         )
     }
@@ -125,6 +127,8 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     }
 
     fun payOrder() {
+        val prefs = context?.getSharedPreferences("order_number", Context.MODE_PRIVATE)
+        prefs?.edit()?.putString("order_number", "${menuViewModel.orderNumber.value}")?.apply()
         findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
     }
 

@@ -1,19 +1,19 @@
 package com.example.pos.data.repository
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.pos.data.dao.CartItemDao
+import com.example.pos.data.dao.CustomerDao
 import com.example.pos.data.dao.MenuItemDao
 import com.example.pos.data.dao.OrderDao
 import com.example.pos.data.entity.CartItem
+import com.example.pos.data.entity.Customer
 import com.example.pos_admin.data.entity.MenuItem
 import com.example.pos_admin.data.entity.Order
 
 
 /*Repository for menu_item class */
 
-class MenuItemRepository(private val menuItemDao: MenuItemDao, private val orderDao: OrderDao, private val cartItemDao: CartItemDao) {
+class MenuItemRepository(private val menuItemDao: MenuItemDao, private val orderDao: OrderDao, private val cartItemDao: CartItemDao, private val customerDao: CustomerDao) {
 
     val items = menuItemDao.getAllMenuItems()
 
@@ -26,7 +26,7 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao, private val order
         return menuItemDao.getMenuItem(id)
     }
 
-    suspend fun insert(menuItem: MenuItem) {
+    suspend fun insertMenuItem(menuItem: MenuItem) {
         return menuItemDao.insert(menuItem)
     }
 
@@ -69,9 +69,9 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao, private val order
     suspend fun update(order: Order) {
         return orderDao.update(order)
     }
-    suspend fun insert(order: Order) {
-        return orderDao.insert(order)
-    }
 
+    suspend fun insertCustomer(customer: Customer) {
+        return customerDao.insertCustomer(customer)
+    }
 
 }

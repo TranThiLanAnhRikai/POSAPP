@@ -90,6 +90,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="05dp"
+            android:text="@={menuViewModel.customerName}"
             android:hint="@string/customer_name"/>
         <LinearLayout
             android:id="@+id/phone_number_layout"
@@ -113,6 +114,7 @@
                 android:id="@+id/phone_number_edttxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@={menuViewModel.customerPhoneNumber}"
                 android:textSize="30dp"
                 android:hint="XXX-XXXX-XXXX"/>
 
@@ -138,22 +140,10 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="30sp"
+            android:text="@={menuViewModel.customerAddress}"
             android:hint="Address"
             android:visibility="gone"/>
 
-        <EditText android:id="@+id/input_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_address"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textSize="30sp"
-            android:hint="Mansion name/Room number"
-            android:visibility="gone"/>
 
 
         <EditText android:id="@+id/input_zip"
@@ -161,7 +151,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_city"
+            app:layout_constraintTop_toBottomOf="@id/input_address"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"
@@ -170,6 +160,7 @@
             android:inputType="number"
             android:maxLength="8"
             android:textSize="30sp"
+            android:text="@={menuViewModel.customerZipCode}"
             android:visibility="gone"/>
 
 
@@ -313,7 +304,7 @@
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
                 android:backgroundTint="@color/light_blue"
-                android:onClick="@{() -> checkoutFragment.toOrderStatus()}" />
+                android:onClick="@{() -> checkoutFragment.placeOrder()}" />
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 

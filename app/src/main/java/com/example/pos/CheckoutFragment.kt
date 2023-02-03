@@ -1,9 +1,7 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +36,8 @@ class CheckoutFragment : Fragment() {
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
                 PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
         )
     }
@@ -84,7 +83,6 @@ class CheckoutFragment : Fragment() {
             if (isChecked) {
                 binding?.apply {
                     inputAddress.visibility = View.VISIBLE
-                    inputCity.visibility = View.VISIBLE
                     inputZip.visibility = View.VISIBLE
                     inputPickupTime.visibility = View.GONE
                     request.visibility = View.GONE
@@ -99,7 +97,6 @@ class CheckoutFragment : Fragment() {
             } else {
                 binding?.apply {
                     inputAddress.visibility = View.GONE
-                    inputCity.visibility = View.GONE
                     inputZip.visibility = View.GONE
                     inputPickupTime.visibility = View.VISIBLE
                     request.visibility = View.VISIBLE
@@ -122,12 +119,21 @@ class CheckoutFragment : Fragment() {
             itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
             recyclerView.adapter = itemsAdapter
         })
+        binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value}"
 
     }
 
-    fun toOrderStatus() {
+    fun placeOrder() {
         menuViewModel.insertToOrderCustomerList()
+        menuViewModel.insertCustomer()
         findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
+        binding?.inputName?.text = null
+        binding?.phoneNumberEdttxt?.text = null
+        binding?.request?.text = null
+        binding?.pickupText?.text = null
+        binding?.inputAddress?.text = null
+        binding?.inputZip?.text = null
+        menuViewModel.orderNumber.value = null
     }
 
     fun cancelOrder() {

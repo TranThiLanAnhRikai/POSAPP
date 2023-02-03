@@ -34,13 +34,11 @@ class OrderStatusFragment : Fragment() {
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
                 PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao()
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
         )
     }
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: OrderItemsAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

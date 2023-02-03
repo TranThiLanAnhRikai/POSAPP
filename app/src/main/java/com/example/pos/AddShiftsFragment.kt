@@ -108,6 +108,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     fun addNewShift() {
         shiftsViewModel.insertShift()
+        findNavController().navigate(R.id.action_addShiftsFragment_to_shiftsFragment)
     }
 
     private fun displayFormattedDate(timeStamp: Long) {

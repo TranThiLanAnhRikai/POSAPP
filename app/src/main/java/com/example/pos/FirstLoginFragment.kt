@@ -61,7 +61,7 @@ class FirstLoginFragment : Fragment() {
     }
 
     fun nextScreen() {
-        val builder = AlertDialog.Builder(requireContext())
+      /*  val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputFirstCode.value == null) {
             builder.setMessage("Please fill in your login code.")
@@ -93,6 +93,7 @@ class FirstLoginFragment : Fragment() {
 
                 }
             })
-        }
+        }*/
+        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
     }
 }

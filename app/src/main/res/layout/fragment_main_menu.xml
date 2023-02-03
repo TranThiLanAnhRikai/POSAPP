@@ -364,7 +364,8 @@
                         android:layout_margin="5dp"
                         android:text="Morning"
                         android:tag="0"
-                        android:textColor="@color/dark_blue"
+                        android:backgroundTint="@color/light_blue"
+                        android:textColor="@color/black"
                         android:textSize="25sp" />
 
                     <Button
@@ -374,7 +375,8 @@
                         android:layout_margin="5dp"
                         android:text="Afternoon"
                         android:tag="1"
-                        android:textColor="@color/dark_blue"
+                        android:backgroundTint="@color/light_blue"
+                        android:textColor="@color/black"
                         android:textSize="25sp" />
 
                     <Button
@@ -384,7 +386,8 @@
                         android:layout_margin="5dp"
                         android:text="Noon"
                         android:tag="2"
-                        android:textColor="@color/dark_blue"
+                        android:backgroundTint="@color/light_blue"
+                        android:textColor="@color/black"
                         android:textSize="25sp" />
 
                 </LinearLayout>
