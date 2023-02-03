@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
-                android:text="@{@string/current_date_time(mainMenuViewModel.formattedDateTime)}"
                 android:textColor="#1d355c"
                 android:textSize="30sp"
                 android:textStyle="italic"
@@ -364,6 +363,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="Morning"
+                        android:tag="0"
                         android:textColor="@color/dark_blue"
                         android:textSize="25sp" />
 
@@ -373,6 +373,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="Afternoon"
+                        android:tag="1"
                         android:textColor="@color/dark_blue"
                         android:textSize="25sp" />
 
@@ -382,6 +383,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="Noon"
+                        android:tag="2"
                         android:textColor="@color/dark_blue"
                         android:textSize="25sp" />
 

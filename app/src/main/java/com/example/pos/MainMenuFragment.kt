@@ -1,6 +1,7 @@
 package com.example.pos_admin
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
@@ -10,8 +11,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,6 +23,7 @@ import com.example.pos.model.MainMenuViewModel
 import com.example.pos.model.MainMenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
+import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentMainMenuBinding
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -34,7 +38,14 @@ class MainMenuFragment : Fragment() {
     private val mainMenuViewModel: MainMenuViewModel by activityViewModels {
         MainMenuViewModelFactory(
             OrderRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao()))
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao()
+
+            ),
+            ShiftRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).shiftDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
+            )
+        )
     }
 
     override fun onCreateView(
@@ -46,16 +57,22 @@ class MainMenuFragment : Fragment() {
         return fragmentBinding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
         mainMenuViewModel.getCurrentDate()
+        Log.d(TAG, "date ${mainMenuViewModel.formattedDateTime.value}")
+        mainMenuViewModel.formattedDateTime.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "it $it")
+            binding?.dateTime?.text = "Today is $it"
+        })
         val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val username = prefs?.getString("username", "")
         binding?.welcomeText?.text = "Welcome back, $username"
-        mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer {weatherInfo ->
+        mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer { weatherInfo ->
             val tempMax = weatherInfo.main.temp_max
             val tempMin = weatherInfo.main.temp_min
             val humidity = weatherInfo.main.humidity
@@ -92,7 +109,36 @@ class MainMenuFragment : Fragment() {
             binding?.totalRevenue?.text = "Total revenue: $${String.format("%.2f", totalRevenue)}"
             binding?.totalNumberOfItems?.text = "Total number of items: $totalNoOfItems"
         })
+        val btnsContainer = binding?.todayShifts
+        btnsContainer?.forEach { it ->
+            it.setOnClickListener {
+                mainMenuViewModel.getShifts(mainMenuViewModel.formattedDateTime.value!!, it.tag.toString().toInt()).observe(viewLifecycleOwner, Observer { shifts ->
+                    Log.d(TAG, "date ${mainMenuViewModel.formattedDateTime.value}, shift ${it.tag.toString().toInt()}")
+                    Log.d(TAG, "shifts $shifts")
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("Staff")
+                    var staffs = mutableListOf<String>()
+                    shifts.forEach {
+                        staffs.add(it.shiftName)
+                    }
+                    Log.d(TAG, "staffs $staffs")
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, staffs)
+                    builder.setAdapter(adapter) { _, which ->
+                        // Handle item click here
+                    }
+                    builder.setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+                })
+            }
+        }
+
     }
+
+
+
 
     private fun handleBottomNavigation(
         menuItemId: Int

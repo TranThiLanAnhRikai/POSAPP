@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".NotificationsFragment">
     <data>
-<!--        <variable
-            name="menuViewModel"
-            type="com.example.pos.model.MenuViewModel" />-->
+        <variable
+            name="notificationsViewModel"
+            type="com.example.pos.model.NotificationsViewModel"/>
         <variable
             name="notificationsFragment"
             type="com.example.pos_admin.NotificationsFragment" />
@@ -32,27 +32,39 @@
             app:layout_constraintTop_toTopOf="parent" />
         <TableLayout
             android:id="@+id/noti_table_head"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:stretchColumns="1, 2"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+        >
             <TableRow>
                 <TextView
                     android:text="DATE"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:layout_column="1"/>
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+      />
                 <TextView
                     android:text="CONTENT"
                     android:layout_gravity="center"
-                    android:textSize="25sp"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
                     android:layout_weight="2"
-                    android:layout_column="2"/>
+
+                   />
 
             </TableRow>
 
         </TableLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/noti_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="40dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -61,6 +73,7 @@
             android:layout_marginBottom="70dp"
             android:text="Create New Notification"
             android:textSize="30sp"
+            android:onClick="@{() -> notificationsFragment.createNewNoti()}"
             android:textColor="@color/dark_blue"
             android:padding="15dp"/>
 

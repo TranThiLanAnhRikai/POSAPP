@@ -90,7 +90,7 @@ class CheckoutFragment : Fragment() {
                     request.visibility = View.GONE
                     tvDeliveryCharge.visibility = View.VISIBLE
                     tvDeliveryChargeAmount.visibility = View.VISIBLE
-                    tvDeliveryChargeAmount.text = "$5"
+                    tvDeliveryChargeAmount.text = "$5.0"
                     menuViewModel?.totalWithDelivery?.value = menuViewModel?.total?.plus(5)
 
                 }

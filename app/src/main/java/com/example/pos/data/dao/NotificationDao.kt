@@ -12,7 +12,7 @@ interface NotificationDao {
     suspend fun update(notification: Notification)
     @Delete
     suspend fun delete(notification: Notification)
-    @Query("SELECT * FROM notifications")
+    @Query("SELECT * FROM notifications ORDER BY date DESC")
     fun getAllNotifications(): LiveData<List<Notification>>
     @Query("SELECT * FROM notifications WHERE id = :id")
     fun getNotification(id: Int): LiveData<Notification>

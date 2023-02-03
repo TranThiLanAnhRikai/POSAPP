@@ -34,43 +34,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="1, 2, 3, 4, 5"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginRight="15dp"
+            android:layout_gravity="center"
             android:layout_marginTop="40dp">
             <TableRow>
                 <TextView
                     android:text="ID"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="1"
-                    android:padding="10dp"
-                    android:gravity="center"
+
+
                     android:textStyle="bold"/>
                 <TextView
                     android:text="NAME"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="2"
-                    android:padding="10dp"
-                    android:gravity="center"
+
                     android:textStyle="bold"/>
                 <TextView
                     android:text="ROLE"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:layout_column="3"
-                    android:padding="10dp"
-                    android:gravity="center"
+
+
                     android:textStyle="bold"/>
                 <TextView
                     android:text="FIRST CODE"
-                    android:textSize="20sp"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:textSize="25sp"
+
+
                     android:layout_column="4"
                     android:textStyle="bold"/>
                 <TextView
                     android:text="SECOND CODE"
-                    android:textSize="20sp"
-                    android:padding="10dp"
-                    android:gravity="center"
+                    android:textSize="25sp"
+
+
                     android:layout_column="5"
                     android:textStyle="bold"/>
 
@@ -82,11 +82,10 @@
             android:id="@+id/users"
             android:scrollbars="vertical"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+
             app:layoutManager="LinearLayoutManager" />
 
 
