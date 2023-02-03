@@ -72,8 +72,9 @@ class SecondLoginFragment : Fragment() {
             dialog.show()
             binding?.loginEditText?.text = null
         } else {
-            binding?.loginEditText?.text = null
+
             findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
+            binding?.loginEditText?.text = null
 
         }
 

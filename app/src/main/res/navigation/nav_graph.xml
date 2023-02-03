@@ -169,6 +169,9 @@
         <action
             android:id="@+id/action_checkoutFragment_to_orderStatusFragment"
             app:destination="@id/orderStatusFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderStatusFragment"

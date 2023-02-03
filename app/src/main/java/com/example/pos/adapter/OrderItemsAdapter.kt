@@ -1,5 +1,6 @@
 package com.example.pos.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -17,6 +18,7 @@ import com.example.pos_admin.data.entity.MenuItem
 
 class OrderItemsAdapter(private val context: Context, private val items: List<MenuItem>, private val listener: OnClickListener )
     :RecyclerView.Adapter<OrderItemsAdapter.OrderItemViewHolder>(){
+   private var currentQuantity = 1
     class OrderItemViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.item_img)
         val name: TextView = view.findViewById(R.id.item_name)
@@ -34,8 +36,8 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
         return OrderItemViewHolder(adapterLayout)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: OrderItemViewHolder, position: Int) {
-        var currentQuantity = 1
         val item = items[position]
         val id = item.id
         holder.name.text = item.name
@@ -46,31 +48,64 @@ class OrderItemsAdapter(private val context: Context, private val items: List<Me
             .load(decodedByte)
             .into(holder.image)
         holder.addToCart.setOnClickListener {
+            if(currentQuantity < 1) {
+                currentQuantity = 1
+            }
             holder.quantity.text = currentQuantity.toString()
             holder.addToCart.visibility = View.GONE
             holder.addMoreLayout.visibility = View.VISIBLE
             listener.addToCart(item.id, Item(holder.name.text.toString(), item.type, holder.quantity.text.toString().toIntOrNull(), item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
-
         }
         holder.imageAdd.setOnClickListener {
-            holder.quantity.text = (currentQuantity++).toString()
+            holder.quantity.text = (holder.quantity.toString().toInt() + 1).toString()
             listener.addToCart(item.id, Item(holder.name.text.toString(), item.type, holder.quantity.text.toString().toIntOrNull(),
                 item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
         }
-        holder.imageMinus.setOnClickListener {
-            currentQuantity--
-            if (currentQuantity == 0) {
+/*        if (currentQuantity == 0) {
+            holder.addMoreLayout.visibility = View.GONE
+            holder.addToCart.visibility = View.VISIBLE
+            listener.removeFromCart(id)
+        }
+        else {
+            holder.imageMinus.setOnClickListener {
+                currentQuantity -= 1
+                if *//*(currentQuantity < 0) {
+                    currentQuantity = 0
+                    holder.addMoreLayout.visibility = View.GONE
+                    holder.addToCart.visibility = View.VISIBLE
+                }
+                else if    *//* (currentQuantity == 0) {
+                    holder.addMoreLayout.visibility = View.GONE
+                    holder.addToCart.visibility = View.VISIBLE
+                    listener.removeFromCart(id)
+                }
+                else {
+                    if (currentQuantity < 0) {
+                        currentQuantity = 0}
+                    holder.quantity.text = currentQuantity.toString()
+                    listener.addToCart(item.id, Item(holder.name.text.toString(), item.type,holder.quantity.text.toString().toIntOrNull(),
+                        item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
+                }
+
+            }
+        }*/
+      holder.imageMinus.setOnClickListener {
+          currentQuantity -= 1
+          if     (currentQuantity < 1) {
+                 currentQuantity = 1
                 holder.addMoreLayout.visibility = View.GONE
                 holder.addToCart.visibility = View.VISIBLE
-                holder.quantity.text = "0"
                 listener.removeFromCart(id)
-                currentQuantity == 1
             }
             else {
+              if(currentQuantity < 1) {
+                  currentQuantity = 1
+              }
                 holder.quantity.text = currentQuantity.toString()
                 listener.addToCart(item.id, Item(holder.name.text.toString(), item.type,holder.quantity.text.toString().toIntOrNull(),
                     item.price.toDouble(), item.image, (item.price.toDouble() * holder.quantity.text.toString().toDouble())))
             }
+
 
         }
 

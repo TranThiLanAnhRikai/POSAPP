@@ -1,20 +1,16 @@
 package com.example.pos
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pos.adapter.OrderItemsAdapter
+import com.example.pos.adapter.OrderAdapter
 import com.example.pos.data.entity.Item
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
@@ -25,13 +21,10 @@ import com.example.pos_admin.R
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.databinding.FragmentOrderBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 //Fragment for staff to make orders//
 
-class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
+class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
     private var binding: FragmentOrderBinding? = null
     private lateinit var headerHelper: CommonHeaderHelper
 
@@ -45,7 +38,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
         )
     }
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: OrderItemsAdapter
+    private lateinit var adapter: OrderAdapter
 
 
 
@@ -66,7 +59,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
 
         recyclerView = binding?.orderItems!!
         menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{items ->
-            adapter = OrderItemsAdapter(requireContext(), items, this)
+            adapter = OrderAdapter(requireContext(), items, this, menuViewModel.selectedItems.value)
             recyclerView.adapter = adapter
         })
 
@@ -75,6 +68,7 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderFragment = this
@@ -85,7 +79,8 @@ class OrderFragment : Fragment(), OrderItemsAdapter.OnClickListener {
             it.setOnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
-                        adapter = OrderItemsAdapter(requireContext(), selectedItems, this)
+                        adapter = OrderAdapter(requireContext(), selectedItems, this, menuViewModel.selectedItems.value)
+                        adapter.notifyDataSetChanged()
                         recyclerView.adapter = adapter
                     })
             }

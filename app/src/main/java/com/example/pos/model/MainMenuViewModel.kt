@@ -25,7 +25,7 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     val formattedDateTime = MutableLiveData<String>()
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDate() {
-        formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
+         formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
     }
 
 

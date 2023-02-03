@@ -62,19 +62,27 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="40dp"
                 android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/login_edit_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_edit_text_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/login_edit_text"
                 android:hint="Login Code"
-                android:padding="10dp"
-                android:textSize="40dp"
-                android:inputType="textPassword"
-                android:maxLength="8"
-                android:text="@={loginViewModel.inputSecondCode}"/>
+                app:endIconMode="password_toggle">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/login_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    android:textSize="40dp"
+                    android:inputType="textPassword"
+                    android:layout_margin="8dp"
+                    android:maxLength="8"
+                    android:focusedByDefault="true"
+                    android:background="@drawable/login_edit_text"
+                    android:text="@={loginViewModel.inputSecondCode}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit_button"

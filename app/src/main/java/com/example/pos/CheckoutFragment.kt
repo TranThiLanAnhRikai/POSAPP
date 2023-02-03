@@ -130,6 +130,11 @@ class CheckoutFragment : Fragment() {
         findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
     }
 
+    fun cancelOrder() {
+        menuViewModel.selectedItems.value?.clear()
+        findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
