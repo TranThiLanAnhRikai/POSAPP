@@ -22,6 +22,10 @@ data class Order(
     var total: Double,
     @ColumnInfo(name = "status")
     var status: String,
-    @ColumnInfo(name = "note")
-    var note: String?
+    @ColumnInfo(name = "delivery_method")
+    var deliveryMethod: String,
+    @ColumnInfo(name = "payment_method")
+    var paymentMethod: String,
+    @ColumnInfo(name = "request")
+    var request: String?,
 )

@@ -47,6 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_input"
                     android:background="@color/light_blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_price"
                     android:background="@color/light_blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

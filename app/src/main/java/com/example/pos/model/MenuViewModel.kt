@@ -17,12 +17,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewModel() {
+class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewModel() {
     val itemName = MutableLiveData<String>()
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
     val _price = MutableLiveData<String>()
-    var total  = 0.0
+    var total = 0.0
     var totalWithDelivery = MutableLiveData<Double>()
     val selectedItems = MutableLiveData<MutableMap<Int, Item>>()
     var totalQuantity: Int = 0
@@ -33,27 +33,41 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     val customerPhoneNumber = MutableLiveData<String>()
     val customerAddress = MutableLiveData<String>()
     val customerZipCode = MutableLiveData<String?>()
-
+    val pickupTime = MutableLiveData<String?>()
+    val request = MutableLiveData<String?>()
+    val deliveryMethod = MutableLiveData<String>()
+    val paymentMethod = MutableLiveData<String>()
 
     fun getAllOrders(): LiveData<List<Order>> {
         return menuItemRepository.getAllOrders()
     }
+
     fun updateOrder(order: Order) {
         viewModelScope.launch {
             menuItemRepository.update(order)
         }
 
     }
+
     fun getOrders(status: String): LiveData<List<Order>> {
         return menuItemRepository.getOrders(status)
     }
 
     fun insertItem() {
         viewModelScope.launch {
-            menuItemRepository.insertMenuItem(MenuItem(0, itemName.value!!, type.value!!, _price.value!!, image.value!!))
+            menuItemRepository.insertMenuItem(
+                MenuItem(
+                    0,
+                    itemName.value!!,
+                    type.value!!,
+                    _price.value!!,
+                    image.value!!
+                )
+            )
         }
 
     }
+
     fun getOrderNumber(): LiveData<List<Order>>? {
         return menuItemRepository.getMaxOrderNumber(currentDate)
     }
@@ -73,6 +87,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
         selectedItems.postValue(currentMap)
 
     }
+
     fun increaseQuantity(id: Int, item: Item) {
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap[id] = item
@@ -104,26 +119,45 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 
     fun insertToOrderCustomerList() {
         val cartItems = selectedItems.value
-        Log.d(TAG, "cartItems $cartItems")
         val keys = cartItems?.keys?.toList()
-        Log.d(TAG, "keys $keys")
         var foodRevenue = 0.0
         var drinkRevenue = 0.0
         var dessertRevenue = 0.0
-        cartItems?.forEach{
-            when(it.value.type) {
+        cartItems?.forEach {
+            when (it.value.type) {
                 ItemType.FOOD.typeName -> foodRevenue += it.value.price * it.value.quantity!!
                 ItemType.DRINK.typeName -> drinkRevenue += it.value.price * it.value.quantity!!
                 else -> dessertRevenue += it.value.price * it.value.quantity!!
             }
         }
         viewModelScope.launch {
-            menuItemRepository.insertToOrderList(Order(0, orderNumber.value!!, "%.2f".format(foodRevenue).toDouble(), "%.2f".format(drinkRevenue).toDouble(), "%.2f".format(dessertRevenue).toDouble(), totalQuantity,  "%.2f".format(totalWithDelivery.value).toDouble(), Status.PROCESSING.toString(), null ))
+            menuItemRepository.insertToOrderList(
+                Order(
+                    0,
+                    orderNumber.value!!,
+                    foodRevenue,
+                    drinkRevenue,
+                    dessertRevenue,
+                    totalQuantity,
+                    totalWithDelivery.value!!,
+                    Status.PROCESSING.toString(),
+                    deliveryMethod.value!!,
+                    paymentMethod.value!!,
+                    request.value
+                )
+            )
         }
         viewModelScope.launch {
-            keys?.forEach {key ->
+            keys?.forEach { key ->
                 val item = selectedItems.value?.get(key)
-                menuItemRepository.insertToCartItemList(CartItem(0, orderNumber.value!!, key, item?.quantity.toString()))
+                menuItemRepository.insertToCartItemList(
+                    CartItem(
+                        0,
+                        orderNumber.value!!,
+                        key,
+                        item?.quantity.toString()
+                    )
+                )
             }
 
         }
@@ -133,7 +167,15 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
     fun insertCustomer() {
         val address = customerAddress.value + " Zip code: ${customerZipCode.value}"
         viewModelScope.launch {
-            menuItemRepository.insertCustomer(Customer( 0, customerName.value!!, orderNumber.value!!, customerPhoneNumber.value!!, address))
+            menuItemRepository.insertCustomer(
+                Customer(
+                    0,
+                    customerName.value!!,
+                    orderNumber.value!!,
+                    customerPhoneNumber.value!!,
+                    address
+                )
+            )
         }
     }
 
@@ -141,9 +183,8 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository): ViewMod
 }
 
 
-
-
-class MenuViewModelFactory(private val menuItemRepository: MenuItemRepository): ViewModelProvider.Factory{
+class MenuViewModelFactory(private val menuItemRepository: MenuItemRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MenuViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

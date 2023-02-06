@@ -36,7 +36,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="70dp"
             android:background="@color/white"
-            android:onClick="@{() -> menuFragment.goToAddMenuFragment()}"
+            android:onClick="@{() -> menuFragment.toAddMenu()}"
             android:padding="15dp"
             android:text="Add New Item"
             android:textColor="#039BE5"

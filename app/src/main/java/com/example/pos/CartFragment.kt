@@ -79,23 +79,26 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             recyclerView.adapter = adapter
             val items = selectedItems.values.toList()
             menuViewModel.total = 0.0
-            items.forEach{ item ->
-                menuViewModel.total +=  item.subTotal
+            items.forEach { item ->
+                menuViewModel.total += item.subTotal
             }
             binding?.total?.text = "TOTAL: $" + "%.2f".format(menuViewModel.total)
 
         })
-        menuViewModel.getOrderNumber()?.observe(viewLifecycleOwner, Observer { orders ->
+        menuViewModel.getOrderNumber()?.observe(viewLifecycleOwner) { orders ->
             if (orders.isEmpty()) {
                 menuViewModel.orderNumber.value = (menuViewModel.currentDate + "001").toLong()
-            }
-            else {
+            } else {
                 val latestOrder = orders[0]
                 menuViewModel.orderNumber.value = latestOrder.orderNumber + 1
             }
-            binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value.toString()}"
-        })
+            if (menuViewModel.selectedItems.value?.isEmpty() != true) {
+                Log.d(TAG, "order no ${menuViewModel.orderNumber.value}")
+                binding?.orderNumber?.text =
+                    "Order Number: ${menuViewModel.orderNumber.value.toString()}"
+            }
 
+        }
 
     }
 

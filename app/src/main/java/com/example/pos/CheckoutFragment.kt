@@ -1,12 +1,16 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -24,8 +28,8 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CheckoutFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Use LoginViewModel.
+ *
  */
 class CheckoutFragment : Fragment() {
 
@@ -60,12 +64,10 @@ class CheckoutFragment : Fragment() {
         recyclerView = binding?.cartItems!!
         binding?.tvSubtotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
         binding?.tvTotalAmount?.text = "$" + "%.2f".format(menuViewModel.total)
-        menuViewModel.totalWithDelivery.observe(viewLifecycleOwner, Observer {
-            menuViewModel.totalWithDelivery.value?.plus(
-                menuViewModel.total)
-            binding?.tvTotalAmount?.text = "$" + "%.2f".format((menuViewModel.totalWithDelivery.value))
-        })
-
+        menuViewModel.totalWithDelivery.observe(viewLifecycleOwner) {
+            binding?.tvTotalAmount?.text =
+                "$" + "%.2f".format((it))
+        }
         return fragmentBinding.root
     }
 
@@ -75,22 +77,30 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.checkoutFragment = this
         binding?.menuViewModel = menuViewModel
+        if (menuViewModel.selectedItems.value?.isEmpty() != true) {
+            binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value}"
+        }
+        menuViewModel.selectedItems.observe(viewLifecycleOwner) { selectedItems ->
+            itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
+            recyclerView.adapter = itemsAdapter
+        }
         val spinner = binding?.spinnerInner
         val options = resources.getStringArray(R.array.payment_options)
         val adapter = ArrayAdapter(requireContext(), R.layout.payment_spinner_item, options)
         spinner?.adapter = adapter
-        binding?.switchDelivery?.setOnCheckedChangeListener { _, isChecked ->
+        menuViewModel?.totalWithDelivery?.value = menuViewModel?.total!!
+        menuViewModel?.deliveryMethod?.value = "Pickup"
+        binding?.switchDelivery?.setOnCheckedChangeListener { it, isChecked ->
             if (isChecked) {
                 binding?.apply {
                     inputAddress.visibility = View.VISIBLE
                     inputZip.visibility = View.VISIBLE
                     inputPickupTime.visibility = View.GONE
-                    request.visibility = View.GONE
                     tvDeliveryCharge.visibility = View.VISIBLE
                     tvDeliveryChargeAmount.visibility = View.VISIBLE
-                    tvDeliveryChargeAmount.text = "$5.0"
-                    menuViewModel?.totalWithDelivery?.value = menuViewModel?.total?.plus(5)
-
+                    tvDeliveryChargeAmount.text = "$5.00"
+                    menuViewModel?.totalWithDelivery?.value = menuViewModel?.total?.plus(5)!!
+                    menuViewModel?.deliveryMethod?.value = "Delivery"
                 }
 
 
@@ -99,41 +109,59 @@ class CheckoutFragment : Fragment() {
                     inputAddress.visibility = View.GONE
                     inputZip.visibility = View.GONE
                     inputPickupTime.visibility = View.VISIBLE
-                    request.visibility = View.VISIBLE
                     tvDeliveryCharge.visibility = View.GONE
                     tvDeliveryChargeAmount.visibility = View.GONE
+                    menuViewModel?.deliveryMethod?.value = "Pickup"
                     menuViewModel?.totalWithDelivery?.value = menuViewModel?.total
-
                 }
             }
 
 
 
+            }
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val selectedOption = options[position]
+                menuViewModel.paymentMethod.value = selectedOption
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+
+
+
+
+
+
+
         }
-
-
-
-
-
-        menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
-            itemsAdapter = CheckoutItemsAdapter(requireContext(), selectedItems)
-            recyclerView.adapter = itemsAdapter
-        })
-        binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value}"
-
     }
 
     fun placeOrder() {
-        menuViewModel.insertToOrderCustomerList()
-        menuViewModel.insertCustomer()
-        findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
-        binding?.inputName?.text = null
-        binding?.phoneNumberEdttxt?.text = null
-        binding?.request?.text = null
-        binding?.pickupText?.text = null
-        binding?.inputAddress?.text = null
-        binding?.inputZip?.text = null
-        menuViewModel.orderNumber.value = null
+        if (menuViewModel.selectedItems.value?.isEmpty() == true) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Error")
+            builder.setMessage("Order is empty.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else {
+            menuViewModel.insertToOrderCustomerList()
+            menuViewModel.insertCustomer()
+            findNavController().navigate(R.id.action_checkoutFragment_to_orderStatusFragment)
+            binding?.inputName?.text = null
+            binding?.phoneNumberEdttxt?.text = null
+            binding?.request?.text = null
+            binding?.pickupText?.text = null
+            binding?.inputAddress?.text = null
+            binding?.inputZip?.text = null
+        }
+
     }
 
     fun cancelOrder() {
@@ -145,6 +173,5 @@ class CheckoutFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
-
 
 }

@@ -19,29 +19,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pos_admin.const.ItemType
-import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.databinding.FragmentAddMenuBinding
 import com.example.pos.model.MenuViewModel
-import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import java.io.ByteArrayOutputStream
 
-
+/** メニューに新しい物を追加させる
+ */
 class AddMenuFragment : Fragment() {
     private val cameraRequestId = 1
     private val uploadRequestId = 2
-    private val itemTypes =  arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
-    private val menuViewModel: MenuViewModel by activityViewModels {
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-        )
-    }
+    private val itemTypes = arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
+    private val menuViewModel: MenuViewModel by activityViewModels()
+
     private var binding: FragmentAddMenuBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +46,7 @@ class AddMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.addMenuFragment = this
         binding?.menuViewModel = menuViewModel
+        // 物のタイプのオプションをDialogで表示する
         val options = itemTypes.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Choose the type")
@@ -64,18 +55,16 @@ class AddMenuFragment : Fragment() {
             binding?.typePick?.text = selectedItemType.toString()
             menuViewModel.type.value = selectedItemType.typeName
         }
-
-
         val dialog = builder.create()
         val container = binding?.typePickContainer
         container?.setOnClickListener {
             dialog.show()
         }
         binding?.addImgText?.setOnClickListener {
-            val options = arrayOf("Take Photo", "Upload Photo")
+            val photoOptions = arrayOf("Take Photo", "Upload Photo")
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Choose an option")
-            builder.setItems(options) { _, which ->
+            builder.setItems(photoOptions) { _, which ->
                 when (which) {
                     0 -> {
                         if (ContextCompat.checkSelfPermission(
@@ -100,54 +89,34 @@ class AddMenuFragment : Fragment() {
         }
     }
 
-
-        /*binding?.addImgText?.setOnClickListener {
-
-
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_DENIED
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == cameraRequestId) {
+            val images: Bitmap = data?.extras?.get("data") as Bitmap
+            binding?.itemImg?.setImageBitmap(images)
+            val bitmap: Bitmap = images
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val imageInByte = byteArrayOutputStream.toByteArray()
+            val imageToStore = encodeToString(imageInByte, DEFAULT)
+            menuViewModel.image.value = imageToStore
+        }
+        if (requestCode == uploadRequestId) {
+            val selectedImage = data?.data
+            val bitmap = MediaStore.Images.Media.getBitmap(
+                requireContext().contentResolver,
+                selectedImage
             )
-                ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(Manifest.permission.CAMERA),
-                    cameraRequestId
-                )
-            binding?.addImgText?.setOnClickListener {
-                val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(cameraInt, cameraRequestId)
-            }
-
-
+            binding?.itemImg?.setImageBitmap(bitmap)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val imageInByte = byteArrayOutputStream.toByteArray()
+            val imageToStore = encodeToString(imageInByte, DEFAULT)
+            menuViewModel.image.value = imageToStore
         }
+
     }
-    */
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode == cameraRequestId) {
-                val images: Bitmap = data?.extras?.get("data") as Bitmap
-                binding?.itemImg?.setImageBitmap(images)
-                val bitmap: Bitmap = images
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                val imageInByte = byteArrayOutputStream.toByteArray()
-                val imageToStore = encodeToString(imageInByte, DEFAULT)
-                menuViewModel.image.value = imageToStore
-            }
-            if (requestCode == uploadRequestId) {
-                val selectedImage = data?.data
-                val bitmap = MediaStore.Images.Media.getBitmap(
-                    requireContext().contentResolver,
-                    selectedImage
-                )
-                binding?.itemImg?.setImageBitmap(bitmap)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                val imageInByte = byteArrayOutputStream.toByteArray()
-                val imageToStore = encodeToString(imageInByte, DEFAULT)
-                menuViewModel.image.value = imageToStore
-            }
-
-        }
 
 
     override fun onDestroyView() {
@@ -212,7 +181,7 @@ class AddMenuFragment : Fragment() {
         val inputPrice = binding?.priceEdttxt
         val uploadedPhoto = binding?.itemImg
 
-       /* var isOptionSelected = false
+        /* var isOptionSelected = false
         for (i in 0 until typeContainer!!.childCount) {
             val child = typeContainer.getChildAt(i)
             if (child is RadioButton) {
@@ -254,12 +223,10 @@ class AddMenuFragment : Fragment() {
             }
         } else {*/
         menuViewModel.insertItem()
+        binding?.nameInput?.text = null
+        binding?.inputPrice?.text = null
         findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
 
     }
 
-
-            fun backToMenu() {
-        findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
-    }
 }

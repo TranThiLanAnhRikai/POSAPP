@@ -62,7 +62,9 @@ class OrdersAdapter(
                                 order.quantity,
                                 order.total,
                                 selectedStatus,
-                                null
+                                order.deliveryMethod,
+                                order.paymentMethod,
+                                order.request
                             )
                         )
                     })

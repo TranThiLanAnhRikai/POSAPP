@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.pos.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
@@ -15,8 +14,10 @@ import com.example.pos_admin.databinding.FragmentMenuBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 
+/** メニューのものをRecyclerViewで表示する
+ */
 class MenuFragment : Fragment() {
-    private val menuViewModel: MenuViewModel by activityViewModels {
+    private val menuViewModel: MenuViewModel by activityViewModels() {
         MenuViewModelFactory(
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
@@ -42,10 +43,10 @@ class MenuFragment : Fragment() {
         binding?.menuFragment = this
         binding?.menuViewModel = menuViewModel
         val recyclerView = binding?.menuItems
-        menuViewModel.getAllMenuItems().observe(viewLifecycleOwner, Observer { items ->
+        menuViewModel.getAllMenuItems().observe(viewLifecycleOwner) { items ->
             val adapter = MenuItemsAdapter(requireContext(), items)
             recyclerView?.adapter = adapter
-        })
+        }
     }
 
     override fun onDestroyView() {
@@ -53,7 +54,8 @@ class MenuFragment : Fragment() {
         binding = null
     }
 
-    fun goToAddMenuFragment() {
+    // メニューに新しい物を追加する画面にナビゲートする
+    fun toAddMenu() {
         findNavController().navigate(R.id.action_menuFragment_to_addMenuFragment)
     }
 }

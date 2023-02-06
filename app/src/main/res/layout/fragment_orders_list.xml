@@ -29,7 +29,7 @@
             android:id="@+id/table_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1, 2, 3, 4, 5"
+            android:stretchColumns="1, 2, 3, 4, 5, 6"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="40dp">
@@ -68,11 +68,12 @@
                 <TextView
                     android:text="STATUS"
                     android:textSize="25sp"
-
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:layout_column="5"
                     android:textStyle="bold"/>
+                <TextView
+                    android:layout_column="6"/>
 
 
             </TableRow>

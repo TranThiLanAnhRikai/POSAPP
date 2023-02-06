@@ -1,13 +1,10 @@
 package com.example.pos_admin
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +15,9 @@ import com.example.pos_admin.model.LoginViewModel
 import com.example.pos_admin.model.LoginViewModelFactory
 
 
+/** 2回目のログインコードを記入させる
+ * Admin側にナビゲートする
+ */
 
 class SecondLoginFragment : Fragment() {
 
@@ -29,7 +29,6 @@ class SecondLoginFragment : Fragment() {
             )
         )
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,19 +44,23 @@ class SecondLoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.secondLoginFragment = this
         binding?.loginViewModel = loginViewModel
-
-
-
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 
-    fun previousFragment() {
+    // First login fragment に戻す
+    fun backToFirstLogin() {
         findNavController().navigate(R.id.action_secondLoginFragment_to_firstLoginFragment)
     }
 
-    // If the second login code is valid, log the user in as admin. Otherwise display a toast message.
-    fun nextFragment() {
-       /* val builder = AlertDialog.Builder(requireContext())
+    // コードがブランクまたは無効の場合はエラーメッセージを表示する。コードの最大文字数は8文字にする。
+    // ログインコードが有効な場合、ユーザーをメインメニューフラグメントにナビゲートする
+
+    fun toMainMenu() {
+        /* val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputSecondCode.value == null) {
             builder.setMessage("You need to fill in your second code.")
@@ -80,16 +83,11 @@ class SecondLoginFragment : Fragment() {
 
 
 */
-
         findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
 
 
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
 }
 

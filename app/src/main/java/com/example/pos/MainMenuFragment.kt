@@ -2,37 +2,31 @@ package com.example.pos_admin
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MainMenuViewModel
 import com.example.pos.model.MainMenuViewModelFactory
-import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentMainMenuBinding
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
+/** Admin側のメイン画面
+ * 当日のセール数字、スタッフのリスト、天気情報を表示する
+ */
 class MainMenuFragment : Fragment() {
     private var binding: FragmentMainMenuBinding? = null
     private val mainMenuViewModel: MainMenuViewModel by activityViewModels {
@@ -64,15 +58,17 @@ class MainMenuFragment : Fragment() {
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
         mainMenuViewModel.getCurrentDate()
-        Log.d(TAG, "date ${mainMenuViewModel.formattedDateTime.value}")
-        mainMenuViewModel.formattedDateTime.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "it $it")
+        mainMenuViewModel.formattedDateTime.observe(viewLifecycleOwner) {
             binding?.dateTime?.text = "Today is $it"
-        })
+        }
+
+        // Shared Preferences でユーザー名を取得して、表示する
         val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val username = prefs?.getString("username", "")
         binding?.welcomeText?.text = "Welcome back, $username"
-        mainMenuViewModel?.getWeatherInfo()?.observe(viewLifecycleOwner, Observer { weatherInfo ->
+
+        // APIで当日の天気情報をゲットして、表示する
+        mainMenuViewModel.getWeatherInfo().observe(viewLifecycleOwner) { weatherInfo ->
             val tempMax = weatherInfo.main.temp_max
             val tempMin = weatherInfo.main.temp_min
             val humidity = weatherInfo.main.humidity
@@ -91,14 +87,18 @@ class MainMenuFragment : Fragment() {
             binding?.sunset?.text = simpleDateFormat.format(Date(sunset * 1000L))
             binding?.humidity?.text = humidity.toString()
             binding?.wind?.text = wind.toString()
-        })
+        }
+
+        // ボトムナビゲーションバーをバインドする
         binding?.bottomNavigationView?.setOnNavigationItemSelectedListener {
             handleBottomNavigation(
                 it.itemId
             )
         }
         binding?.bottomNavigationView?.selectedItemId = R.id.bottom_navigation_view
-        mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner, Observer { orders ->
+
+        // 当日のセール数字を表示する
+        mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner) { orders ->
             binding?.totalNumberOfOrders?.text = "Total number of orders: ${orders.size}"
             var totalRevenue = 0.0
             var totalNoOfItems = 0
@@ -108,41 +108,41 @@ class MainMenuFragment : Fragment() {
             }
             binding?.totalRevenue?.text = "Total revenue: $${String.format("%.2f", totalRevenue)}"
             binding?.totalNumberOfItems?.text = "Total number of items: $totalNoOfItems"
-        })
-        val btnsContainer = binding?.todayShifts
-        btnsContainer?.forEach { it ->
+        }
+
+        // 当日のスタッフを表示する
+        val buttonsContainer = binding?.todayShifts
+        buttonsContainer?.forEach { it ->
             it.setOnClickListener {
-                mainMenuViewModel.getShifts(mainMenuViewModel.formattedDateTime.value!!, it.tag.toString().toInt()).observe(viewLifecycleOwner, Observer { shifts ->
-                    Log.d(TAG, "date ${mainMenuViewModel.formattedDateTime.value}, shift ${it.tag.toString().toInt()}")
-                    Log.d(TAG, "shifts $shifts")
+                mainMenuViewModel.getShifts(
+                    mainMenuViewModel.formattedDateTime.value!!,
+                    it.tag.toString().toInt()
+                ).observe(viewLifecycleOwner) { shifts ->
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("Staff")
-                    var staffs = mutableListOf<String>()
-                    shifts.forEach {
-                        staffs.add(it.shiftName)
+                    val staffs = mutableListOf<String>()
+                    shifts.forEach { shift ->
+                        staffs.add(shift.shiftName)
                     }
-                    Log.d(TAG, "staffs $staffs")
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, staffs)
-                    builder.setAdapter(adapter) { _, which ->
-                        // Handle item click here
+                    val adapter =
+                        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, staffs)
+                    builder.setAdapter(adapter) { _, _ ->
                     }
                     builder.setPositiveButton("OK") { dialog, _ ->
                         dialog.dismiss()
                     }
                     val dialog = builder.create()
                     dialog.show()
-                })
+                }
             }
         }
 
     }
 
-
-
-
+    // ボトムナビゲーションバーを処理する
     private fun handleBottomNavigation(
         menuItemId: Int
-    ): Boolean = when(menuItemId) {
+    ): Boolean = when (menuItemId) {
         R.id.main_menu_users_button -> {
             findNavController().navigate(R.id.action_mainMenuFragment_to_usersFragment)
             true
@@ -164,11 +164,11 @@ class MainMenuFragment : Fragment() {
         binding = null
     }
 
-    fun toSalesAnalysisFragment() {
+    fun toSalesAnalysis() {
         findNavController().navigate(R.id.action_mainMenuFragment_to_salesAnalysisFragment)
     }
 
-    fun toShiftsFragment() {
+    fun toShifts() {
         findNavController().navigate(R.id.action_mainMenuFragment_to_shiftsFragment)
     }
 }

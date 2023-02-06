@@ -23,7 +23,7 @@
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:onClick="@{() -> secondLoginFragment.previousFragment()}"
+            android:onClick="@{() -> secondLoginFragment.backToFirstLogin()}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -96,7 +96,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn"
-                android:onClick="@{() -> secondLoginFragment.nextFragment()}"
+                android:onClick="@{() -> secondLoginFragment.toMainMenu()}"
                 android:padding="16dp"
                 android:text="Submit"
                 android:textColor="@color/dark_blue"
