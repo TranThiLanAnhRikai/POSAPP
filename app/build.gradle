@@ -64,6 +64,7 @@ dependencies {
     // Moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
     implementation 'com.github.oky2abbas:chainChart:v0+'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 
 
 }

@@ -3,6 +3,7 @@ package com.example.pos
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,11 @@ import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentAddShiftsBinding
 import com.example.pos_admin.model.ShiftsViewModel
 import com.example.pos_admin.model.ShiftsViewModelFactory
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.utils.ColorTemplate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -108,7 +114,9 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     fun addNewShift() {
         shiftsViewModel.insertShift()
+
         findNavController().navigate(R.id.action_addShiftsFragment_to_shiftsFragment)
+        binding?.inputName?.text = null
     }
 
     private fun displayFormattedDate(timeStamp: Long) {
@@ -116,3 +124,4 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
 }
+

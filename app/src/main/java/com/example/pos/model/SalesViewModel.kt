@@ -12,7 +12,8 @@ import java.util.*
 class SalesViewModel(private val orderRepository: OrderRepository): ViewModel() {
     var revenueList = mutableListOf<Double>()
     var dates = mutableListOf<String>()
-    var numberOfOrders = mutableListOf<Float>()
+   /* var numberOfOrders = mutableListOf<Float>()*/
+    var numberOfOrders = mutableListOf<Int>()
     var numberOfItems = mutableListOf<Int>()
     var foodRevenueList = mutableListOf<Double>()
     var drinkRevenueList = mutableListOf<Double>()

@@ -26,6 +26,7 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDate() {
          formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
+        Log.d(TAG, "formattedDT ${formattedDateTime.value}")
     }
 
 
@@ -42,8 +43,11 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     val status: LiveData<String> = _status
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getTodayOrders(): LiveData<List<Order>> {
-        return orderRepository.getTodayOrders(formattedDateTime.value!!)
+        val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        Log.d(TAG, "today $today")
+        return orderRepository.getTodayOrders(today)
     }
     fun getWeatherInfo(): MutableLiveData<WeatherInfo> {
         viewModelScope.launch {
