@@ -17,7 +17,7 @@ import com.example.pos.model.MenuViewModelFactory
 /** メニューのものをRecyclerViewで表示する
  */
 class MenuFragment : Fragment() {
-    private val menuViewModel: MenuViewModel by activityViewModels() {
+    private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),

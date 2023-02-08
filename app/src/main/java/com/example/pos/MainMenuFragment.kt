@@ -2,11 +2,9 @@ package com.example.pos_admin
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MainMenuViewModel
@@ -144,9 +141,6 @@ class MainMenuFragment : Fragment() {
     }
 
 
-
-
-
     // ボトムナビゲーションバーを処理する
     private fun handleBottomNavigation(
         menuItemId: Int
@@ -167,19 +161,23 @@ class MainMenuFragment : Fragment() {
 
     }
 
+    // この画面に戻ると、ホームボタンをハイライトする
     override fun onResume() {
         super.onResume()
         binding?.bottomNavigationView?.menu?.findItem(R.id.main_menu_home_button)?.isChecked = true
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
 
+    // Sales Analysis 画面にナビゲートする
     fun toSalesAnalysis() {
         findNavController().navigate(R.id.action_mainMenuFragment_to_salesAnalysisFragment)
     }
 
+    // Shifts 画面にナビゲートする
     fun toShifts() {
         findNavController().navigate(R.id.action_mainMenuFragment_to_shiftsFragment)
     }

@@ -73,7 +73,7 @@
             android:layout_marginBottom="70dp"
             android:text="Create New Notification"
             android:textSize="30sp"
-            android:onClick="@{() -> notificationsFragment.createNewNoti()}"
+            android:onClick="@{() -> notificationsFragment.createNewNotification()}"
             android:textColor="@color/dark_blue"
             android:padding="15dp"/>
 

@@ -2,10 +2,7 @@ package com.example.pos
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.ContentValues.TAG
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,15 +18,14 @@ import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentAddShiftsBinding
 import com.example.pos_admin.model.ShiftsViewModel
 import com.example.pos_admin.model.ShiftsViewModelFactory
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.utils.ColorTemplate
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/** 新しいシフトを作る
+ *　日付をユーザーにせんたくさせる
+ * 名前はユーザーテーブルからautocompleteオプションとして供給する
+ * 新しく作ったシフトはシフトテーブルに保存する
+ */
 class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var shiftsViewModel: ShiftsViewModel
     private var binding: FragmentAddShiftsBinding? = null
@@ -43,7 +39,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View? {
         val fragmentBinding = FragmentAddShiftsBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        //Get shiftsViewModel
+        //　shiftsViewModelをし始める
         val shiftDao = PosAdminRoomDatabase.getDatabase(requireContext()).shiftDao()
         val userDao = PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
         val repository = ShiftRepository(shiftDao, userDao)
@@ -55,6 +51,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.addShiftsFragment = this
         binding?.shiftsViewModel = shiftsViewModel
+        //　カレンダーを表示する。今日以前の日付を無効にする
         binding?.datePick?.setOnClickListener {
             val today = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))
             val datePicker = DatePickerDialog(
@@ -67,6 +64,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             datePicker.datePicker.minDate = today.timeInMillis
             datePicker.show()
         }
+        //
         val options = shiftOptions.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Choose a shift")
@@ -109,9 +107,6 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         formatter.format(selectedTimeStamp).toString()
     }
 
-    fun previousFragment() {
-        findNavController().navigate(R.id.action_addShiftsFragment_to_shiftsFragment)
-    }
 
     fun addNewShift() {
         val builder = AlertDialog.Builder(requireContext())

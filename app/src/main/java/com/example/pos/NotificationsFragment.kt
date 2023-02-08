@@ -1,15 +1,12 @@
 package com.example.pos_admin
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -22,11 +19,15 @@ import com.example.pos_admin.data.entity.Notification
 import com.example.pos_admin.databinding.FragmentNotificationsBinding
 import java.util.*
 
+/** 通知をRecyclerViewで表示する
+ *
+ */
 class NotificationsFragment : Fragment() {
     private var binding: FragmentNotificationsBinding? = null
     private lateinit var notificationsViewModel: NotificationsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +47,7 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.notificationsFragment = this
         binding?.notificationsViewModel = notificationsViewModel
-        recyclerView = binding?.notiRecyclerview!!
+        recyclerView = (binding?.notiRecyclerview ?: return)
         notificationsViewModel.getAllNotifications()
             .observe(viewLifecycleOwner) { notifications ->
                 adapter = NotificationsAdapter(requireContext(), notifications)
@@ -59,7 +60,7 @@ class NotificationsFragment : Fragment() {
         binding = null
     }
 
-    fun createNewNoti() {
+    fun createNewNotification() {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_custom, null)
@@ -71,6 +72,7 @@ class NotificationsFragment : Fragment() {
             .setPositiveButton("OK") { _, _ ->
                 val date = "${datePicker.year}/${datePicker.month + 1}/${datePicker.dayOfMonth}"
                 val text = textInput.text.toString()
+                // 全てのフィールドに記入されたかチェックする。されないとエラーメッセージを表示する。されたらテーブルに保存する
                 if (text.isEmpty()) {
                     val builder = android.app.AlertDialog.Builder(requireContext())
                     builder.setTitle("Error")
