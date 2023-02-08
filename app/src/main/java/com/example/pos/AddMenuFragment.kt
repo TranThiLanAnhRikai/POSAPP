@@ -13,8 +13,11 @@ import android.util.Base64.encodeToString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -124,109 +127,60 @@ class AddMenuFragment : Fragment() {
         binding = null
     }
 
-    /*fun addNewItem() {
-        //Check whether all fields have bene filled and a photo has been uploaded/taken
-        val inputName = binding?.nameEdttxt
-        val typeContainer = binding?.typePickContainer
-        val inputPrice = binding?.priceEdttxt
-        val uploadedPhoto = binding?.itemImg
-
-        var isOptionSelected = false
-        for (i in 0 until typeContainer!!.childCount) {
-            val child = typeContainer.getChildAt(i)
-            if (child is RadioButton) {
-                if (child.isChecked) {
-                    isOptionSelected = true
-                    continue
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please select the type of the item.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-        if (inputName!!.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Please fill in the name of the item.",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            if (inputPrice!!.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please fill in the price of the item.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                if (uploadedPhoto == null) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please take a photo or upload one",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    menuViewModel.insertItem()
-                }
-            }
-        }
-
-    }*/
+    // メニューに新しい物を追加する
     fun addNewItem() {
-        //Check whether all fields have bene filled and a photo has been uploaded/taken
-        val inputName = binding?.nameEdttxt
-        val typeContainer = binding?.typePickContainer
-        val inputPrice = binding?.priceEdttxt
-        val uploadedPhoto = binding?.itemImg
-
-        /* var isOptionSelected = false
-        for (i in 0 until typeContainer!!.childCount) {
-            val child = typeContainer.getChildAt(i)
-            if (child is RadioButton) {
-                if (child.isChecked) {
-                    isOptionSelected = true
-                }
+        //
+        if (menuViewModel.itemName.value == null) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Error")
+            builder.setMessage("Please fill in the name of the item.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.type.value == null) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Error")
+            builder.setMessage("Please select the type of the item.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel._price.value == null) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Error")
+            builder.setMessage("Please fill in the price of the item.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.image.value == null) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Error")
+            builder.setMessage("Please take a photo or upload one.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else {
+            menuViewModel.insertItem()
+            binding?.nameInput?.text = null
+            binding?.inputPrice?.text = null
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("New Item added")
+/*            builder.setMessage("Please take a photo or upload one.")*/
+            builder.setPositiveButton("Add another one") { dialog, _ ->
+                dialog.dismiss()
+                binding?.nameInput?.text = null
+                binding?.inputPrice?.text = null
+                binding?.typePick?.text = "Choose the type"
+                binding?.itemImg?.setImageBitmap(null)
+                binding?.inputPrice?.clearFocus()
             }
+            builder.setNegativeButton("Go back to menu") { _, _ ->
+                findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
+
         }
-        if (!isOptionSelected || inputName!!.toString().isEmpty() || inputPrice!!.toString()
-                .isEmpty() || uploadedPhoto == null
-        ) {
-            if (!isOptionSelected) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please select the type of the item.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            if (inputName!!.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please fill in the name of the item.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            if (inputPrice!!.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please fill in the price of the item.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            if (uploadedPhoto == null) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please take a phot or upload one.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {*/
-        menuViewModel.insertItem()
-        binding?.nameInput?.text = null
-        binding?.inputPrice?.text = null
-        findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
-
     }
 
 }

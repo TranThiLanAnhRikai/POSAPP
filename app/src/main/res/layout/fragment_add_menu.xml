@@ -87,6 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/black"
                     android:text="@={menuViewModel._price}"/>
 
