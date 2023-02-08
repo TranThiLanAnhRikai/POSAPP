@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.pos.SalesAnalysisFragment">
     <data>
         <variable
@@ -10,18 +11,51 @@
             name="salesViewModel"
             type="com.example.pos.model.SalesViewModel" />
     </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/btns_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="20dp"
+            app:singleSelection="true"
 
+            android:layout_marginBottom="50dp">
+            <Button
+                android:id="@+id/week_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Week"
+                android:tag="week"
+                style="?attr/materialButtonOutlinedStyle"
+                android:textSize="30sp"/>
+            <Button
+                android:id="@+id/month_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:tag="month"
+                style="?attr/materialButtonOutlinedStyle"
+                android:text="Month"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
+        app:layout_constraintTop_toBottomOf="@+id/btns_container"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Sales in the latest 7 days"
+            android:layout_marginTop="20dp"
+            android:text="Sales"
             android:textAlignment="center"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -31,46 +65,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginBottom="150dp"
             android:baselineAligned="false" />
     </LinearLayout>
-   <!-- <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/btns_container"
-        android:layout_width="match_parent"
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!-- <com.google.android.material.button.MaterialButtonToggleGroup
+    android:id="@+id/btns_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:gravity="center"
+    android:layout_marginBottom="50dp">
+    <Button
+        android:id="@+id/items_composition"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:layout_marginBottom="50dp">
-        <Button
-            android:id="@+id/items_composition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:tag="Food"
-            android:clickable="false"
-            style="?attr/materialButtonOutlinedStyle"
-            android:textSize="30sp"/>
-        <Button
-            android:id="@+id/drink_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:tag="Drink"
-            style="?attr/materialButtonOutlinedStyle"
-            android:text="DRINK"/>
-        <Button
-            android:id="@+id/dessert_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:tag="Dessert"
-            style="?attr/materialButtonOutlinedStyle"
-            android:text="DESSERT"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>-->
+        android:text=""
+        android:tag="Food"
+        android:clickable="false"
+        style="?attr/materialButtonOutlinedStyle"
+        android:textSize="30sp"/>
+    <Button
+        android:id="@+id/drink_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:tag="Drink"
+        style="?attr/materialButtonOutlinedStyle"
+        android:text="DRINK"/>
+    <Button
+        android:id="@+id/dessert_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:tag="Dessert"
+        style="?attr/materialButtonOutlinedStyle"
+        android:text="DESSERT"/>
+</com.google.android.material.button.MaterialButtonToggleGroup>-->
 
 
 </layout>

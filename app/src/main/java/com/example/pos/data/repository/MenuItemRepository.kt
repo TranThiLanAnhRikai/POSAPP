@@ -56,8 +56,8 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao, private val order
     fun getOrders(status: String): LiveData<List<Order>> {
         return orderDao.getOrders(status)
     }
-    fun getLatestOrders(limit: Int, latestDate: String): LiveData<List<Order>> {
-        return orderDao.getLatestOrders(limit, latestDate)
+    fun getLatestOrders(latestDate: String): LiveData<List<Order>> {
+        return orderDao.getOrdersByWeek(latestDate)
     }
     fun getTodayOrders(date: String): LiveData<List<Order>> {
         val constructedDate = "%$date%"
