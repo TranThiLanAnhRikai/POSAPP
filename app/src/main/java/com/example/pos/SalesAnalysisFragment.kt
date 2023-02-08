@@ -32,7 +32,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 class SalesAnalysisFragment : Fragment() {
     private var binding: FragmentSalesAnalysisBinding? = null
     private lateinit var lineChart: LineChart
-    private lateinit var revenueLineDataSet: LineDataSet
     private val salesViewModel: SalesViewModel by activityViewModels {
         SalesViewModelFactory(
             OrderRepository(
@@ -57,10 +56,55 @@ class SalesAnalysisFragment : Fragment() {
         binding?.salesAnalysisFragment = this
         binding?.salesViewModel = salesViewModel
         lineChart = binding?.lineChart!!
-        binding?.btnsContainer?.forEach { it ->
+        salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
+            salesViewModel.numberOfOrders.clear()
+            salesViewModel.revenueList.clear()
+            salesViewModel.numberOfItems.clear()
+            salesViewModel.dessertRevenueList.clear()
+            salesViewModel.drinkRevenueList.clear()
+            salesViewModel.foodRevenueList.clear()
+            orders.forEach { order ->
+                salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
+            }
+            val datesList = salesViewModel.dates.distinct()
+            datesList.forEach { date ->
+                var sum = 0.0
+                var orderSum = 0
+                var quantitySum = 0
+                var foodSales = 0.0
+                var drinkSales = 0.0
+                var dessertSales = 0.0
+                orders.filter { order ->
+                    order.orderNumber.toString().substring(6, 8) == date
+
+                }
+                    .forEach { order ->
+                        orderSum++
+                        quantitySum += order.quantity
+                        sum += order.total
+                        foodSales += order.foodRevenue ?: 0.0
+                        drinkSales += order.drinkRevenue ?: 0.0
+                        dessertSales += order.dessertRevenue ?: 0.0
+                    }
+
+                salesViewModel.numberOfOrders.add(orderSum)
+                salesViewModel.revenueList.add(sum)
+                salesViewModel.numberOfItems.add(quantitySum)
+                salesViewModel.foodRevenueList.add(foodSales)
+                salesViewModel.drinkRevenueList.add(drinkSales)
+                salesViewModel.dessertRevenueList.add(dessertSales)
+            }
+            populateLineChart(
+                salesViewModel.dates.distinct().reversed(),
+                salesViewModel.revenueList.reversed(),
+                salesViewModel.foodRevenueList.reversed(),
+                salesViewModel.drinkRevenueList.reversed(),
+                salesViewModel.dessertRevenueList.reversed())
+        }
+            binding?.btnsContainer?.forEach { it ->
             it.setOnClickListener {
                 if (it.tag.toString() == "week") {
-                    salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
+                    /*salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
                         salesViewModel.numberOfOrders.clear()
                         salesViewModel.revenueList.clear()
                         salesViewModel.numberOfItems.clear()
@@ -69,7 +113,6 @@ class SalesAnalysisFragment : Fragment() {
                         salesViewModel.foodRevenueList.clear()
                         orders.forEach { order ->
                             salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
-                            Log.d(TAG, "dates ${salesViewModel.dates}")
                         }
                         val datesList = salesViewModel.dates.distinct()
                         datesList.forEach { date ->
@@ -114,7 +157,13 @@ class SalesAnalysisFragment : Fragment() {
                             salesViewModel.drinkRevenueList.reversed(),
                             salesViewModel.dessertRevenueList.reversed()
                         )
-                    }
+                    }*/
+                    populateLineChart(
+                        salesViewModel.dates.distinct().reversed(),
+                        salesViewModel.revenueList.reversed(),
+                        salesViewModel.foodRevenueList.reversed(),
+                        salesViewModel.drinkRevenueList.reversed(),
+                        salesViewModel.dessertRevenueList.reversed())
                 } else {
                     binding?.monthSelected?.setOnClickListener {
                         salesViewModel.getOrdersByMonth().observe(viewLifecycleOwner) { orders ->
@@ -157,7 +206,6 @@ class SalesAnalysisFragment : Fragment() {
                                 salesViewModel.drinkRevenueList.add(drinkSales)
                                 salesViewModel.dessertRevenueList.add(dessertSales)
                             }
-                            Log.d(TAG, "monthList $monthsList")
                             populateLineChart(
                                 monthsList.reversed(),
                                 salesViewModel.revenueList.reversed(),
@@ -171,16 +219,15 @@ class SalesAnalysisFragment : Fragment() {
             }
 
         }
-
-
-
     }
+
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
+
 
     fun populateLineChart(
         dates: List<String>,
@@ -201,7 +248,7 @@ class SalesAnalysisFragment : Fragment() {
             revenueLineEntry.add(Entry(value, i))
             i++
         }
-        revenueLineDataSet = LineDataSet(revenueLineEntry, "Total")
+        val revenueLineDataSet = LineDataSet(revenueLineEntry, "Total")
         revenueLineDataSet.color = resources.getColor(R.color.dark_blue)
 
         val foodLineEntry: ArrayList<Entry> = ArrayList()
@@ -254,14 +301,15 @@ class SalesAnalysisFragment : Fragment() {
         dessertLineDataSet.lineWidth = 3f
         dessertLineDataSet.valueTextSize = 20f
         lineChart.legend.textSize = 20f
-        lineChart.legend.stackSpace = 5f
         lineChart.legend.position = Legend.LegendPosition.ABOVE_CHART_CENTER
         lineChart.xAxis.textSize = 20f
         lineChart.axisRight.textSize = 20f
         lineChart.axisLeft.textSize = 20f
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        lineChart.extraBottomOffset = 10f
-        lineChart.xAxis.spaceBetweenLabels = 4
+        lineChart.extraBottomOffset = 20f
+        lineChart.legend.formToTextSpace = 1f
+        lineChart.xAxis.labelRotationAngle = 45f
+        lineChart.xAxis.setDrawGridLines(false)
         lineChart.invalidate()
     }
 }

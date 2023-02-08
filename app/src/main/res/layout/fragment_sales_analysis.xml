@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginRight="20dp"
             app:singleSelection="true"
-
+            app:checkedButton="@+id/week_selected"
             android:layout_marginBottom="50dp">
             <Button
                 android:id="@+id/week_selected"

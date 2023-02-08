@@ -34,8 +34,9 @@ class NotificationsFragment : Fragment() {
         val fragmentBinding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val dao = PosAdminRoomDatabase.getDatabase(requireContext()).notificationDao()
         val repository = NotificationRepository(dao)
-        val factory =  NotificationsViewModelFactory(repository)
-        notificationsViewModel = ViewModelProvider(this, factory)[NotificationsViewModel::class.java]
+        val factory = NotificationsViewModelFactory(repository)
+        notificationsViewModel =
+            ViewModelProvider(this, factory)[NotificationsViewModel::class.java]
         binding = fragmentBinding
 
         return fragmentBinding.root
@@ -46,10 +47,11 @@ class NotificationsFragment : Fragment() {
         binding?.notificationsFragment = this
         binding?.notificationsViewModel = notificationsViewModel
         recyclerView = binding?.notiRecyclerview!!
-        notificationsViewModel.getAllNotifications().observe(viewLifecycleOwner, androidx.lifecycle.Observer {notifications ->
-            adapter = NotificationsAdapter(requireContext(), notifications)
-            recyclerView.adapter = adapter
-        })
+        notificationsViewModel.getAllNotifications()
+            .observe(viewLifecycleOwner) { notifications ->
+                adapter = NotificationsAdapter(requireContext(), notifications)
+                recyclerView.adapter = adapter
+            }
     }
 
     override fun onDestroyView() {
@@ -59,10 +61,8 @@ class NotificationsFragment : Fragment() {
 
     fun createNewNoti() {
         val builder = AlertDialog.Builder(requireContext())
-
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_custom, null)
-
         val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
         val textInput = dialogView.findViewById<EditText>(R.id.text_input)
         val today = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))
@@ -71,7 +71,18 @@ class NotificationsFragment : Fragment() {
             .setPositiveButton("OK") { _, _ ->
                 val date = "${datePicker.year}/${datePicker.month + 1}/${datePicker.dayOfMonth}"
                 val text = textInput.text.toString()
-                notificationsViewModel.insertNewNoti(Notification(0, date, text))
+                if (text.isEmpty()) {
+                    val builder = android.app.AlertDialog.Builder(requireContext())
+                    builder.setTitle("Error")
+                    builder.setMessage("Please fill in the content.")
+                    builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    val dialog: android.app.AlertDialog = builder.create()
+                    dialog.show()
+                } else {
+                    notificationsViewModel.insertNewNoti(Notification(0, date, text))
+                    textInput.text = null
+                }
+
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
