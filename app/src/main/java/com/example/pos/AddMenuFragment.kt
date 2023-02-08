@@ -129,42 +129,35 @@ class AddMenuFragment : Fragment() {
 
     // メニューに新しい物を追加する
     fun addNewItem() {
-        //
+        //　全てのフィールドに記入されたのをチェックする。それぞれのフィールドがブラックであれば、エラーメッセージを表示する
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
         if (menuViewModel.itemName.value == null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error")
             builder.setMessage("Please fill in the name of the item.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         } else if (menuViewModel.type.value == null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error")
             builder.setMessage("Please select the type of the item.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         } else if (menuViewModel._price.value == null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error")
             builder.setMessage("Please fill in the price of the item.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         } else if (menuViewModel.image.value == null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error")
             builder.setMessage("Please take a photo or upload one.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         } else {
+            // テーブルに新しい物を入れてから、ふたつのオプションを表示して、選ばれたオプションによって動かせる
             menuViewModel.insertItem()
             binding?.nameInput?.text = null
             binding?.inputPrice?.text = null
-            val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("New Item added")
-/*            builder.setMessage("Please take a photo or upload one.")*/
             builder.setPositiveButton("Add another one") { dialog, _ ->
                 dialog.dismiss()
                 binding?.nameInput?.text = null

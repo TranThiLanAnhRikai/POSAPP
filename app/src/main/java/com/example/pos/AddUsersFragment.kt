@@ -1,5 +1,6 @@
 package com.example.pos_admin
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.opengl.Visibility
 import android.os.Bundle
@@ -41,14 +42,14 @@ class AddUsersFragment : Fragment() {
         binding?.addUsersFragment = this
         binding?.usersViewModel = usersViewModel
         binding?.role?.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId) {
+            when (checkedId) {
                 R.id.admin -> {
                     usersViewModel.inputRole.value = Role.ADMIN.roleName
                     val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     val randomString = (1..8).map { characters.random() }.joinToString("")
-                        usersViewModel.secondCode.value  = randomString
-                        binding?.secondCodeEdttxt?.text = "Second Code: $randomString"
-                        binding?.secondCodeEdttxt?.visibility = View.VISIBLE
+                    usersViewModel.secondCode.value = randomString
+                    binding?.secondCodeEdttxt?.text = "Second Code: $randomString"
+                    binding?.secondCodeEdttxt?.visibility = View.VISIBLE
 
                 }
 
@@ -60,14 +61,61 @@ class AddUsersFragment : Fragment() {
         }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
 
     fun addNewUser() {
-        usersViewModel.insertNewUser()
-        findNavController().navigate(R.id.action_addUsersFragment_to_usersFragment)
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
+        if (usersViewModel.inputName.value == null) {
+            builder.setMessage("Please fill in user name.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+        else if (usersViewModel.inputRole.value == null) {
+            builder.setMessage("Please choose a role for the user.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+        else if (usersViewModel.firstCode.value == null) {
+            builder.setMessage("Please fill in an 8-character code.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+        else if (usersViewModel.firstCode.value!!.length < 8) {
+            builder.setMessage("Login code has to be 8 characters.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+        else {
+            usersViewModel.insertNewUser()
+            binding?.nameEdttxt?.text = null
+            binding?.firstCodeEdttxt?.text = null
+            builder.setTitle("New User added")
+            builder.setPositiveButton("Add another one") { dialog, _ ->
+                dialog.dismiss()
+                binding?.nameEdttxt?.text = null
+                binding?.firstCodeEdttxt?.text = null
+                binding?.firstCodeEdttxt?.clearFocus()
+                binding?.secondCodeEdttxt?.visibility = View.GONE
+                binding?.role?.clearCheck()
+            }
+            builder.setNegativeButton("Go back to Users List") { _, _ ->
+                findNavController().navigate(R.id.action_addUsersFragment_to_usersFragment)
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+
+
 
     }
 }

@@ -85,6 +85,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="Code"
                 android:paddingLeft="10dp"
+                android:maxLength="8"
                 android:text="@={usersViewModel.firstCode}"
                 android:textSize="40sp" />
             <TextView
