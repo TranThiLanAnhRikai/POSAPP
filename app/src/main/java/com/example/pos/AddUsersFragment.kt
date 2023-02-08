@@ -1,18 +1,13 @@
 package com.example.pos_admin
 
 import android.app.AlertDialog
-import android.content.ContentValues
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.pos_admin.adapter.ShiftsAdapter
 import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
@@ -20,6 +15,9 @@ import com.example.pos_admin.databinding.FragmentAddUsersBinding
 import com.example.pos_admin.model.UsersViewModel
 import com.example.pos_admin.model.UsersViewModelFactory
 
+/**　新しいユーザーを作る
+ * ユーザーのテーブルに保存する
+ */
 
 class AddUsersFragment : Fragment() {
     private lateinit var usersViewModel: UsersViewModel
@@ -41,6 +39,7 @@ class AddUsersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.addUsersFragment = this
         binding?.usersViewModel = usersViewModel
+        // 新しいユーザーの役目を選択させる。Adminであれば、自動的に2回目パスワードを発生する
         binding?.role?.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.admin -> {
@@ -67,6 +66,7 @@ class AddUsersFragment : Fragment() {
         binding = null
     }
 
+    // 新しいユーザーをテーブルに保存する前に全てのフィールドに正しく記入されたかチェックする。されなければエラーメッセージを表示する
     fun addNewUser() {
 
         val builder = AlertDialog.Builder(requireContext())
@@ -76,26 +76,22 @@ class AddUsersFragment : Fragment() {
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        }
-        else if (usersViewModel.inputRole.value == null) {
+        } else if (usersViewModel.inputRole.value == null) {
             builder.setMessage("Please choose a role for the user.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        }
-        else if (usersViewModel.firstCode.value == null) {
+        } else if (usersViewModel.firstCode.value == null) {
             builder.setMessage("Please fill in an 8-character code.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        }
-        else if (usersViewModel.firstCode.value!!.length < 8) {
+        } else if (usersViewModel.firstCode.value!!.length < 8) {
             builder.setMessage("Login code has to be 8 characters.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        }
-        else {
+        } else {
             usersViewModel.insertNewUser()
             binding?.nameEdttxt?.text = null
             binding?.firstCodeEdttxt?.text = null
@@ -114,7 +110,6 @@ class AddUsersFragment : Fragment() {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
-
 
 
     }

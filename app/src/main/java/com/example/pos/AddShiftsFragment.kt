@@ -64,7 +64,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             datePicker.datePicker.minDate = today.timeInMillis
             datePicker.show()
         }
-        //
+        // シフトのオプションを表示する
         val options = shiftOptions.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Choose a shift")
@@ -73,14 +73,12 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             binding?.shiftText?.text = selectedShiftTime.shiftName
             shiftsViewModel._shift.value = selectedShiftTime.ordinal
         }
-
-
         val dialog = builder.create()
         val container = binding?.shiftText
         container?.setOnClickListener {
             dialog.show()
         }
-
+        // 全員のユーザーをテーブルからゲートして、autocompleteで供給する
         shiftsViewModel.getAllUsers()
             .observe(viewLifecycleOwner) { users ->
                 val nameList = mutableListOf<String>()
@@ -107,7 +105,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         formatter.format(selectedTimeStamp).toString()
     }
 
-
+    // 新しいシフトをテーブルに保存する前に全てのフィールドに記入されたかチェックする。されなければエラーメッセージを表示する。
     fun addNewShift() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
@@ -128,7 +126,6 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             dialog.show()
         } else {
             shiftsViewModel.insertShift()
-
             builder.setTitle("New Shift added")
             builder.setPositiveButton("Add another one") { dialog, _ ->
                 dialog.dismiss()

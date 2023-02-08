@@ -34,7 +34,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
     private lateinit var headerHelper: CommonHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels {
+    private val menuViewModel: MenuViewModel by activityViewModels() /*{
         MenuViewModelFactory(
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
@@ -43,7 +43,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
                 PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
         )
-    }
+    }*/
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var adapter: CartItemsAdapter
