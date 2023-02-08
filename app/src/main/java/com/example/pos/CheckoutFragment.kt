@@ -143,12 +143,44 @@ class CheckoutFragment : Fragment() {
     }
 
     fun placeOrder() {
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
         if (menuViewModel.selectedItems.value?.isEmpty() == true) {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Error")
             builder.setMessage("Order is empty.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.customerName.value == null) {
+            builder.setMessage("Customer name needed.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.customerPhoneNumber.value == null) {
+            builder.setMessage("Customer phone number needed.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.paymentMethod.value == "Payment Method") {
+            builder.setMessage("Choose a payment method.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.deliveryMethod.value == "Pickup" && menuViewModel.pickupTime.value == null) {
+            builder.setMessage("Pickup time needed.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.deliveryMethod.value == "Delivery" && menuViewModel.customerAddress.value == null) {
+            builder.setMessage("Customer address needed.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
+        } else if (menuViewModel.deliveryMethod.value == "Delivery" && menuViewModel.customerZipCode.value == null) {
+            builder.setMessage("Zip code needed.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: android.app.AlertDialog = builder.create()
             dialog.show()
         } else {
             menuViewModel.insertToOrderCustomerList()
@@ -157,7 +189,7 @@ class CheckoutFragment : Fragment() {
             binding?.inputName?.text = null
             binding?.phoneNumberEdttxt?.text = null
             binding?.request?.text = null
-            binding?.pickupText?.text = null
+            binding?.inputPickupTime?.text = null
             binding?.inputAddress?.text = null
             binding?.inputZip?.text = null
         }

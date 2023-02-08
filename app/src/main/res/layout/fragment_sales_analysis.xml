@@ -73,41 +73,5 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!-- <com.google.android.material.button.MaterialButtonToggleGroup
-    android:id="@+id/btns_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:gravity="center"
-    android:layout_marginBottom="50dp">
-    <Button
-        android:id="@+id/items_composition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:tag="Food"
-        android:clickable="false"
-        style="?attr/materialButtonOutlinedStyle"
-        android:textSize="30sp"/>
-    <Button
-        android:id="@+id/drink_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:tag="Drink"
-        style="?attr/materialButtonOutlinedStyle"
-        android:text="DRINK"/>
-    <Button
-        android:id="@+id/dessert_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:tag="Dessert"
-        style="?attr/materialButtonOutlinedStyle"
-        android:text="DESSERT"/>
-</com.google.android.material.button.MaterialButtonToggleGroup>-->
-
 
 </layout>
