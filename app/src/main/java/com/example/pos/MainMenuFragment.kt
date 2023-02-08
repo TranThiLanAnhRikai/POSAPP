@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MainMenuViewModel
@@ -50,6 +51,8 @@ class MainMenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentMainMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+
+
         return fragmentBinding.root
     }
 
@@ -59,6 +62,7 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.mainMenuFragment = this
         binding?.mainMenuViewModel = mainMenuViewModel
+
         mainMenuViewModel.getCurrentDate()
         mainMenuViewModel.formattedDateTime.observe(viewLifecycleOwner) {
             binding?.dateTime?.text = "Today is $it"
@@ -68,7 +72,12 @@ class MainMenuFragment : Fragment() {
         val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val username = prefs?.getString("username", "")
         binding?.welcomeText?.text = "Welcome back, $username"
-
+        // ボトムナビゲーションバーをバインドする
+        binding?.bottomNavigationView?.setOnNavigationItemSelectedListener {
+            handleBottomNavigation(
+                it.itemId
+            )
+        }
         // APIで当日の天気情報をゲットして、表示する
         mainMenuViewModel.getWeatherInfo().observe(viewLifecycleOwner) { weatherInfo ->
             val tempMax = weatherInfo.main.temp_max
@@ -91,17 +100,9 @@ class MainMenuFragment : Fragment() {
             binding?.wind?.text = wind.toString()
         }
 
-        // ボトムナビゲーションバーをバインドする
-        binding?.bottomNavigationView?.setOnNavigationItemSelectedListener {
-            handleBottomNavigation(
-                it.itemId
-            )
-        }
-        binding?.bottomNavigationView?.selectedItemId = R.id.bottom_navigation_view
 
         // 当日のセール数字を表示する
         mainMenuViewModel.getTodayOrders().observe(viewLifecycleOwner) { orders ->
-            Log.d(TAG, "orders $orders")
             binding?.totalNumberOfOrders?.text = "Total number of orders: ${orders.size}"
             var totalRevenue = 0.0
             var totalNoOfItems = 0
@@ -142,6 +143,10 @@ class MainMenuFragment : Fragment() {
 
     }
 
+
+
+
+
     // ボトムナビゲーションバーを処理する
     private fun handleBottomNavigation(
         menuItemId: Int
@@ -159,9 +164,13 @@ class MainMenuFragment : Fragment() {
             true
         }
         else -> false
+
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        binding?.bottomNavigationView?.menu?.findItem(R.id.main_menu_home_button)?.isChecked = true
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

@@ -28,7 +28,9 @@
             app:destination="@id/mainMenuFragment" />
         <action
             android:id="@+id/action_secondLoginFragment_to_firstLoginFragment"
-            app:destination="@id/firstLoginFragment" />
+            app:destination="@id/firstLoginFragment"
+            app:popUpTo="@id/firstLoginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_secondLoginFragment_to_shiftsFragment"
             app:destination="@id/shiftsFragment" />
@@ -62,6 +64,9 @@
         <action
             android:id="@+id/action_menuFragment_to_addMenuFragment"
             app:destination="@id/addMenuFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
@@ -84,7 +89,9 @@
         tools:layout="@layout/fragment_sales_analysis">
         <action
             android:id="@+id/action_salesAnalysisFragment_to_mainMenuFragment"
-            app:destination="@id/mainMenuFragment" />
+            app:destination="@id/mainMenuFragment"
+            app:popUpTo="@id/mainMenuFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/usersFragment"
@@ -102,7 +109,9 @@
         tools:layout="@layout/fragment_add_menu">
         <action
             android:id="@+id/action_addMenuFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
+            app:destination="@id/menuFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/menuFragment"/>
     </fragment>
     <fragment
         android:id="@+id/addUsersFragment"
@@ -111,7 +120,9 @@
         tools:layout="@layout/fragment_add_users">
         <action
             android:id="@+id/action_addUsersFragment_to_usersFragment"
-            app:destination="@id/usersFragment" />
+            app:destination="@id/usersFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/usersFragment"/>
     </fragment>
     <fragment
         android:id="@+id/addShiftsFragment"
@@ -120,7 +131,9 @@
         tools:layout="@layout/fragment_add_shifts">
         <action
             android:id="@+id/action_addShiftsFragment_to_shiftsFragment"
-            app:destination="@id/shiftsFragment" />
+            app:destination="@id/shiftsFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/shiftsFragment"/>
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
@@ -135,7 +148,9 @@
             app:destination="@id/ordersListFragment" />
         <action
             android:id="@+id/action_orderFragment_to_firstLoginFragment"
-            app:destination="@id/firstLoginFragment" />
+            app:destination="@id/firstLoginFragment"
+            app:popUpTo="@id/firstLoginFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -144,13 +159,12 @@
         tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/orderFragment"/>
         <action
             android:id="@+id/action_cartFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
-<!--        <action
-            android:id="@+id/action_cartFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/ordersListFragment"
@@ -159,7 +173,9 @@
         tools:layout="@layout/fragment_orders_list">
         <action
             android:id="@+id/action_ordersListFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpTo="@id/orderFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -171,7 +187,9 @@
             app:destination="@id/orderStatusFragment" />
         <action
             android:id="@+id/action_checkoutFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/orderFragment"/>
     </fragment>
     <fragment
         android:id="@+id/orderStatusFragment"
@@ -183,6 +201,8 @@
             app:destination="@id/ordersListFragment" />
         <action
             android:id="@+id/action_orderStatusFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/orderFragment"/>
     </fragment>
 </navigation>

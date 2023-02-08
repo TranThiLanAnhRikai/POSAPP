@@ -8,7 +8,7 @@ import com.example.pos_admin.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
 
-class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
+class UsersViewModel(private val userRepository: UserRepository) : ViewModel() {
     val inputName = MutableLiveData<String>()
     val inputRole = MutableLiveData<String>()
     val firstCode = MutableLiveData<String>()
@@ -22,17 +22,33 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
     fun insertNewUser() {
         viewModelScope.launch {
             if (secondCode.value != null) {
-                userRepository.insert(User(0, inputName.value!!, inputRole.value!!, firstCode.value!!, secondCode.value!!))
-            }
-            else {
-                userRepository.insert(User(0, inputName.value!!, inputRole.value!!, firstCode.value!!, "0"))
+                userRepository.insert(
+                    User(
+                        0,
+                        inputName.value!!,
+                        inputRole.value!!,
+                        firstCode.value!!,
+                        secondCode.value!!
+                    )
+                )
+            } else {
+                userRepository.insert(
+                    User(
+                        0,
+                        inputName.value!!,
+                        inputRole.value!!,
+                        firstCode.value!!,
+                        "0"
+                    )
+                )
             }
         }
     }
 
 }
 
-class UsersViewModelFactory(private val userRepository: UserRepository): ViewModelProvider.Factory{
+class UsersViewModelFactory(private val userRepository: UserRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UsersViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
