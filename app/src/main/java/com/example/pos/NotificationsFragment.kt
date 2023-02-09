@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.NotificationsAdapter
 import com.example.pos.data.repository.NotificationRepository
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos.model.NotificationsViewModel
 import com.example.pos.model.NotificationsViewModelFactory
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.entity.Notification
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentNotificationsBinding
 import java.util.*
 
@@ -27,6 +30,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var notificationsViewModel: NotificationsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationsAdapter
+    private lateinit var headerHelper: CommonAdminHeaderHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +43,11 @@ class NotificationsFragment : Fragment() {
         notificationsViewModel =
             ViewModelProvider(this, factory)[NotificationsViewModel::class.java]
         binding = fragmentBinding
-
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
@@ -47,6 +55,7 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.notificationsFragment = this
         binding?.notificationsViewModel = notificationsViewModel
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         recyclerView = (binding?.notiRecyclerview ?: return)
         notificationsViewModel.getAllNotifications()
             .observe(viewLifecycleOwner) { notifications ->

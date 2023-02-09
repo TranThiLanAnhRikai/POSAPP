@@ -1,5 +1,7 @@
 package com.example.pos_admin.model
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,12 +12,17 @@ import java.util.*
 import androidx.lifecycle.MutableLiveData
 import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.ShiftRepository
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel() {
 
     val inputName = MutableLiveData<String>()
     val _date = MutableLiveData<String>()
     val _shift = MutableLiveData<Int>()
+    @RequiresApi(Build.VERSION_CODES.O)
+    val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
 
     fun getAllShifts(): LiveData<List<Shift>> {
             return shiftRepository.shifts
@@ -35,6 +42,11 @@ class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel()
 
     fun getAllUsers(): LiveData<List<User>> {
         return shiftRepository.getAllUsers()
+    }
+
+    fun getTodayShifts(date: String): LiveData<List<Shift>> {
+
+        return shiftRepository.getTodayShifts(date)
     }
 
 

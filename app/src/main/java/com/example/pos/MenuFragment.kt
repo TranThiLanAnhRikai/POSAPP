@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pos.adapter.MenuItemsAdapter
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.databinding.FragmentMenuBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 
 /** メニューのものをRecyclerViewで表示する
  */
@@ -28,6 +31,7 @@ class MenuFragment : Fragment() {
         )
     }
     private var binding: FragmentMenuBinding? = null
+    private lateinit var headerHelper: CommonAdminHeaderHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +39,11 @@ class MenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
@@ -42,6 +51,7 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.menuFragment = this
         binding?.menuViewModel = menuViewModel
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         val recyclerView = binding?.menuItems
         menuViewModel.getAllMenuItems().observe(viewLifecycleOwner) { items ->
             val adapter = MenuItemsAdapter(requireContext(), items)

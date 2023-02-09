@@ -21,4 +21,6 @@ interface ShiftDao {
     fun getAllShifts(): LiveData<List<Shift>>
     @Query("SELECT * FROM shifts WHERE date = :date AND shift_time = :shift")
     fun getShifts(date: String, shift: Int): LiveData<List<Shift>>
+    @Query("SELECT * FROM shifts WHERE date = :date")
+    fun getTodayShifts(date: String): LiveData<List<Shift>>
 }

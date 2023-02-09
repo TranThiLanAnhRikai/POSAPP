@@ -1,9 +1,7 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CheckoutItemsAdapter
@@ -21,7 +19,7 @@ import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
-import com.example.pos.helper.CommonHeaderHelper
+import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos_admin.databinding.FragmentCheckoutBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
@@ -34,7 +32,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 class CheckoutFragment : Fragment() {
 
     private var binding: FragmentCheckoutBinding? = null
-    private lateinit var headerHelper: CommonHeaderHelper
+    private lateinit var headerHelper: CommonStaffHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
@@ -57,7 +55,7 @@ class CheckoutFragment : Fragment() {
         val fragmentBinding = FragmentCheckoutBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
         headerHelper.bindHeader()
         val headerContainer = binding?.headerContainer
         headerContainer?.addView(headerBinding.root)
@@ -77,7 +75,8 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.checkoutFragment = this
         binding?.menuViewModel = menuViewModel
-        if (menuViewModel.selectedItems.value?.isEmpty() != true) {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        if (menuViewModel.selectedItems.value != null) {
             binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value}"
         }
         menuViewModel.selectedItems.observe(viewLifecycleOwner) { selectedItems ->
@@ -117,8 +116,7 @@ class CheckoutFragment : Fragment() {
             }
 
 
-
-            }
+        }
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -133,19 +131,13 @@ class CheckoutFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
 
-
-
-
-
-
-
         }
     }
 
     fun placeOrder() {
         val builder = android.app.AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
-        if (menuViewModel.selectedItems.value?.isEmpty() == true) {
+        if (menuViewModel.selectedItems.value == null) {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Error")
             builder.setMessage("Order is empty.")

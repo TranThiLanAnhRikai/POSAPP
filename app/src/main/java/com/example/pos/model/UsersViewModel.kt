@@ -13,10 +13,14 @@ class UsersViewModel(private val userRepository: UserRepository) : ViewModel() {
     val inputRole = MutableLiveData<String>()
     val firstCode = MutableLiveData<String>()
     val secondCode = MutableLiveData<String>()
-
-
+    val listOfFirstCode = MutableLiveData<MutableList<String>>()
+    val listOfSecondCode = MutableLiveData<MutableList<String>>()
     fun getAllUsers(): LiveData<List<User>> {
         return userRepository.getAllUsers()
+    }
+
+    fun getUser(user_first_code: String): LiveData<User> {
+        return userRepository.getUser(user_first_code)
     }
 
     fun insertNewUser() {

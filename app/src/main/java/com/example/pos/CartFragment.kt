@@ -9,19 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CartItemsAdapter
 import com.example.pos.data.entity.Item
-import com.example.pos.data.repository.OrderRepository
 import com.example.pos.model.MenuViewModel
-import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
-import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos.data.repository.MenuItemRepository
-import com.example.pos.helper.CommonHeaderHelper
+import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos_admin.databinding.FragmentCartBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
@@ -33,7 +30,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
  */
 class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
-    private lateinit var headerHelper: CommonHeaderHelper
+    private lateinit var headerHelper: CommonStaffHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels() /*{
         MenuViewModelFactory(
             MenuItemRepository(
@@ -56,8 +53,9 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
         val fragmentBinding = FragmentCartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
         headerHelper.bindHeader()
+        (((activity as AppCompatActivity?) ?: return null).supportActionBar ?: return null).hide()
         val headerContainer = binding?.headerContainer
         headerContainer?.addView(headerBinding.root)
         recyclerView = binding?.orderReview!!
@@ -92,12 +90,13 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
                 val latestOrder = orders[0]
                 menuViewModel.orderNumber.value = latestOrder.orderNumber + 1
             }
-            if (menuViewModel.selectedItems.value?.isEmpty() != true) {
-                Log.d(TAG, "order no ${menuViewModel.orderNumber.value}")
-                binding?.orderNumber?.text =
-                    "Order Number: ${menuViewModel.orderNumber.value.toString()}"
-            }
 
+
+        }
+        if (menuViewModel.selectedItems.value != null) {
+            Log.d(TAG, "selectedItems ${menuViewModel.selectedItems.value}")
+            binding?.orderNumber?.text =
+                "Order Number: ${menuViewModel.orderNumber.value.toString()}"
         }
 
     }

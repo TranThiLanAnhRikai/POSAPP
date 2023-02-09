@@ -13,6 +13,8 @@ data class CartItem (
     val orderNumber: Long,
     @ColumnInfo (name = "item_id")
     val itemId: Int,
+    @ColumnInfo (name = "item_name")
+    val itemName: String,
     @ColumnInfo(name = "quantity")
     val quantity: String,
     )

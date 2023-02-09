@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -17,7 +18,7 @@ import com.example.pos.adapter.OrderAdapter
 import com.example.pos.data.entity.Item
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
-import com.example.pos.helper.CommonHeaderHelper
+import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
@@ -29,7 +30,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
     private var binding: FragmentOrderBinding? = null
-    private lateinit var headerHelper: CommonHeaderHelper
+    private lateinit var headerHelper: CommonStaffHeaderHelper
 
     private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
@@ -54,11 +55,11 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
         val fragmentBinding = FragmentOrderBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
         headerHelper.bindHeader()
         val headerContainer = binding?.headerContainer
         headerContainer?.addView(headerBinding.root)
-
+        (((activity as AppCompatActivity?) ?: return null).supportActionBar ?: return null).hide()
         recyclerView = binding?.orderItems!!
         menuViewModel.getMenuItems(ItemType.FOOD.typeName)
             .observe(viewLifecycleOwner, Observer { items ->

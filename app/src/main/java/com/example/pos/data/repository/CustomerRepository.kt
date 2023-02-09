@@ -1,7 +1,8 @@
-package com.example.pos.data.entity
+package com.example.pos.data.repository
 
 import androidx.lifecycle.LiveData
 import com.example.pos.data.dao.CustomerDao
+import com.example.pos.data.entity.Customer
 
 class CustomerRepository(private val customerDao: CustomerDao) {
 

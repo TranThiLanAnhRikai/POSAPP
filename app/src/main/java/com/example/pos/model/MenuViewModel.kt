@@ -1,7 +1,5 @@
 package com.example.pos.model
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.pos.const.Status
 import com.example.pos.data.entity.CartItem
@@ -51,6 +49,18 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
 
     fun getOrders(status: String): LiveData<List<Order>> {
         return menuItemRepository.getOrders(status)
+    }
+
+    fun getOrderByOrderNumber(orderNumber: Long): LiveData<Order> {
+        return menuItemRepository.getOrderById(orderNumber)
+    }
+
+    fun getCartItemsByOrderNumber(orderNumber: Long): LiveData<List<CartItem>> {
+        return menuItemRepository.getCartItemsByOrderNumber(orderNumber)
+    }
+
+    fun getCustomerByOrderNumber(orderNumber: Long): LiveData<Customer> {
+        return menuItemRepository.getCustomerByOrderNumber(orderNumber)
     }
 
     fun insertItem() {
@@ -123,6 +133,13 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
         var foodRevenue = 0.0
         var drinkRevenue = 0.0
         var dessertRevenue = 0.0
+        var delivery = ""
+        delivery = if (deliveryMethod.value == "Pickup") {
+            deliveryMethod.value + " at " + pickupTime.value
+        } else {
+            deliveryMethod.value!!
+        }
+
         cartItems?.forEach {
             when (it.value.type) {
                 ItemType.FOOD.typeName -> foodRevenue += it.value.price * it.value.quantity!!
@@ -141,7 +158,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
                     totalQuantity,
                     totalWithDelivery.value!!,
                     Status.PROCESSING.toString(),
-                    deliveryMethod.value!!,
+                    delivery,
                     paymentMethod.value!!,
                     request.value
                 )
@@ -155,6 +172,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
                         0,
                         orderNumber.value!!,
                         key,
+                        item?.name!!,
                         item?.quantity.toString()
                     )
                 )

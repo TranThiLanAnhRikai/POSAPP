@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.R
 import com.example.pos_admin.const.ShiftTime
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.ShiftRepository
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentAddShiftsBinding
 import com.example.pos_admin.model.ShiftsViewModel
 import com.example.pos_admin.model.ShiftsViewModelFactory
@@ -27,11 +31,12 @@ import java.util.*
  * 新しく作ったシフトはシフトテーブルに保存する
  */
 class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
-    private lateinit var shiftsViewModel: ShiftsViewModel
+    private val shiftsViewModel: ShiftsViewModel by activityViewModels()
     private var binding: FragmentAddShiftsBinding? = null
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy MMM dd, EEEE", Locale.US)
     private val shiftOptions = arrayOf(ShiftTime.MORNING, ShiftTime.AFTERNOON, ShiftTime.NOON)
+    private lateinit var headerHelper: CommonAdminHeaderHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,18 +44,18 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View? {
         val fragmentBinding = FragmentAddShiftsBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        //　shiftsViewModelをし始める
-        val shiftDao = PosAdminRoomDatabase.getDatabase(requireContext()).shiftDao()
-        val userDao = PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
-        val repository = ShiftRepository(shiftDao, userDao)
-        val factory = ShiftsViewModelFactory(repository)
-        shiftsViewModel = ViewModelProvider(this, factory)[ShiftsViewModel::class.java]
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.addShiftsFragment = this
         binding?.shiftsViewModel = shiftsViewModel
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         //　カレンダーを表示する。今日以前の日付を無効にする
         binding?.datePick?.setOnClickListener {
             val today = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))

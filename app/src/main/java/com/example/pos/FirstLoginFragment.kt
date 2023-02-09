@@ -1,13 +1,17 @@
 package com.example.pos_admin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.pos.const.Destination
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
 import com.example.pos_admin.databinding.FragmentFirstLoginBinding
@@ -59,16 +63,15 @@ class FirstLoginFragment : Fragment() {
     // ログインコードが有効な場合、ユーザーの種類によって適切の画面にナビゲートする
 
     fun nextScreen() {
-        /*  val builder = AlertDialog.Builder(requireContext())
+        /*val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputFirstCode.value == null) {
             builder.setMessage("Please fill in your login code.")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        }
-        else {
-            loginViewModel.getUser().observe(viewLifecycleOwner, Observer { person ->
+        } else {
+            loginViewModel.getUser().observe(viewLifecycleOwner) { person ->
                 loginViewModel.user.value = person
                 if (person == null) {
                     builder.setMessage("Login code is invalid. Please try again.")
@@ -78,10 +81,10 @@ class FirstLoginFragment : Fragment() {
                     binding?.loginEditText?.text = null
                 } else {
                     val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-                    prefs?.edit()?.putString("username", "${loginViewModel.user.value?.name}")?.apply()
+                    prefs?.edit()?.putString("username", "${loginViewModel.user.value?.name}")
+                        ?.apply()
                     loginViewModel.userSecondLoginCode.value = person.secondCode
                     val destination = loginViewModel.nextFragment()
-                    Log.d(TAG, "des $destination")
                     binding?.loginEditText?.text = null
                     if (destination == Destination.NON_STAFF) {
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
@@ -90,8 +93,9 @@ class FirstLoginFragment : Fragment() {
                     }
 
                 }
-            })
-        }*/
-        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+            }
+        }
+*/
+        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
     }
 }

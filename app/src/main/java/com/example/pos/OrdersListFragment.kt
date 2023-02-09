@@ -1,33 +1,24 @@
 package com.example.pos
 
-import android.app.DatePickerDialog
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
+import android.widget.TextView
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pos.adapter.OrderItemsAdapter
+import com.example.pos.adapter.OrderDetailsDialogAdapter
 import com.example.pos.adapter.OrdersAdapter
 import com.example.pos.const.Status
-import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos.model.MenuViewModel
-import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
-import com.example.pos_admin.adapter.ShiftsAdapter
-import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.entity.Order
-import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.databinding.FragmentOrdersListBinding
-import com.example.pos_admin.databinding.FragmentShiftsBinding
-import com.example.pos_admin.model.ShiftsViewModel
-import com.example.pos_admin.model.ShiftsViewModelFactory
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -83,7 +74,6 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     }
 
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
@@ -91,6 +81,56 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
 
     override fun updateOrder(order: Order) {
         menuViewModel.updateOrder(order)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showOrder(orderNumber: Long) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.order_details_layout, null)
+        dialogBuilder.setView(dialogView)
+        val orderNo = dialogView.findViewById<TextView>(R.id.order_number)
+        orderNo.text = "Order Number: $orderNumber"
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.order_details)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val total = dialogView.findViewById<TextView>(R.id.total_amount)
+        val customerName = dialogView.findViewById<TextView>(R.id.customer_name)
+        val customerPhoneNumber = dialogView.findViewById<TextView>(R.id.customer_phone_number)
+        val paymentMethod = dialogView.findViewById<TextView>(R.id.payment_method)
+        val deliveryMethod = dialogView.findViewById<TextView>(R.id.delivery_method)
+        val address = dialogView.findViewById<TextView>(R.id.customer_address)
+        val request = dialogView.findViewById<TextView>(R.id.request)
+        menuViewModel.getOrderByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            total.text = "Total: $${it.total}"
+            paymentMethod.text = it.paymentMethod
+            deliveryMethod.text = it.deliveryMethod
+            if (it.request != null) {
+                request.visibility = View.VISIBLE
+                request.text = it.request
+            }
+        }
+
+        menuViewModel.getCartItemsByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            val itemsAdapter = OrderDetailsDialogAdapter(requireContext(), it)
+            recyclerView.adapter = itemsAdapter
+        }
+
+        menuViewModel.getCustomerByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            customerName.text = it.customerName
+            customerPhoneNumber.text = it.phoneNumber
+            if (!it.address!!.contains("null")) {
+                address.visibility = View.VISIBLE
+                address.text = it.address
+            }
+        }
+
+
+        dialogBuilder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
     }
 
 }

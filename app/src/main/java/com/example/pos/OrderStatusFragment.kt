@@ -10,14 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.pos.adapter.OrderItemsAdapter
 import com.example.pos.model.MenuViewModel
 import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos.data.repository.MenuItemRepository
-import com.example.pos.helper.CommonHeaderHelper
+import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos_admin.databinding.FragmentOrderStatusBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
@@ -30,17 +28,8 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 class OrderStatusFragment : Fragment() {
 
     private var binding: FragmentOrderStatusBinding? = null
-    private lateinit var headerHelper: CommonHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels {
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-        )
-    }
+    private lateinit var headerHelper: CommonStaffHeaderHelper
+    private val menuViewModel: MenuViewModel by activityViewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -50,11 +39,10 @@ class OrderStatusFragment : Fragment() {
         val fragmentBinding = FragmentOrderStatusBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonHeaderHelper(headerBinding, requireContext())
+        headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
         headerHelper.bindHeader()
         val headerContainer = binding?.headerContainer
         headerContainer?.addView(headerBinding.root)
-        Log.d(TAG, "orderNo ${menuViewModel.orderNumber.value}")
         binding?.orderPlacedText?.text =
             "Order ${menuViewModel.orderNumber.value} has been placed successfully."
         return fragmentBinding.root

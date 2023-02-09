@@ -25,6 +25,9 @@ interface OrderDao {
     @Query("SELECT * FROM orders WHERE substr(order_number, 1, 6) >= :latestDate")
     fun getOrdersByMonth(latestDate: String): LiveData<List<Order>>
 
+    @Query("SELECT * FROM orders WHERE order_number = :orderNumber")
+    fun getOrderById(orderNumber: Long): LiveData<Order>
+
     @Update
     suspend fun update(order: Order)
 

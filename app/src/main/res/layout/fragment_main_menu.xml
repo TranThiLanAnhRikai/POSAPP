@@ -25,8 +25,15 @@
             android:id="@+id/datetime_weather_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp">
+            android:layout_alignParentTop="true">
+            <LinearLayout
+                android:id="@+id/headerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal">
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/welcome_text"
@@ -37,7 +44,7 @@
                 android:textSize="50sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/headerContainer" />
 
             <TextView
                 android:id="@+id/date_time"
@@ -276,10 +283,10 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/total_revenue"
+                        android:id="@+id/total_sales"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Total revenue"
+                        android:text="Total Sales"
                         android:gravity="center"
                         android:textSize="30sp"/>
                     <TextView

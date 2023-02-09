@@ -45,7 +45,6 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTodayOrders(): LiveData<List<Order>> {
         val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        Log.d(TAG, "today $today")
         return orderRepository.getTodayOrders(today)
     }
     fun getWeatherInfo(): MutableLiveData<WeatherInfo> {

@@ -13,6 +13,7 @@ import android.content.ContentValues.TAG
 import android.view.View
 import android.content.DialogInterface
 import android.util.Log
+import android.widget.Button
 import android.widget.EditText
 import com.example.pos_admin.data.entity.Order
 
@@ -29,6 +30,7 @@ class OrdersAdapter(
         val quantity: TextView = view.findViewById(R.id.quantity)
         val total: TextView = view.findViewById(R.id.total)
         val status: TextView = view.findViewById(R.id.status)
+        val detailsButton: Button = view.findViewById(R.id.order_details_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -48,8 +50,10 @@ class OrdersAdapter(
             if (holder.status.text == Status.PROCESSING.name) {
                 val statusOptions = arrayOf(Status.DELIVERED.name, Status.CANCELLED.name)
                 val builder = AlertDialog.Builder(holder.itemView.context)
-                builder.setTitle("Change Status To").setSingleChoiceItems(
-                    statusOptions, -1, DialogInterface.OnClickListener { _, which ->
+                builder.setTitle("Change Order ${order.orderNumber} Status To")
+                    .setSingleChoiceItems(
+                        statusOptions, -1
+                    ) { _, which ->
                         val selectedStatus = statusOptions[which]
                         holder.status.text = selectedStatus
                         setListener.updateOrder(
@@ -67,7 +71,7 @@ class OrdersAdapter(
                                 order.request
                             )
                         )
-                    })
+                    }
                     .setPositiveButton("OK") { _, _ ->
                     }
                     .show()
@@ -77,6 +81,9 @@ class OrdersAdapter(
 
             }
         }
+        holder.detailsButton.setOnClickListener {
+            setListener.showOrder(order.orderNumber)
+        }
     }
 
 
@@ -84,5 +91,6 @@ class OrdersAdapter(
 
     interface SetOnClickListener {
         fun updateOrder(order: Order)
+        fun showOrder(orderNumber: Long)
     }
 }

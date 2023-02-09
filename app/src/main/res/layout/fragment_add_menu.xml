@@ -15,6 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/add_menu_background">
+        <LinearLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal">
+        </LinearLayout>
         <TextView
             android:id="@+id/add_new_item_text"
             android:text="ADD NEW MENU ITEM"
@@ -25,7 +33,7 @@
             android:textSize="50sp"
             android:textColor="@color/black"
             android:textStyle="italic"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
         <LinearLayout

@@ -25,7 +25,6 @@ class NotificationsAdapter(private val context: Context, private val notificatio
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val notification = notifications[position]
-        Log.d(TAG, "notification in adapter $notification")
         holder.date.text = notification.date
         holder.content.text = notification.content
     }

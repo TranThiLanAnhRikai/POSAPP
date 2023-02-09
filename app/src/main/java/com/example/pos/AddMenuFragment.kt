@@ -15,16 +15,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.databinding.FragmentAddMenuBinding
 import com.example.pos.model.MenuViewModel
 import com.example.pos_admin.R
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import java.io.ByteArrayOutputStream
 
 /** メニューに新しい物を追加させる
@@ -34,7 +37,7 @@ class AddMenuFragment : Fragment() {
     private val uploadRequestId = 2
     private val itemTypes = arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
     private val menuViewModel: MenuViewModel by activityViewModels()
-
+    private lateinit var headerHelper: CommonAdminHeaderHelper
     private var binding: FragmentAddMenuBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +45,11 @@ class AddMenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentAddMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
@@ -49,6 +57,7 @@ class AddMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.addMenuFragment = this
         binding?.menuViewModel = menuViewModel
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         // 物のタイプのオプションをDialogで表示する
         val options = itemTypes.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(requireContext())

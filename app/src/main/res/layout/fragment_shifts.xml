@@ -17,6 +17,12 @@
         android:background="@drawable/add_user_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        </LinearLayout>
 
         <TextView
             android:id="@+id/shifts_text"
@@ -40,27 +46,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:checkedButton="@id/all_shifts"
             android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/all_shifts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:textColor="@color/black"
+                android:text="All shifts"/>
             <RadioButton
                 android:id="@+id/morning_shift"
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
+                android:textSize="30sp"
+                android:textColor="@color/black"
                 android:text="Morning"/>
             <RadioButton
                 android:id="@+id/afternoon_shift"
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
+                android:textSize="30sp"
+                android:textColor="@color/black"
                 android:text="Afternoon"/>
             <RadioButton
                 android:id="@+id/noon_shift"
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
+                android:textSize="30sp"
+                android:textColor="@color/black"
                 android:text="Noon"/>
         </RadioGroup>
 

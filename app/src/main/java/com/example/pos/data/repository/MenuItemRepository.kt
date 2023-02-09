@@ -74,4 +74,16 @@ class MenuItemRepository(private val menuItemDao: MenuItemDao, private val order
         return customerDao.insertCustomer(customer)
     }
 
+    fun getOrderById(orderNumber: Long): LiveData<Order> {
+        return orderDao.getOrderById(orderNumber)
+    }
+
+    fun getCartItemsByOrderNumber(orderNumber: Long): LiveData<List<CartItem>> {
+        return cartItemDao.getCart(orderNumber)
+    }
+
+    fun getCustomerByOrderNumber(orderNumber: Long): LiveData<Customer> {
+        return customerDao.getCustomer(orderNumber)
+    }
+
 }

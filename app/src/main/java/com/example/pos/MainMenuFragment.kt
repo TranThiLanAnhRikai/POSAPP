@@ -13,14 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pos.data.repository.OrderRepository
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos.model.MainMenuViewModel
 import com.example.pos.model.MainMenuViewModelFactory
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.ShiftRepository
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentMainMenuBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,6 +34,7 @@ import java.util.*
  */
 class MainMenuFragment : Fragment() {
     private var binding: FragmentMainMenuBinding? = null
+    private lateinit var headerHelper: CommonAdminHeaderHelper
     private val mainMenuViewModel: MainMenuViewModel by activityViewModels {
         MainMenuViewModelFactory(
             OrderRepository(
@@ -50,8 +54,13 @@ class MainMenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentMainMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
 
-
+        (((activity as AppCompatActivity?) ?: return null).supportActionBar ?: return null).hide()
         return fragmentBinding.root
     }
 
@@ -109,7 +118,7 @@ class MainMenuFragment : Fragment() {
                 totalRevenue += order.total
                 totalNoOfItems += order.quantity
             }
-            binding?.totalRevenue?.text = "Total revenue: $${String.format("%.2f", totalRevenue)}"
+            binding?.totalSales?.text = "Total Sales: $${String.format("%.2f", totalRevenue)}"
             binding?.totalNumberOfItems?.text = "Total number of items: $totalNoOfItems"
         }
 

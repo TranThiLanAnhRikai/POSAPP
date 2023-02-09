@@ -6,14 +6,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.pos.data.repository.OrderRepository
+import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos.model.SalesViewModel
 import com.example.pos.model.SalesViewModelFactory
 import com.example.pos_admin.R
 import com.example.pos_admin.data.PosAdminRoomDatabase
+import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentSalesAnalysisBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -39,6 +42,7 @@ class SalesAnalysisFragment : Fragment() {
             )
         )
     }
+    private lateinit var headerHelper: CommonAdminHeaderHelper
 
 
     override fun onCreateView(
@@ -47,6 +51,11 @@ class SalesAnalysisFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentSalesAnalysisBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
@@ -55,6 +64,7 @@ class SalesAnalysisFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.salesAnalysisFragment = this
         binding?.salesViewModel = salesViewModel
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         lineChart = binding?.lineChart!!
         salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
             salesViewModel.numberOfOrders.clear()

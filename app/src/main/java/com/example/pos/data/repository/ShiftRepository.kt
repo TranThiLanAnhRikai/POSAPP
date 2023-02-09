@@ -17,6 +17,10 @@ class ShiftRepository(private val shiftDao: ShiftDao, private val userDao: UserD
         return shiftDao.getShifts(date, shift)
     }
 
+    fun getTodayShifts(date: String): LiveData<List<Shift>> {
+        return shiftDao.getTodayShifts(date)
+    }
+
     suspend fun insert(shift: Shift) {
         return shiftDao.insert(shift)
     }

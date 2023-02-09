@@ -5,7 +5,7 @@ import android.content.Intent
 import com.example.pos_admin.MainActivity
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
-class CommonHeaderHelper(private val binding: StaffCommonHeaderBinding, private val context: Context?) {
+class CommonStaffHeaderHelper(private val binding: StaffCommonHeaderBinding, private val context: Context?) {
 
     fun bindHeader() {
         val prefs = context?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
