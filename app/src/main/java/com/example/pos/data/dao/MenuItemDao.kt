@@ -22,6 +22,6 @@ interface MenuItemDao {
     @Query("SELECT * FROM menu_items WHERE id = :id")
     fun getMenuItem(id: Int): LiveData<MenuItem>
 
-    @Query("SELECT * FROM menu_items WHERE type = :type")
+    @Query("SELECT * FROM menu_items WHERE type = :type ORDER BY id DESC")
     fun getMenuItems(type: String): LiveData<List<MenuItem>>
 }

@@ -26,7 +26,6 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDate() {
          formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
-        Log.d(TAG, "formattedDT ${formattedDateTime.value}")
     }
 
 

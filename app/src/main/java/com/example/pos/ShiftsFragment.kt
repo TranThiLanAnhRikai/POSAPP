@@ -53,7 +53,7 @@ class ShiftsFragment : Fragment() {
             recyclerView?.adapter = adapter
         })*/
         val spinner = binding?.dateSpinner
-        shiftsViewModel.getAllShifts().observe(viewLifecycleOwner, Observer { shifts ->
+        shiftsViewModel.getAllShifts().observe(viewLifecycleOwner) { shifts ->
             val dates = mutableListOf<String>()
             shifts.forEach {
                 dates.add(it.shiftDate)
@@ -67,7 +67,12 @@ class ShiftsFragment : Fragment() {
                     selectedDate = formatter.format(calendar)
                 }
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     selectedDate = parent?.getItemAtPosition(position).toString()
                     Log.d(TAG, "dateSelected $selectedDate")
                 }
@@ -95,7 +100,7 @@ class ShiftsFragment : Fragment() {
                 val adapter = ShiftsAdapter(requireContext(), shifts)
                 recyclerView?.adapter = adapter
             })*/
-        })
+        }
     }
 
 /*    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

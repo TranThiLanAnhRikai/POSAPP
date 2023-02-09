@@ -1,6 +1,9 @@
 package com.example.pos
+
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -42,12 +45,10 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
     private lateinit var adapter: OrderAdapter
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
 
         val fragmentBinding = FragmentOrderBinding.inflate(inflater, container, false)
@@ -59,10 +60,12 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
         headerContainer?.addView(headerBinding.root)
 
         recyclerView = binding?.orderItems!!
-        menuViewModel.getMenuItems(ItemType.FOOD.typeName).observe(viewLifecycleOwner, Observer{items ->
-            adapter = OrderAdapter(requireContext(), items, this, menuViewModel.selectedItems.value)
-            recyclerView.adapter = adapter
-        })
+        menuViewModel.getMenuItems(ItemType.FOOD.typeName)
+            .observe(viewLifecycleOwner, Observer { items ->
+                adapter =
+                    OrderAdapter(requireContext(), items, this, menuViewModel.selectedItems.value)
+                recyclerView.adapter = adapter
+            })
 
 
         return fragmentBinding.root
@@ -80,23 +83,28 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
             it.setOnClickListener {
                 menuViewModel.getMenuItems(it.tag.toString())
                     .observe(viewLifecycleOwner, Observer { selectedItems ->
-                        adapter = OrderAdapter(requireContext(), selectedItems, this, menuViewModel.selectedItems.value)
+                        adapter = OrderAdapter(
+                            requireContext(),
+                            selectedItems,
+                            this,
+                            menuViewModel.selectedItems.value
+                        )
                         adapter.notifyDataSetChanged()
                         recyclerView.adapter = adapter
                     })
             }
 
         }
-        menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { items ->
+        menuViewModel.selectedItems.observe(viewLifecycleOwner) { items ->
             val values = items.values
             menuViewModel.totalQuantity = 0
-            values.forEach{item ->
+            values.forEach { item ->
+                Log.d(TAG, "item ${item.name} ${item.quantity}")
                 menuViewModel.totalQuantity += item.quantity!!
+                Log.d(TAG, "quantity ${menuViewModel.totalQuantity}")
             }
             binding?.totalQuantity?.text = menuViewModel.totalQuantity.toString()
-        })
-
-
+        }
 
 
     }
@@ -122,9 +130,6 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
     fun toOrdersList() {
         findNavController().navigate(R.id.action_orderFragment_to_ordersListFragment)
     }
-
-
-
 
 
 }

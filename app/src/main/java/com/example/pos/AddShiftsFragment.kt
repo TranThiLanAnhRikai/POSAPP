@@ -30,7 +30,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var shiftsViewModel: ShiftsViewModel
     private var binding: FragmentAddShiftsBinding? = null
     private val calendar = Calendar.getInstance()
-    private val formatter = SimpleDateFormat("yyyy MM dd, EEEE", Locale.US)
+    private val formatter = SimpleDateFormat("yyyy MMM dd, EEEE", Locale.US)
     private val shiftOptions = arrayOf(ShiftTime.MORNING, ShiftTime.AFTERNOON, ShiftTime.NOON)
 
     override fun onCreateView(

@@ -12,6 +12,6 @@ interface CartItemDao {
     suspend fun update(cartItem: CartItem)
     @Delete
     suspend fun delete(cartItem: CartItem)
-    @Query("SELECT * FROM cart WHERE oder_number = :oderNumber")
-    fun getCart(oderNumber: Int): LiveData<List<CartItem>>
+    @Query("SELECT * FROM cart WHERE oder_number = :orderNumber")
+    fun getCart(orderNumber: Int): LiveData<List<CartItem>>
 }

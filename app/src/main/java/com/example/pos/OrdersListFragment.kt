@@ -39,7 +39,7 @@ import java.util.*
 class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     private var binding: FragmentOrdersListBinding? = null
     lateinit var adapter: OrdersAdapter
-    private val menuViewModel: MenuViewModel by activityViewModels {
+    private val menuViewModel: MenuViewModel by activityViewModels() /*{
         MenuViewModelFactory (
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
@@ -48,7 +48,7 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
                 PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
             )
                 )
-    }
+    }*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,18 +63,18 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
         binding?.ordersListFragment = this
         binding?.menuViewModel = menuViewModel
         val recyclerView = binding?.orders
-        menuViewModel.getOrders(Status.PROCESSING.name).observe(viewLifecycleOwner, androidx.lifecycle.Observer { orders ->
+        menuViewModel.getOrders(Status.PROCESSING.name).observe(viewLifecycleOwner) { orders ->
             adapter = OrdersAdapter(requireContext(), orders, this)
             recyclerView?.adapter = adapter
-        })
+        }
         val btnsContainer = binding?.btnsContainer
         btnsContainer?.forEach { it ->
             it.setOnClickListener {
                 menuViewModel.getOrders(it.tag.toString())
-                    .observe(viewLifecycleOwner, androidx.lifecycle.Observer { selectedItems ->
+                    .observe(viewLifecycleOwner) { selectedItems ->
                         adapter = OrdersAdapter(requireContext(), selectedItems, this)
                         recyclerView?.adapter = adapter
-                    })
+                    }
             }
 
         }

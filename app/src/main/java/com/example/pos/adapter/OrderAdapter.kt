@@ -44,185 +44,77 @@ class OrderAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: OrderItemViewHolder, position: Int) {
-        var currentQuantity = 1
         val item = items[position]
-        val id = item.id
         val addedItems = addedItemsMap?.keys?.toList()
-        if (addedItems != null) {
-            if (id in addedItems) {
-                holder.addToCart.visibility = View.GONE
-                holder.addMoreLayout.visibility = View.VISIBLE
-                holder.quantity.text = addedItemsMap?.get(id)?.quantity.toString()
-                holder.name.text = item.name
-                holder.price.text = "Price: $" + item.price
-                val decodedString = Base64.decode(item.image, Base64.DEFAULT)
-                val decodedByte =
-                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                Glide.with(context)
-                    .load(decodedByte)
-                    .into(holder.image)
-                holder.imageAdd.setOnClickListener {
-                    holder.quantity.text = (currentQuantity++).toString()
-                    listener.addToCart(
-                        item.id, Item(
-                            holder.name.text.toString(),
-                            item.type,
-                            holder.quantity.text.toString().toIntOrNull(),
-                            item.price.toDouble(),
-                            item.image,
-                            (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                        )
-                    )
-                }
-                holder.imageMinus.setOnClickListener {
-                    currentQuantity--
-                    if (currentQuantity == 0) {
-                        holder.addMoreLayout.visibility = View.GONE
-                        holder.addToCart.visibility = View.VISIBLE
-                        holder.quantity.text = "0"
-                        listener.removeFromCart(id)
-                        currentQuantity == 1
-                    } else {
-                        holder.quantity.text = currentQuantity.toString()
-                        listener.addToCart(
-                            item.id, Item(
-                                holder.name.text.toString(),
-                                item.type,
-                                holder.quantity.text.toString().toIntOrNull(),
-                                item.price.toDouble(),
-                                item.image,
-                                (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                            )
-                        )
-                    }
-                }
-            } else {
-                holder.name.text = item.name
-                holder.price.text = "Price: $" + item.price
-                val decodedString = Base64.decode(item.image, Base64.DEFAULT)
-                val decodedByte =
-                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                Glide.with(context)
-                    .load(decodedByte)
-                    .into(holder.image)
-                holder.addToCart.setOnClickListener {
-                    holder.quantity.text = currentQuantity.toString()
-                    holder.addToCart.visibility = View.GONE
-                    holder.addMoreLayout.visibility = View.VISIBLE
-                    listener.addToCart(
-                        item.id,
-                        Item(
-                            holder.name.text.toString(),
-                            item.type,
-                            holder.quantity.text.toString().toIntOrNull(),
-                            item.price.toDouble(),
-                            item.image,
-                            (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                        )
-                    )
+        var currentQuantity = addedItemsMap?.get(item.id)?.quantity ?: 0
 
-                }
-                holder.imageAdd.setOnClickListener {
-                    holder.quantity.text = (currentQuantity++).toString()
-                    listener.addToCart(
-                        item.id, Item(
-                            holder.name.text.toString(),
-                            item.type,
-                            holder.quantity.text.toString().toIntOrNull(),
-                            item.price.toDouble(),
-                            item.image,
-                            (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                        )
-                    )
-                }
-                holder.imageMinus.setOnClickListener {
-                    currentQuantity--
-                    if (currentQuantity == 0) {
-                        holder.addMoreLayout.visibility = View.GONE
-                        holder.addToCart.visibility = View.VISIBLE
-                        holder.quantity.text = "0"
-                        listener.removeFromCart(id)
-                        currentQuantity == 1
-                    } else {
-                        holder.quantity.text = currentQuantity.toString()
-                        listener.addToCart(
-                            item.id, Item(
-                                holder.name.text.toString(),
-                                item.type,
-                                holder.quantity.text.toString().toIntOrNull(),
-                                item.price.toDouble(),
-                                item.image,
-                                (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                            )
-                        )
-                    }
+        holder.name.text = item.name
+        holder.price.text = "Price: $" + item.price
+        holder.quantity.text = currentQuantity.toString()
+        val decodedString = Base64.decode(item.image, Base64.DEFAULT)
+        val decodedByte =
+            BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        Glide.with(context)
+            .load(decodedByte)
+            .into(holder.image)
+        if (addedItems != null && item.id in addedItems) {
+            holder.addToCart.visibility = View.GONE
+            holder.addMoreLayout.visibility = View.VISIBLE
+        }
 
-                }
-            }
-        } else {
-            holder.name.text = item.name
-            holder.price.text = "Price: $" + item.price
-            val decodedString = Base64.decode(item.image, Base64.DEFAULT)
-            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-            Glide.with(context)
-                .load(decodedByte)
-                .into(holder.image)
-            holder.addToCart.setOnClickListener {
-                holder.quantity.text = currentQuantity.toString()
-                holder.addToCart.visibility = View.GONE
-                holder.addMoreLayout.visibility = View.VISIBLE
-                listener.addToCart(
-                    item.id,
-                    Item(
-                        holder.name.text.toString(),
-                        item.type,
-                        holder.quantity.text.toString().toIntOrNull(),
-                        item.price.toDouble(),
-                        item.image,
-                        (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                    )
+        holder.addToCart.setOnClickListener {
+            currentQuantity++
+            holder.quantity.text = currentQuantity.toString()
+            holder.addToCart.visibility = View.GONE
+            holder.addMoreLayout.visibility = View.VISIBLE
+            listener.addToCart(
+                item.id,
+                Item(
+                    holder.name.text.toString(),
+                    item.type,
+                    holder.quantity.text.toString().toIntOrNull(),
+                    item.price.toDouble(),
+                    item.image,
+                    (item.price.toDouble() * holder.quantity.text.toString().toDouble())
                 )
+            )
+        }
 
-            }
-            holder.imageAdd.setOnClickListener {
-                holder.quantity.text = (currentQuantity++).toString()
-                listener.addToCart(
-                    item.id, Item(
-                        holder.name.text.toString(),
-                        item.type,
-                        holder.quantity.text.toString().toIntOrNull(),
-                        item.price.toDouble(),
-                        item.image,
-                        (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                    )
+        holder.imageAdd.setOnClickListener {
+            currentQuantity++
+            holder.quantity.text = currentQuantity.toString()
+            listener.addToCart(
+                item.id, Item(
+                    holder.name.text.toString(),
+                    item.type,
+                    holder.quantity.text.toString().toIntOrNull(),
+                    item.price.toDouble(),
+                    item.image,
+                    (item.price.toDouble() * holder.quantity.text.toString().toDouble())
                 )
-            }
-            holder.imageMinus.setOnClickListener {
-                currentQuantity--
-                if (currentQuantity == 0) {
-                    holder.addMoreLayout.visibility = View.GONE
-                    holder.addToCart.visibility = View.VISIBLE
-                    holder.quantity.text = "0"
-                    listener.removeFromCart(id)
-                    currentQuantity == 1
-                } else {
-                    holder.quantity.text = currentQuantity.toString()
-                    listener.addToCart(
-                        item.id, Item(
-                            holder.name.text.toString(),
-                            item.type,
-                            holder.quantity.text.toString().toIntOrNull(),
-                            item.price.toDouble(),
-                            item.image,
-                            (item.price.toDouble() * holder.quantity.text.toString().toDouble())
-                        )
-                    )
-                }
+            )
+        }
 
+        holder.imageMinus.setOnClickListener {
+            currentQuantity--
+            holder.quantity.text = currentQuantity.toString()
+            listener.addToCart(
+                item.id, Item(
+                    holder.name.text.toString(),
+                    item.type,
+                    holder.quantity.text.toString().toIntOrNull(),
+                    item.price.toDouble(),
+                    item.image,
+                    (item.price.toDouble() * holder.quantity.text.toString().toDouble())
+                )
+            )
+            if (currentQuantity == 0) {
+                holder.addMoreLayout.visibility = View.GONE
+                holder.addToCart.visibility = View.VISIBLE
+                listener.removeFromCart(item.id)
             }
         }
     }
-
 
     override fun getItemCount() = items.size
 
