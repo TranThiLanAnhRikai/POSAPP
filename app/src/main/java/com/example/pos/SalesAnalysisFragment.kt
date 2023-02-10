@@ -3,10 +3,9 @@ package com.example.pos
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -51,13 +50,9 @@ class SalesAnalysisFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentSalesAnalysisBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

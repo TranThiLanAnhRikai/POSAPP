@@ -54,13 +54,9 @@ class MainMenuFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentMainMenuBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
-
-        (((activity as AppCompatActivity?) ?: return null).supportActionBar ?: return null).hide()
+        (activity as AppCompatActivity?)!!.supportActionBar?.show()
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(false)
         return fragmentBinding.root
     }
 

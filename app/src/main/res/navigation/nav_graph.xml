@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_firstLoginFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_firstLoginFragment_to_addMenuFragment"
+            app:destination="@id/addMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/secondLoginFragment"
@@ -67,6 +70,9 @@
         <action
             android:id="@+id/action_menuFragment_to_mainMenuFragment"
             app:destination="@id/mainMenuFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_addMenuFragment2"
+            app:destination="@id/addMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"

@@ -48,6 +48,7 @@
         <TextView
             android:id="@+id/total"
             android:textSize="40dp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="500dp"

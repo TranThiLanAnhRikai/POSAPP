@@ -30,7 +30,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var notificationsViewModel: NotificationsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationsAdapter
-    private lateinit var headerHelper: CommonAdminHeaderHelper
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +43,6 @@ class NotificationsFragment : Fragment() {
         notificationsViewModel =
             ViewModelProvider(this, factory)[NotificationsViewModel::class.java]
         binding = fragmentBinding
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 

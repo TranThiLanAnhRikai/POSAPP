@@ -36,7 +36,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy MMM dd, EEEE", Locale.US)
     private val shiftOptions = arrayOf(ShiftTime.MORNING, ShiftTime.AFTERNOON, ShiftTime.NOON)
-    private lateinit var headerHelper: CommonAdminHeaderHelper
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +44,6 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View? {
         val fragmentBinding = FragmentAddShiftsBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 

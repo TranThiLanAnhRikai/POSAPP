@@ -61,29 +61,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="15dp"
-                    android:textSize="40dp"
+                    android:textSize="40sp"
                     android:inputType="textPassword"
                     android:layout_margin="8dp"
                     android:maxLength="8"
-                    android:focusedByDefault="true"
                     android:background="@drawable/login_edit_text"
                     android:text="@={loginViewModel.inputFirstCode}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--<EditText
-                android:id="@+id/login_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/login_edit_text"
-                android:hint="Login Code"
-                android:padding="10dp"
-                android:textSize="40dp"
-                android:inputType="textPassword"
-                android:layout_margin="8dp"
-                android:maxLength="8"
-                android:focusedByDefault="true"
-                android:text="@={loginViewModel.inputFirstCode}"/>
--->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/submit_button"

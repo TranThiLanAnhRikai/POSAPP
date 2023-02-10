@@ -24,7 +24,6 @@ class UsersFragment : Fragment() {
 
     private lateinit var usersViewModel: UsersViewModel
     private var binding: FragmentUsersBinding? = null
-    private lateinit var headerHelper: CommonAdminHeaderHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +36,6 @@ class UsersFragment : Fragment() {
         val repository = UserRepository(dao)
         val factory = UsersViewModelFactory(repository)
         usersViewModel = ViewModelProvider(this, factory)[UsersViewModel::class.java]
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 

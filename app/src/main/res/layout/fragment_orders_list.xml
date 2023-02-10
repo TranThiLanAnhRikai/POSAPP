@@ -17,11 +17,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/orders_list_background">
+        <LinearLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="List Of Orders"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:textSize="50sp"
             android:textColor="@color/white"
             android:gravity="center"/>

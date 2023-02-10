@@ -35,7 +35,6 @@ class SecondLoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentBinding = FragmentSecondLoginBinding.inflate(inflater, container, false)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         binding = fragmentBinding
         return fragmentBinding.root
     }

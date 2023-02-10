@@ -40,7 +40,7 @@ class ShiftsFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy, MM, dd, EEEE", Locale.JAPAN)
     private var binding: FragmentShiftsBinding? = null
-    private lateinit var headerHelper: CommonAdminHeaderHelper
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,12 +48,6 @@ class ShiftsFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentShiftsBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-        val headerBinding = AdminCommonHeaderBinding.inflate(inflater, container, false)
-        headerHelper = CommonAdminHeaderHelper(headerBinding, requireContext())
-        headerHelper.bindHeader()
-        val headerContainer = binding?.headerContainer
-        headerContainer?.addView(headerBinding.root)
-
         return fragmentBinding.root
     }
 

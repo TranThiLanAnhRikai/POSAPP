@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderDetailsDialogAdapter
 import com.example.pos.adapter.OrdersAdapter
 import com.example.pos.const.Status
+import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos.model.MenuViewModel
 import com.example.pos_admin.R
 import com.example.pos_admin.data.entity.Order
 import com.example.pos_admin.databinding.FragmentOrdersListBinding
+import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 import java.util.*
 
 
@@ -30,6 +33,7 @@ import java.util.*
 class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     private var binding: FragmentOrdersListBinding? = null
     lateinit var adapter: OrdersAdapter
+    private lateinit var headerHelper: CommonStaffHeaderHelper
     private val menuViewModel: MenuViewModel by activityViewModels() /*{
         MenuViewModelFactory (
             MenuItemRepository(
@@ -46,6 +50,11 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     ): View? {
         val fragmentBinding = FragmentOrdersListBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
+        headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
+        headerHelper.bindHeader()
+        val headerContainer = binding?.headerContainer
+        headerContainer?.addView(headerBinding.root)
         return fragmentBinding.root
     }
 
@@ -53,6 +62,7 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding?.ordersListFragment = this
         binding?.menuViewModel = menuViewModel
+
         val recyclerView = binding?.orders
         menuViewModel.getOrders(Status.PROCESSING.name).observe(viewLifecycleOwner) { orders ->
             adapter = OrdersAdapter(requireContext(), orders, this)
