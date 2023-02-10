@@ -8,19 +8,29 @@ import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.entity.User
 import com.example.pos_admin.data.repository.UserRepository
 
+/** ふたつのログイン画面のViewModel
+ * ユーザーの有効の確認
+ */
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
-    val inputFirstCode = MutableLiveData<String>()
-    val inputSecondCode = MutableLiveData<String>()
-    var userSecondLoginCode = MutableLiveData<String>()
-    val user = MutableLiveData<User>()
 
-    //Use the value of the first login code user fills in to get user(?) from database
+    // 一つ目コードのフィールド
+    val inputFirstCode: MutableLiveData<String> = MutableLiveData<String>()
+
+    // 二つ目コードのフィールド
+    val inputSecondCode: MutableLiveData<String> = MutableLiveData<String>()
+
+    // 一つ目コードでユーザーテーブルからユーザーをゲート出来れば、あのユーザーのテーブルでの二つ目コード
+    var userSecondLoginCode: MutableLiveData<String> = MutableLiveData<String>()
+
+    // ユーザーのテーブルからユーザーをゲットする変数
+    val user: MutableLiveData<User> = MutableLiveData<User>()
+
+    // 記入された一つ目コードでユーザーテーブルからユーザーをゲートする
     fun getUser(): LiveData<User> {
         return userRepository.getUser(inputFirstCode.value!!)
     }
 
-
-    // Decide the next view based on the type of user
+    // ユーザーのタイプによって、次の画面をアサインする
     fun nextFragment(): Destination {
         return if (user.value != null && user.value?.role == Role.STAFF.roleName) {
             Destination.STAFF
@@ -29,9 +39,9 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    // Check whether the second login code is valid
+    // 記入された二つ目コードの有効をチェックする
     fun isSecondLoginCodeValid(): Boolean {
-        if (user.value?.secondCode != inputSecondCode.value ) {
+        if (user.value?.secondCode != inputSecondCode.value) {
             return false
         }
         return true

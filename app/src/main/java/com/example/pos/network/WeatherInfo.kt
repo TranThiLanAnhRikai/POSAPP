@@ -1,5 +1,5 @@
 package com.example.pos.network
-import com.squareup.moshi.Json
+
 
 data class WeatherInfo(
     val coord: Coord,

@@ -1,16 +1,14 @@
 package com.example.pos_admin
 
-import android.content.ContentValues.TAG
+
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
@@ -19,13 +17,9 @@ import com.example.pos_admin.adapter.ShiftsAdapter
 import com.example.pos_admin.databinding.FragmentShiftsBinding
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.entity.Shift
 import com.example.pos_admin.data.repository.ShiftRepository
-import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.model.*
 
 class ShiftsFragment : Fragment() {
@@ -86,6 +80,12 @@ class ShiftsFragment : Fragment() {
                     id: Long
                 ) {
                     selectedDate = parent?.getItemAtPosition(position).toString()
+                    shiftsViewModel.getTodayShifts(selectedDate)
+                        .observe(viewLifecycleOwner) {
+                            val adapter = ShiftsAdapter(requireContext(), it)
+                            val recyclerView = binding?.shifts
+                            recyclerView?.adapter = adapter
+                        }
                 }
             }
             binding?.shiftsTime?.setOnCheckedChangeListener { _, checkedId ->
@@ -111,35 +111,8 @@ class ShiftsFragment : Fragment() {
                 }
 
             }
-
-
-            /*val recyclerView = binding?.shifts
-            shiftsViewModel.getAllShifts().observe(viewLifecycleOwner, Observer { shifts ->
-                val adapter = ShiftsAdapter(requireContext(), shifts)
-                recyclerView?.adapter = adapter
-            })*/
         }
     }
-
-/*    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        calendar.set(year, month, dayOfMonth)
-        val selectedTimeStamp = calendar.timeInMillis
-        val selectedDate = formatter.format(selectedTimeStamp).toString()
-        binding?.shiftsTime?.setOnCheckedChangeListener{ _, checkedId ->
-            when(checkedId) {
-                R.id.morning_shift -> {
-                    showShifts(selectedDate, 1)
-                }
-                R.id.afternoon_shift -> {
-                    showShifts(selectedDate, 2)
-                }
-                R.id.noon_shift -> {
-                    showShifts(selectedDate, 3)
-                }
-            }
-        }
-
-    }*/
 
     private fun showShifts(selectedDate: String, shiftTime: Int) {
         shiftsViewModel.getAllShifts().observe(viewLifecycleOwner) { shifts ->

@@ -16,7 +16,7 @@ import com.example.pos_admin.data.PosAdminRoomDatabase
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var navController: NavController
-    lateinit var database: PosAdminRoomDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         // Set up the action bar for use with the NavController
         setupActionBarWithNavController(navController)
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_logout, menu)
         return true
@@ -45,10 +46,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    fun removeLogoutButtonFromMenu(menu: Menu) {
-        menu.removeItem(R.id.logout)
     }
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,13 +23,7 @@ import com.example.pos_admin.model.LoginViewModelFactory
 class SecondLoginFragment : Fragment() {
 
     private var binding: FragmentSecondLoginBinding? = null
-    private val loginViewModel: LoginViewModel by activityViewModels {
-        LoginViewModelFactory(
-            UserRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).userDao()
-            )
-        )
-    }
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +31,7 @@ class SecondLoginFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentSecondLoginBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
         return fragmentBinding.root
     }
 
@@ -59,7 +55,7 @@ class SecondLoginFragment : Fragment() {
     // ログインコードが有効な場合、ユーザーをメインメニューフラグメントにナビゲートする
 
     fun toMainMenu() {
-        /* val builder = AlertDialog.Builder(requireContext())
+       /* val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputSecondCode.value == null) {
             builder.setMessage("You need to fill in your second code.")
@@ -80,11 +76,8 @@ class SecondLoginFragment : Fragment() {
 
         }
 
-
 */
         findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
-
-
     }
 
 

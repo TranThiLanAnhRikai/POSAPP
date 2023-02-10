@@ -38,6 +38,17 @@
                 android:background="@drawable/login_round_corner_drawable"
                 android:gravity="center"
                 android:text="Pick a Date"/>
+
+            <TextView
+                android:id="@+id/shift_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:background="@drawable/login_round_corner_drawable"
+                android:text="Choose a Shift"
+                android:layout_marginTop="20dp"
+                android:textSize="50sp" />
                 <AutoCompleteTextView
                     android:id="@+id/input_name"
                     android:layout_width="match_parent"
@@ -50,16 +61,6 @@
                     android:text="@={shiftsViewModel.inputName}"
                     android:background="@drawable/login_round_corner_drawable"/>
 
-                <TextView
-                    android:id="@+id/shift_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/login_round_corner_drawable"
-                    android:text="Choose a Shift"
-                    android:layout_marginTop="20dp"
-                    android:textSize="50sp" />
             </LinearLayout>
 
 />

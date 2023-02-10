@@ -1,12 +1,8 @@
 package com.example.pos.model
 
-import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos.data.repository.OrderRepository
 import kotlinx.coroutines.launch
 import com.example.pos.network.PosApi
@@ -14,9 +10,7 @@ import com.example.pos.network.WeatherInfo
 import com.example.pos_admin.data.entity.Order
 import com.example.pos_admin.data.entity.Shift
 import com.example.pos_admin.data.repository.ShiftRepository
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
+import java.time.*
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*

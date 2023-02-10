@@ -21,6 +21,9 @@ class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel()
     val inputName = MutableLiveData<String>()
     val _date = MutableLiveData<String>()
     val _shift = MutableLiveData<Int>()
+    val currentStaff = MutableLiveData<MutableList<String>>()
+    val allUsers = MutableLiveData<MutableList<String>>()
+
     @RequiresApi(Build.VERSION_CODES.O)
     val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
 
@@ -48,6 +51,7 @@ class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel()
 
         return shiftRepository.getTodayShifts(date)
     }
+
 
 
 

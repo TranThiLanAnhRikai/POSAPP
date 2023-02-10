@@ -13,12 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.NotificationsAdapter
 import com.example.pos.data.repository.NotificationRepository
-import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos.model.NotificationsViewModel
 import com.example.pos.model.NotificationsViewModelFactory
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.entity.Notification
-import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentNotificationsBinding
 import java.util.*
 

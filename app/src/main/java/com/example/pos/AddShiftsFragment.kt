@@ -2,11 +2,15 @@ package com.example.pos
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.InputFilter
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
@@ -72,12 +76,21 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val selectedShiftTime = shiftOptions[which]
             binding?.shiftText?.text = selectedShiftTime.shiftName
             shiftsViewModel._shift.value = selectedShiftTime.ordinal
+            shiftsViewModel.getShifts(shiftsViewModel._date.value!!, shiftsViewModel._shift.value!!)
+                .observe(viewLifecycleOwner) { shifts ->
+                    val list = shiftsViewModel.currentStaff.value ?: mutableListOf()
+                    shifts.forEach { shift ->
+                        list.add(shift.shiftName)
+                    }
+                    shiftsViewModel.currentStaff.value = list
+                }
         }
         val dialog = builder.create()
         val container = binding?.shiftText
         container?.setOnClickListener {
             dialog.show()
         }
+
         // 全員のユーザーをテーブルからゲートして、autocompleteで供給する
         shiftsViewModel.getAllUsers()
             .observe(viewLifecycleOwner) { users ->
@@ -91,8 +104,8 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 autocompleteName?.setAdapter(adapter)
 
             }
-
     }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.set(year, month, dayOfMonth)
@@ -124,7 +137,13 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-        } else {
+        } else if (shiftsViewModel.inputName.value!! in (shiftsViewModel.currentStaff.value
+                ?: return)) {
+            builder.setMessage("This staff already is in this shift.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }  else {
             shiftsViewModel.insertShift()
             builder.setTitle("New Shift added")
             builder.setPositiveButton("Add another one") { dialog, _ ->
@@ -149,6 +168,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun displayFormattedDate(timeStamp: Long) {
         binding?.datePick?.text = formatter.format(timeStamp)
     }
+
 
 }
 

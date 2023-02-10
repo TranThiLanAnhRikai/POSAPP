@@ -2,11 +2,9 @@ package com.example.pos_admin
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +16,10 @@ import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pos.data.repository.OrderRepository
-import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos.model.MainMenuViewModel
 import com.example.pos.model.MainMenuViewModelFactory
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.ShiftRepository
-import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentMainMenuBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +30,6 @@ import java.util.*
  */
 class MainMenuFragment : Fragment() {
     private var binding: FragmentMainMenuBinding? = null
-    private lateinit var headerHelper: CommonAdminHeaderHelper
     private val mainMenuViewModel: MainMenuViewModel by activityViewModels {
         MainMenuViewModelFactory(
             OrderRepository(
@@ -126,8 +121,6 @@ class MainMenuFragment : Fragment() {
                     mainMenuViewModel.formattedDateTime.value!!,
                     it.tag.toString().toInt()
                 ).observe(viewLifecycleOwner) { shifts ->
-                    Log.d(TAG, "date ${mainMenuViewModel.formattedDateTime.value}")
-                    Log.d(TAG, "shifts $shifts")
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("Staff")
                     val staffs = mutableListOf<String>()

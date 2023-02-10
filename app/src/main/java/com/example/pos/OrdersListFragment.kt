@@ -34,16 +34,7 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     private var binding: FragmentOrdersListBinding? = null
     lateinit var adapter: OrdersAdapter
     private lateinit var headerHelper: CommonStaffHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels() /*{
-        MenuViewModelFactory (
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-                )
-    }*/
+    private val menuViewModel: MenuViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

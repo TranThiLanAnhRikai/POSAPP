@@ -33,7 +33,10 @@ class UsersAdapter(private val context: Context, private val listOfUsers: List<U
         holder.userName.text = user.name
         holder.userRole.text = user.role
         holder.userFirstCode.text = user.firstCode
-        holder.userSecondCode.text = user.secondCode
+        if (user.secondCode != "0") {
+            holder.userSecondCode.text = user.secondCode
+        }
+
     }
 
     override fun getItemCount() = listOfUsers.size

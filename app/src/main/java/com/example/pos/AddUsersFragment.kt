@@ -1,9 +1,7 @@
 package com.example.pos_admin
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.const.Role
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
-import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentAddUsersBinding
 import com.example.pos_admin.model.UsersViewModel
 import com.example.pos_admin.model.UsersViewModelFactory
-import kotlin.math.log
 
 /**　新しいユーザーを作る
  * ユーザーのテーブルに保存する
