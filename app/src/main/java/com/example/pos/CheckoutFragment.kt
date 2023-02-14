@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
@@ -126,44 +128,36 @@ class CheckoutFragment : Fragment() {
     }
 
     fun placeOrder() {
-        val builder = android.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         if (menuViewModel.selectedItems.value == null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error")
-            builder.setMessage("Order is empty.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Order is empty."
             dialog.show()
         } else if (menuViewModel.customerName.value == null) {
-            builder.setMessage("Customer name needed.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Customer name needed."
             dialog.show()
         } else if (menuViewModel.customerPhoneNumber.value == null) {
-            builder.setMessage("Customer phone number needed.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Customer phone number needed."
             dialog.show()
         } else if (menuViewModel.paymentMethod.value == "Payment Method") {
-            builder.setMessage("Choose a payment method.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Choose a payment method."
             dialog.show()
         } else if (menuViewModel.deliveryMethod.value == "Pickup" && menuViewModel.pickupTime.value == null) {
-            builder.setMessage("Pickup time needed.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Pickup time needed."
             dialog.show()
         } else if (menuViewModel.deliveryMethod.value == "Delivery" && menuViewModel.customerAddress.value == null) {
-            builder.setMessage("Customer address needed.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Customer address needed."
             dialog.show()
         } else if (menuViewModel.deliveryMethod.value == "Delivery" && menuViewModel.customerZipCode.value == null) {
-            builder.setMessage("Zip code needed.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: android.app.AlertDialog = builder.create()
+            textViewError.text = "Zip code needed."
             dialog.show()
         } else {
             menuViewModel.insertToOrderCustomerList()
@@ -175,6 +169,13 @@ class CheckoutFragment : Fragment() {
             binding?.inputPickupTime?.text = null
             binding?.inputAddress?.text = null
             binding?.inputZip?.text = null
+            menuViewModel.selectedItems.value!!.clear()
+            menuViewModel.customerName.value = null
+            menuViewModel.customerAddress.value = null
+            menuViewModel.customerPhoneNumber.value = null
+            menuViewModel.deliveryMethod.value = null
+            menuViewModel.customerZipCode.value = null
+            menuViewModel.paymentMethod.value = null
         }
 
     }

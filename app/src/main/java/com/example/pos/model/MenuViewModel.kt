@@ -155,9 +155,9 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
                 Order(
                     0,
                     orderNumber.value!!,
-                    foodRevenue,
-                    drinkRevenue,
-                    dessertRevenue,
+                    df.format(foodRevenue).toDouble(),
+                    df.format(drinkRevenue).toDouble(),
+                    df.format(dessertRevenue).toDouble(),
                     totalQuantity,
                     total,
                     Status.PROCESSING.toString(),
