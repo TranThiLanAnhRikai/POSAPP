@@ -1,5 +1,4 @@
 package com.example.pos
-
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -41,7 +40,6 @@ class SalesAnalysisFragment : Fragment() {
             )
         )
     }
-    private lateinit var headerHelper: CommonAdminHeaderHelper
 
 
     override fun onCreateView(
@@ -68,6 +66,7 @@ class SalesAnalysisFragment : Fragment() {
             salesViewModel.dessertRevenueList.clear()
             salesViewModel.drinkRevenueList.clear()
             salesViewModel.foodRevenueList.clear()
+            salesViewModel.dates.clear()
             orders.forEach { order ->
                 salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
             }
@@ -100,22 +99,23 @@ class SalesAnalysisFragment : Fragment() {
                 salesViewModel.dessertRevenueList.add(dessertSales)
             }
             populateLineChart(
-                salesViewModel.dates.distinct().reversed(),
-                salesViewModel.revenueList.reversed(),
-                salesViewModel.foodRevenueList.reversed(),
-                salesViewModel.drinkRevenueList.reversed(),
-                salesViewModel.dessertRevenueList.reversed())
+                salesViewModel.dates.distinct(),
+                salesViewModel.revenueList,
+                salesViewModel.foodRevenueList,
+                salesViewModel.drinkRevenueList,
+                salesViewModel.dessertRevenueList)
         }
             binding?.btnsContainer?.forEach { it ->
             it.setOnClickListener {
                 if (it.tag.toString() == "week") {
-                    /*salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
+                    salesViewModel.getOrdersByWeek().observe(viewLifecycleOwner) { orders ->
                         salesViewModel.numberOfOrders.clear()
                         salesViewModel.revenueList.clear()
                         salesViewModel.numberOfItems.clear()
                         salesViewModel.dessertRevenueList.clear()
                         salesViewModel.drinkRevenueList.clear()
                         salesViewModel.foodRevenueList.clear()
+                        salesViewModel.dates.clear()
                         orders.forEach { order ->
                             salesViewModel.dates.add(order.orderNumber.toString().substring(6, 8))
                         }
@@ -147,28 +147,14 @@ class SalesAnalysisFragment : Fragment() {
                             salesViewModel.drinkRevenueList.add(drinkSales)
                             salesViewModel.dessertRevenueList.add(dessertSales)
                         }
-
-
-
-// and so on for each radio button
-
-
-
-
                         populateLineChart(
-                            datesList.reversed(),
-                            salesViewModel.revenueList.reversed(),
-                            salesViewModel.foodRevenueList.reversed(),
-                            salesViewModel.drinkRevenueList.reversed(),
-                            salesViewModel.dessertRevenueList.reversed()
+                            datesList,
+                            salesViewModel.revenueList,
+                            salesViewModel.foodRevenueList,
+                            salesViewModel.drinkRevenueList,
+                            salesViewModel.dessertRevenueList
                         )
-                    }*/
-                    populateLineChart(
-                        salesViewModel.dates.distinct().reversed(),
-                        salesViewModel.revenueList.reversed(),
-                        salesViewModel.foodRevenueList.reversed(),
-                        salesViewModel.drinkRevenueList.reversed(),
-                        salesViewModel.dessertRevenueList.reversed())
+                    }
                 } else {
                     binding?.monthSelected?.setOnClickListener {
                         salesViewModel.getOrdersByMonth().observe(viewLifecycleOwner) { orders ->
@@ -212,11 +198,11 @@ class SalesAnalysisFragment : Fragment() {
                                 salesViewModel.dessertRevenueList.add(dessertSales)
                             }
                             populateLineChart(
-                                monthsList.reversed(),
-                                salesViewModel.revenueList.reversed(),
-                                salesViewModel.foodRevenueList.reversed(),
-                                salesViewModel.drinkRevenueList.reversed(),
-                                salesViewModel.dessertRevenueList.reversed()
+                                monthsList,
+                                salesViewModel.revenueList,
+                                salesViewModel.foodRevenueList,
+                                salesViewModel.drinkRevenueList,
+                                salesViewModel.dessertRevenueList
                             )
                         }
                     }
@@ -315,6 +301,8 @@ class SalesAnalysisFragment : Fragment() {
         lineChart.legend.formToTextSpace = 1f
         lineChart.xAxis.labelRotationAngle = 45f
         lineChart.xAxis.setDrawGridLines(false)
+        lineChart.axisLeft.xOffset = 15f
+        lineChart.axisRight.xOffset = 15f
         lineChart.invalidate()
     }
 }

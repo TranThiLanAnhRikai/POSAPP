@@ -80,6 +80,7 @@ class ShiftsFragment : Fragment() {
                     id: Long
                 ) {
                     selectedDate = parent?.getItemAtPosition(position).toString()
+                    binding?.allShifts?.isSelected
                     shiftsViewModel.getTodayShifts(selectedDate)
                         .observe(viewLifecycleOwner) {
                             val adapter = ShiftsAdapter(requireContext(), it)

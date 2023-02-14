@@ -1,6 +1,8 @@
 package com.example.pos.model
 
+import android.content.ContentValues.TAG
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.pos.data.repository.OrderRepository
@@ -17,6 +19,7 @@ import java.util.*
 
 class MainMenuViewModel(private val orderRepository: OrderRepository, private val shiftRepository: ShiftRepository): ViewModel() {
     val formattedDateTime = MutableLiveData<String>()
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDate() {
          formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))

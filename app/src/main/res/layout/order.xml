@@ -10,7 +10,7 @@
             android:textSize="25sp"
             android:layout_column="1"
             android:layout_gravity="center"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:paddingTop="10dp"
           />
         <TextView
@@ -18,14 +18,14 @@
             android:textSize="25sp"
             android:layout_column="2"
             android:layout_gravity="center"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:paddingTop="10dp"
             />
         <TextView
             android:id="@+id/quantity"
             android:textSize="25sp"
             android:layout_column="3"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:paddingTop="10dp"
            />
@@ -34,21 +34,21 @@
             android:textSize="25sp"
             android:paddingTop="10dp"
             android:layout_gravity="center"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:layout_column="4" />
         <TextView
             android:id="@+id/status"
             android:textSize="25sp"
             android:layout_gravity="center"
             android:paddingTop="10dp"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:layout_column="5" />
         <Button
             android:id="@+id/order_details_btn"
             android:textSize="25sp"
             android:text="See Details"
             android:layout_column="6"
-            android:textColor="#0e7d82"
+            android:textColor="@color/black"
             android:backgroundTint="@color/white"/>
 
 

@@ -5,7 +5,6 @@ import com.example.pos.const.Status
 import com.example.pos.data.entity.CartItem
 import com.example.pos.data.entity.Customer
 import com.example.pos.data.entity.Item
-
 import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.data.entity.MenuItem
@@ -121,6 +120,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
     }
 
     fun deleteOrder() {
+
         val currentMap = selectedItems.value ?: mutableMapOf()
         currentMap.clear()
         selectedItems.postValue(currentMap)
@@ -173,7 +173,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
                         orderNumber.value!!,
                         key,
                         item?.name!!,
-                        item?.quantity.toString()
+                        item.quantity.toString()
                     )
                 )
             }
@@ -196,6 +196,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
             )
         }
     }
+
 
 
 }

@@ -62,7 +62,7 @@ class FirstLoginFragment : Fragment() {
     // ログインコードが有効な場合、ユーザーの種類によって適切の画面にナビゲートする
 
     fun nextScreen() {
-        /*val builder = AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         if (loginViewModel.inputFirstCode.value == null) {
             builder.setMessage("Please fill in your login code.")
@@ -93,7 +93,7 @@ class FirstLoginFragment : Fragment() {
 
                 }
             }
-        }*/
-        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+        }
+
     }
 }

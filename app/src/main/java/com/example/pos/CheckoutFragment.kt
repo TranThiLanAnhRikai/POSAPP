@@ -25,24 +25,15 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
- * A simple [Fragment] subclass.
- * Use LoginViewModel.
+ *
+ *
  *
  */
 class CheckoutFragment : Fragment() {
 
     private var binding: FragmentCheckoutBinding? = null
     private lateinit var headerHelper: CommonStaffHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels {
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-        )
-    }
+    private val menuViewModel: MenuViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemsAdapter: CheckoutItemsAdapter
 
@@ -54,6 +45,7 @@ class CheckoutFragment : Fragment() {
     ): View? {
         val fragmentBinding = FragmentCheckoutBinding.inflate(inflater, container, false)
         binding = fragmentBinding
+        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
         val headerBinding = StaffCommonHeaderBinding.inflate(inflater, container, false)
         headerHelper = CommonStaffHeaderHelper(headerBinding, requireContext())
         headerHelper.bindHeader()
@@ -75,7 +67,6 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.checkoutFragment = this
         binding?.menuViewModel = menuViewModel
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         if (menuViewModel.selectedItems.value != null) {
             binding?.orderNumber?.text = "Order Number: ${menuViewModel.orderNumber.value}"
         }
@@ -87,8 +78,8 @@ class CheckoutFragment : Fragment() {
         val options = resources.getStringArray(R.array.payment_options)
         val adapter = ArrayAdapter(requireContext(), R.layout.payment_spinner_item, options)
         spinner?.adapter = adapter
-        menuViewModel?.totalWithDelivery?.value = menuViewModel?.total!!
-        menuViewModel?.deliveryMethod?.value = "Pickup"
+        menuViewModel.totalWithDelivery.value = menuViewModel.total
+        menuViewModel.deliveryMethod.value = "Pickup"
         binding?.switchDelivery?.setOnCheckedChangeListener { it, isChecked ->
             if (isChecked) {
                 binding?.apply {

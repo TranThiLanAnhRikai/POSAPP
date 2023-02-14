@@ -98,11 +98,21 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 users.forEach {
                     nameList.add(it.name)
                 }
-                val adapter =
-                    ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nameList)
+                if (shiftsViewModel.currentStaff.value?.isNotEmpty() == true) {
+                    shiftsViewModel.currentStaff.value!!.forEach {
+                        if (it in nameList) {
+                            nameList.remove(it)
+                        }
+                    }
+                }
+                val adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    nameList
+                )
                 val autocompleteName = binding?.inputName
                 autocompleteName?.setAdapter(adapter)
-
+                autocompleteName?.threshold = 1
             }
     }
 

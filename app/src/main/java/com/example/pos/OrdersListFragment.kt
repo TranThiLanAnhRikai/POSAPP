@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderDetailsDialogAdapter
@@ -132,6 +133,10 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
 
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
+    }
+
+    fun toOrder() {
+        findNavController().navigate(R.id.action_ordersListFragment_to_orderFragment)
     }
 
 }

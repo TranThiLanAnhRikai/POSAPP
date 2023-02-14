@@ -62,11 +62,11 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
         (((activity as AppCompatActivity?) ?: return null).supportActionBar ?: return null).hide()
         recyclerView = binding?.orderItems!!
         menuViewModel.getMenuItems(ItemType.FOOD.typeName)
-            .observe(viewLifecycleOwner, Observer { items ->
+            .observe(viewLifecycleOwner) { items ->
                 adapter =
                     OrderAdapter(requireContext(), items, this, menuViewModel.selectedItems.value)
                 recyclerView.adapter = adapter
-            })
+            }
 
 
         return fragmentBinding.root
@@ -100,7 +100,6 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
             val values = items.values
             menuViewModel.totalQuantity = 0
             values.forEach { item ->
-                Log.d(TAG, "item ${item.name} ${item.quantity}")
                 menuViewModel.totalQuantity += item.quantity!!
                 Log.d(TAG, "quantity ${menuViewModel.totalQuantity}")
             }

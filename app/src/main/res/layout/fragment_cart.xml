@@ -98,7 +98,7 @@
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
                 android:text="CHECKOUT"
-                android:onClick="@{() -> cartFragment.payOrder()}"/>
+                android:onClick="@{() -> cartFragment.placeOrder()}"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </LinearLayout>
 </layout>

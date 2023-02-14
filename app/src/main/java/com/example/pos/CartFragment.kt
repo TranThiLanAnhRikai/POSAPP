@@ -1,17 +1,15 @@
 package com.example.pos
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.CartItemsAdapter
@@ -31,16 +29,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
     private lateinit var headerHelper: CommonStaffHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels() /*{
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-        )
-    }*/
+    private val menuViewModel: MenuViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var adapter: CartItemsAdapter
@@ -68,7 +57,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding?.cartFragment = this
         binding?.menuViewModel = menuViewModel
-        menuViewModel.selectedItems.observe(viewLifecycleOwner, Observer { selectedItems ->
+        menuViewModel.selectedItems.observe(viewLifecycleOwner) { selectedItems ->
             if (selectedItems.isEmpty()) {
                 binding?.orderNumber?.visibility = View.GONE
                 binding?.total?.visibility = View.GONE
@@ -82,7 +71,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
             }
             binding?.total?.text = "TOTAL: $" + "%.2f".format(menuViewModel.total)
 
-        })
+        }
         menuViewModel.getOrderNumber()?.observe(viewLifecycleOwner) { orders ->
             if (orders.isEmpty()) {
                 menuViewModel.orderNumber.value = (menuViewModel.currentDate + "001").toLong()
@@ -90,14 +79,14 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
                 val latestOrder = orders[0]
                 menuViewModel.orderNumber.value = latestOrder.orderNumber + 1
             }
+            if (menuViewModel.selectedItems.value != null) {
+                binding?.orderNumber?.text =
+                    "Order Number: ${menuViewModel.orderNumber.value.toString()}"
+            }
 
 
         }
-        if (menuViewModel.selectedItems.value != null) {
-            Log.d(TAG, "selectedItems ${menuViewModel.selectedItems.value}")
-            binding?.orderNumber?.text =
-                "Order Number: ${menuViewModel.orderNumber.value.toString()}"
-        }
+
 
     }
 
@@ -124,11 +113,21 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     }
 
     fun deleteOrder() {
-        menuViewModel.deleteOrder()
-        findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Are you sure you want to delete order ${menuViewModel.orderNumber.value}?")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            menuViewModel.deleteOrder()
+            findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
+        }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
     }
 
-    fun payOrder() {
+    fun placeOrder() {
         val prefs = context?.getSharedPreferences("order_number", Context.MODE_PRIVATE)
         prefs?.edit()?.putString("order_number", "${menuViewModel.orderNumber.value}")?.apply()
         findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
