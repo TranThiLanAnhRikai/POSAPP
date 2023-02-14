@@ -5,12 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pos.const.Destination
+import com.example.pos.data.repository.MenuItemRepository
+import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.repository.UserRepository
 import com.example.pos_admin.databinding.FragmentFirstLoginBinding
@@ -34,6 +40,8 @@ class FirstLoginFragment : Fragment() {
             )
         )
     }
+
+
 
 
     override fun onCreateView(
@@ -63,19 +71,23 @@ class FirstLoginFragment : Fragment() {
 
     fun nextScreen() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         if (loginViewModel.inputFirstCode.value == null) {
-            builder.setMessage("Please fill in your login code.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please fill in your login code."
             dialog.show()
         } else {
             loginViewModel.getUser().observe(viewLifecycleOwner) { person ->
                 loginViewModel.user.value = person
                 if (person == null) {
-                    builder.setMessage("Login code is invalid. Please try again.")
-                    builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                    val dialog: AlertDialog = builder.create()
+                    textViewError.text = "Login code is invalid. Please try again."
                     dialog.show()
                     binding?.loginEditText?.text = null
                 } else {
@@ -86,14 +98,32 @@ class FirstLoginFragment : Fragment() {
                     val destination = loginViewModel.nextFragment()
                     binding?.loginEditText?.text = null
                     if (destination == Destination.NON_STAFF) {
-                        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
-                    } else {
-                        findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
-                    }
+                        val builderAlert = AlertDialog.Builder(requireContext())
+                        val inflaterAlert = this.layoutInflater
+                        val optionsDialogView =
+                            inflaterAlert.inflate(R.layout.options_dialog_layout, null)
+                        builderAlert.setView(optionsDialogView)
+                        val toListLayout =
+                            optionsDialogView.findViewById<View>(R.id.to_list_container)
+                        val toOrderLayout =
+                            optionsDialogView.findViewById<View>(R.id.to_order_container)
+                        val optionsDialog: AlertDialog = builderAlert.create()
+                        toListLayout.setOnClickListener {
+                            findNavController().navigate(R.id.action_firstLoginFragment_to_ordersListFragment)
+                            optionsDialog.dismiss()
+                        }
+                        toOrderLayout.setOnClickListener {
+                            findNavController().navigate((R.id.action_firstLoginFragment_to_orderFragment))
+                            optionsDialog.dismiss()
+                        }
+                        optionsDialog.show()
 
+                    }else {
+                        findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
+                    }
                 }
             }
-        }
 
+        }
     }
 }

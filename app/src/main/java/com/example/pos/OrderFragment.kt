@@ -67,8 +67,6 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
                     OrderAdapter(requireContext(), items, this, menuViewModel.selectedItems.value)
                 recyclerView.adapter = adapter
             }
-
-
         return fragmentBinding.root
     }
 
@@ -78,7 +76,6 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding?.orderFragment = this
         binding?.menuViewModel = menuViewModel
-
         val btnsContainer = binding?.btnsContainer
         btnsContainer?.forEach { it ->
             it.setOnClickListener {
@@ -98,12 +95,18 @@ class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
         }
         menuViewModel.selectedItems.observe(viewLifecycleOwner) { items ->
             val values = items.values
-            menuViewModel.totalQuantity = 0
-            values.forEach { item ->
-                menuViewModel.totalQuantity += item.quantity!!
-                Log.d(TAG, "quantity ${menuViewModel.totalQuantity}")
+            if (items.isEmpty()) {
+                binding?.totalQuantity?.visibility = View.GONE
+            } else {
+                menuViewModel.totalQuantity = 0
+                values.forEach { item ->
+                    menuViewModel.totalQuantity += (item.quantity ?: return@forEach)
+                    Log.d(TAG, "quantity ${menuViewModel.totalQuantity}")
+                }
+                binding?.totalQuantity?.visibility = View.VISIBLE
+                binding?.totalQuantity?.text = menuViewModel.totalQuantity.toString()
             }
-            binding?.totalQuantity?.text = menuViewModel.totalQuantity.toString()
+
         }
 
 

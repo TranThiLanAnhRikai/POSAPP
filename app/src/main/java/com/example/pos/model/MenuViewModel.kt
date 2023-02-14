@@ -10,6 +10,7 @@ import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.data.entity.MenuItem
 import com.example.pos_admin.data.entity.Order
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -134,6 +135,8 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
         var drinkRevenue = 0.0
         var dessertRevenue = 0.0
         var delivery = ""
+        val df = DecimalFormat("#.##")
+        val total: Double = df.format(totalWithDelivery.value).toDouble()
         delivery = if (deliveryMethod.value == "Pickup") {
             deliveryMethod.value + " at " + pickupTime.value
         } else {
@@ -156,7 +159,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
                     drinkRevenue,
                     dessertRevenue,
                     totalQuantity,
-                    totalWithDelivery.value!!,
+                    total,
                     Status.PROCESSING.toString(),
                     delivery,
                     paymentMethod.value!!,

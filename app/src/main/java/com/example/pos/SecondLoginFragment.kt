@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -55,29 +57,31 @@ class SecondLoginFragment : Fragment() {
     // ログインコードが有効な場合、ユーザーをメインメニューフラグメントにナビゲートする
 
     fun toMainMenu() {
-       /* val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         if (loginViewModel.inputSecondCode.value == null) {
-            builder.setMessage("You need to fill in your second code.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "You need to fill in your second code."
             dialog.show()
             binding?.loginEditText?.text = null
         } else if (!loginViewModel.isSecondLoginCodeValid()) {
-            builder.setMessage("Login code is invalid. Please try again.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Login code is invalid. Please try again."
             dialog.show()
             binding?.loginEditText?.text = null
         } else {
-
             findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
             binding?.loginEditText?.text = null
 
         }
 
-*/
-        findNavController().navigate(R.id.action_secondLoginFragment_to_mainMenuFragment)
+
     }
 
 

@@ -2,30 +2,22 @@ package com.example.pos
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.text.InputFilter
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.pos.helper.CommonAdminHeaderHelper
 import com.example.pos_admin.R
 import com.example.pos_admin.const.ShiftTime
-import com.example.pos_admin.data.PosAdminRoomDatabase
-import com.example.pos_admin.data.repository.ShiftRepository
-import com.example.pos_admin.databinding.AdminCommonHeaderBinding
 import com.example.pos_admin.databinding.FragmentAddShiftsBinding
 import com.example.pos_admin.model.ShiftsViewModel
-import com.example.pos_admin.model.ShiftsViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,7 +46,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.addShiftsFragment = this
         binding?.shiftsViewModel = shiftsViewModel
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (((activity as AppCompatActivity?) ?: return).supportActionBar ?: return).show()
         //　カレンダーを表示する。今日以前の日付を無効にする
         binding?.datePick?.setOnClickListener {
             val today = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"))
@@ -76,7 +68,11 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val selectedShiftTime = shiftOptions[which]
             binding?.shiftText?.text = selectedShiftTime.shiftName
             shiftsViewModel._shift.value = selectedShiftTime.ordinal
-            shiftsViewModel.getShifts(shiftsViewModel._date.value!!, shiftsViewModel._shift.value!!)
+            shiftsViewModel.currentStaff.value?.clear()
+            shiftsViewModel.getShifts(
+                shiftsViewModel._date.value ?: return@setItems,
+                shiftsViewModel._shift.value ?: return@setItems
+            )
                 .observe(viewLifecycleOwner) { shifts ->
                     val list = shiftsViewModel.currentStaff.value ?: mutableListOf()
                     shifts.forEach { shift ->
@@ -99,7 +95,7 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     nameList.add(it.name)
                 }
                 if (shiftsViewModel.currentStaff.value?.isNotEmpty() == true) {
-                    shiftsViewModel.currentStaff.value!!.forEach {
+                    (shiftsViewModel.currentStaff.value ?: return@observe).forEach {
                         if (it in nameList) {
                             nameList.remove(it)
                         }
@@ -130,45 +126,58 @@ class AddShiftsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     // 新しいシフトをテーブルに保存する前に全てのフィールドに記入されたかチェックする。されなければエラーメッセージを表示する。
     fun addNewShift() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: androidx.appcompat.app.AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         if (shiftsViewModel._date.value == null) {
-            builder.setMessage("Please pick a date.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please pick a date."
             dialog.show()
         } else if (shiftsViewModel.inputName.value == null) {
-            builder.setMessage("Please pick a staff.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please pick a staff."
             dialog.show()
         } else if (shiftsViewModel._shift.value !in 0..2) {
-            builder.setMessage("Please choose a shift.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please choose a shift."
             dialog.show()
-        } else if (shiftsViewModel.inputName.value!! in (shiftsViewModel.currentStaff.value
-                ?: return)) {
-            builder.setMessage("This staff already is in this shift.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+        } else if ((shiftsViewModel.inputName.value
+                ?: return) in (shiftsViewModel.currentStaff.value
+                ?: return)
+        ) {
+            textViewError.text = "This staff already is in this shift."
             dialog.show()
-        }  else {
+        } else {
             shiftsViewModel.insertShift()
-            builder.setTitle("New Shift added")
-            builder.setPositiveButton("Add another one") { dialog, _ ->
-                dialog.dismiss()
-                binding?.datePick?.text = "Pick a Date"
-                binding?.inputName?.text = null
-                binding?.shiftText?.text = "Choose a Shift"
-                binding?.inputName?.clearFocus()
+            val builderAlert = AlertDialog.Builder(requireContext())
+            val inflaterAlert = this.layoutInflater
+            val successDialogView = inflaterAlert.inflate(R.layout.success_dialog_layout, null)
+            builderAlert.setView(successDialogView)
+            val title = successDialogView.findViewById<TextView>(R.id.title)
+            title.text = "NEW SHIFT ADDED"
+            val detail: TextView = successDialogView.findViewById(R.id.detail)
+            detail.text =
+                "${shiftsViewModel.inputName.value} - ${shiftsViewModel._date.value} - ${binding?.shiftText?.text}"
+            val continueBtn = successDialogView.findViewById<Button>(R.id.continue_button)
+            val backBtn = successDialogView.findViewById<Button>(R.id.back_button)
+            val successDialog: AlertDialog = builderAlert.create()
+            continueBtn.setOnClickListener {
+                successDialog.dismiss()
             }
-            builder.setNegativeButton("Go back to Shifts List") { _, _ ->
+            backBtn.setOnClickListener {
+                successDialog.dismiss()
                 findNavController().navigate(R.id.action_addShiftsFragment_to_shiftsFragment)
-                shiftsViewModel.inputName.value = null
             }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+            successDialog.show()
+            binding?.datePick?.text = "Pick a Date"
+            binding?.inputName?.text = null
+            binding?.shiftText?.text = "Choose a Shift"
+            binding?.inputName?.clearFocus()
+
 
         }
 

@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_firstLoginFragment_to_addMenuFragment"
             app:destination="@id/addMenuFragment" />
+        <action
+            android:id="@+id/action_firstLoginFragment_to_ordersListFragment"
+            app:destination="@id/ordersListFragment" />
     </fragment>
     <fragment
         android:id="@+id/secondLoginFragment"

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -41,11 +43,11 @@ class AddUsersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.addUsersFragment = this
         binding?.usersViewModel = usersViewModel
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (((activity as AppCompatActivity?) ?: return).supportActionBar ?: return).show()
         usersViewModel.getAllUsers().observe(viewLifecycleOwner) { users ->
             val newFirstCodeList = usersViewModel.listOfFirstCode.value ?: mutableListOf()
             val newSecondCodeList = usersViewModel.listOfSecondCode.value ?: mutableListOf()
-            users.forEach { it ->
+            users.forEach {
                 newFirstCodeList.add(it.firstCode)
                 newSecondCodeList.add(it.secondCode)
             }
@@ -60,7 +62,9 @@ class AddUsersFragment : Fragment() {
                     usersViewModel.inputRole.value = Role.ADMIN.roleName
                     val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     var randomString = (1..8).map { characters.random() }.joinToString("")
-                    while (randomString in usersViewModel.listOfSecondCode.value!!) {
+                    while (randomString in (usersViewModel.listOfSecondCode.value
+                            ?: return@setOnCheckedChangeListener)
+                    ) {
                         randomString = (1..8).map { characters.random() }.joinToString("")
                     }
                     usersViewModel.secondCode.value = randomString
@@ -85,51 +89,60 @@ class AddUsersFragment : Fragment() {
 
     // 新しいユーザーをテーブルに保存する前に全てのフィールドに正しく記入されたかチェックする。されなければエラーメッセージを表示する
     fun addNewUser() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: androidx.appcompat.app.AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         if (usersViewModel.inputName.value == null) {
-            builder.setMessage("Please fill in user name.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please fill in user name."
             dialog.show()
         } else if (usersViewModel.inputRole.value == null) {
-            builder.setMessage("Please choose a role for the user.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please choose a role for the user."
             dialog.show()
         } else if (usersViewModel.firstCode.value == null) {
-            builder.setMessage("Please fill in an 8-character code.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = "Please fill in an 8-character code."
             dialog.show()
-        } else if (usersViewModel.firstCode.value!!.length < 8) {
-            builder.setMessage("Login code has to be 8 characters.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+        } else if ((usersViewModel.firstCode.value ?: return).length < 8) {
+            textViewError.text = "Login code has to be 8 characters."
             dialog.show()
-        } else if (usersViewModel.firstCode.value!! in usersViewModel.listOfFirstCode.value!!) {
-            builder.setMessage("Login code already exists. Choose a different one.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+        } else if ((usersViewModel.firstCode.value
+                ?: return) in (usersViewModel.listOfFirstCode.value
+                ?: return)
+        ) {
+            textViewError.text = "Login code already exists. Choose a different one."
             dialog.show()
         } else {
             usersViewModel.insertNewUser()
-            binding?.nameEdttxt?.text = null
-            binding?.firstCodeEdttxt?.text = null
-            builder.setTitle("New User added")
-            builder.setPositiveButton("Add another one") { dialog, _ ->
-                dialog.dismiss()
-                binding?.nameEdttxt?.text = null
-                binding?.firstCodeEdttxt?.text = null
-                binding?.firstCodeEdttxt?.clearFocus()
-                binding?.secondCodeEdttxt?.visibility = View.GONE
-                binding?.role?.clearCheck()
+            val builderAlert = AlertDialog.Builder(requireContext())
+            val inflaterAlert = this.layoutInflater
+            val successDialogView = inflaterAlert.inflate(R.layout.success_dialog_layout, null)
+            builderAlert.setView(successDialogView)
+            val title = successDialogView.findViewById<TextView>(R.id.title)
+            title.text = "NEW USER ADDED"
+            val detail: TextView = successDialogView.findViewById(R.id.detail)
+            detail.text = "${usersViewModel.inputName.value} - ${usersViewModel.inputRole.value}"
+            val continueBtn = successDialogView.findViewById<Button>(R.id.continue_button)
+            val backBtn = successDialogView.findViewById<Button>(R.id.back_button)
+            val successDialog: AlertDialog = builderAlert.create()
+            continueBtn.setOnClickListener {
+                successDialog.dismiss()
             }
-            builder.setNegativeButton("Go back to Users List") { _, _ ->
+            backBtn.setOnClickListener {
+                successDialog.dismiss()
                 findNavController().navigate(R.id.action_addUsersFragment_to_usersFragment)
             }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+            successDialog.show()
+            binding?.nameEdttxt?.text = null
+            binding?.firstCodeEdttxt?.text = null
+            binding?.firstCodeEdttxt?.clearFocus()
+            binding?.secondCodeEdttxt?.visibility = View.GONE
+            binding?.role?.clearCheck()
         }
 
 

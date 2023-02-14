@@ -13,6 +13,8 @@ import android.util.Base64.encodeToString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -33,7 +35,7 @@ class AddMenuFragment : Fragment() {
     private val cameraRequestId = 1
     private val uploadRequestId = 2
     private val itemTypes = arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
-    private val menuViewModel: MenuViewModel by activityViewModels{
+    private val menuViewModel: MenuViewModel by activityViewModels {
         MenuViewModelFactory(
             MenuItemRepository(
                 PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
@@ -140,49 +142,58 @@ class AddMenuFragment : Fragment() {
     fun addNewItem() {
         //　全てのフィールドに記入されたのをチェックする。それぞれのフィールドがブラックであれば、エラーメッセージを表示する
         val builder = AlertDialog.Builder(requireContext())
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.login_error_dialog, null)
+        builder.setView(dialogView)
+        val textViewError = dialogView.findViewById<TextView>(R.id.textView_error)
+        val btn = dialogView.findViewById<Button>(R.id.button)
+        val dialog: AlertDialog = builder.create()
+        btn.setOnClickListener {
+            dialog.dismiss()
+        }
         builder.setTitle("Error")
         if (menuViewModel.itemName.value == null) {
-            builder.setMessage("Please fill in the name of the item.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = getString(R.string.please_fill_in_the_name_of_the_item)
             dialog.show()
         } else if (menuViewModel.type.value == null) {
-            builder.setMessage("Please select the type of the item.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = getString(R.string.please_select_the_type_of_the_item)
             dialog.show()
         } else if (menuViewModel._price.value == null) {
-            builder.setMessage("Please fill in the price of the item.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = getString(R.string.please_fill_in_the_price_of_the_item)
             dialog.show()
         } else if (menuViewModel.image.value == null) {
-            builder.setMessage("Please take a photo or upload one.")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-            val dialog: AlertDialog = builder.create()
+            textViewError.text = getString(R.string.please_take_a_photo_or_upload_one)
             dialog.show()
         } else {
             // テーブルに新しい物を入れてから、ふたつのオプションを表示して、選ばれたオプションによって動かせる
             menuViewModel.insertItem()
-            binding?.nameInput?.text = null
-            binding?.inputPrice?.text = null
-            builder.setTitle("New Item added")
-            builder.setPositiveButton("Add another one") { dialog, _ ->
-                dialog.dismiss()
-                binding?.nameInput?.text = null
-                binding?.inputPrice?.text = null
-                binding?.typePick?.text = "Choose the type"
-                binding?.itemImg?.setImageBitmap(null)
-                binding?.inputPrice?.clearFocus()
+            val builderAlert = AlertDialog.Builder(requireContext())
+            val inflaterAlert = this.layoutInflater
+            val successDialogView = inflaterAlert.inflate(R.layout.success_dialog_layout, null)
+            builderAlert.setView(successDialogView)
+            val title = successDialogView.findViewById<TextView>(R.id.title)
+            title.text = "NEW ITEM ADDED"
+            val detail: TextView = successDialogView.findViewById(R.id.detail)
+            detail.text = "${menuViewModel.itemName.value} - Price $${menuViewModel._price.value} - Type ${menuViewModel.type.value}"
+            val continueBtn = successDialogView.findViewById<Button>(R.id.continue_button)
+            val backBtn = successDialogView.findViewById<Button>(R.id.back_button)
+            val successDialog: AlertDialog = builderAlert.create()
+            continueBtn.setOnClickListener {
+                successDialog.dismiss()
             }
-            builder.setNegativeButton("Go back to menu") { _, _ ->
+            backBtn.setOnClickListener {
+                successDialog.dismiss()
                 findNavController().navigate(R.id.action_addMenuFragment_to_menuFragment)
             }
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-
-
+            successDialog.show()
+            binding?.nameInput?.text = null
+            binding?.inputPrice?.text = null
+            binding?.typePick?.text = "Choose the type"
+            binding?.itemImg?.setImageBitmap(null)
+            binding?.inputPrice?.clearFocus()
         }
-    }
 
+    }
 }
+
+

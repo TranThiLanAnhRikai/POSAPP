@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
@@ -113,7 +116,7 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     }
 
     fun deleteOrder() {
-        val builder = AlertDialog.Builder(requireContext())
+/*        val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to delete order ${menuViewModel.orderNumber.value}?")
         builder.setPositiveButton("OK") { dialog, _ ->
             menuViewModel.deleteOrder()
@@ -123,7 +126,26 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
                 dialog.dismiss()
             }
         val dialog: AlertDialog = builder.create()
-        dialog.show()
+        dialog.show()*/
+        val builderAlert = AlertDialog.Builder(requireContext())
+        val inflaterAlert = this.layoutInflater
+        val confirmDialogView = inflaterAlert.inflate(R.layout.confirm_dialog_layout, null)
+        builderAlert.setView(confirmDialogView)
+        val title = confirmDialogView.findViewById<TextView>(R.id.title)
+        title.text = "Confirm delete order ${menuViewModel.orderNumber.value}?"
+        val continueBtn = confirmDialogView.findViewById<ImageView>(R.id.continue_button)
+        val backBtn = confirmDialogView.findViewById<ImageView>(R.id.back_button)
+        val confirmDialog: AlertDialog = builderAlert.create()
+        continueBtn.setOnClickListener {
+            menuViewModel.deleteOrder()
+            findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
+            confirmDialog.dismiss()
+
+        }
+        backBtn.setOnClickListener {
+            confirmDialog.dismiss()
+        }
+        confirmDialog.show()
 
     }
 

@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pos.adapter.OrderDetailsDialogAdapter
 import com.example.pos.adapter.OrdersAdapter
 import com.example.pos.const.Status
+import com.example.pos.data.repository.MenuItemRepository
 import com.example.pos.helper.CommonStaffHeaderHelper
 import com.example.pos.model.MenuViewModel
+import com.example.pos.model.MenuViewModelFactory
 import com.example.pos_admin.R
+import com.example.pos_admin.data.PosAdminRoomDatabase
 import com.example.pos_admin.data.entity.Order
 import com.example.pos_admin.databinding.FragmentOrdersListBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
@@ -35,7 +38,16 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     private var binding: FragmentOrdersListBinding? = null
     lateinit var adapter: OrdersAdapter
     private lateinit var headerHelper: CommonStaffHeaderHelper
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels {
+        MenuViewModelFactory(
+            MenuItemRepository(
+                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
+                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
+            )
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -136,6 +148,7 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     }
 
     fun toOrder() {
+        menuViewModel.selectedItems.value?.clear()
         findNavController().navigate(R.id.action_ordersListFragment_to_orderFragment)
     }
 
