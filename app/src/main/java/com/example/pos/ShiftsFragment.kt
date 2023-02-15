@@ -22,6 +22,11 @@ import com.example.pos_admin.data.entity.Shift
 import com.example.pos_admin.data.repository.ShiftRepository
 import com.example.pos_admin.model.*
 
+/**
+ * シフトリストを表示する
+ * デフォルトは本日、終日
+ * 選択された日付とシフト時間で適切なシフトリストを表示する
+ */
 class ShiftsFragment : Fragment() {
     private val shiftsViewModel: ShiftsViewModel by activityViewModels {
         ShiftsViewModelFactory(

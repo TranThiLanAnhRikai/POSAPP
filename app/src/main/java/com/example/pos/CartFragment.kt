@@ -24,10 +24,8 @@ import com.example.pos_admin.databinding.FragmentCartBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CartFragment.newInstance] factory method to
- * create an instance of this fragment.
+/** オーダーに入った物を表示する
+ *　カートの内容をアップデートできる
  */
 class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     private var binding: FragmentCartBinding? = null
@@ -116,17 +114,6 @@ class CartFragment : Fragment(), CartItemsAdapter.OnClickListener {
     }
 
     fun deleteOrder() {
-/*        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Are you sure you want to delete order ${menuViewModel.orderNumber.value}?")
-        builder.setPositiveButton("OK") { dialog, _ ->
-            menuViewModel.deleteOrder()
-            findNavController().navigate(R.id.action_cartFragment_to_orderFragment)
-        }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()*/
         val builderAlert = AlertDialog.Builder(requireContext())
         val inflaterAlert = this.layoutInflater
         val confirmDialogView = inflaterAlert.inflate(R.layout.confirm_dialog_layout, null)

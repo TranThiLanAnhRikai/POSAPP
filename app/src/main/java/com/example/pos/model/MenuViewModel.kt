@@ -1,5 +1,7 @@
 package com.example.pos.model
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.pos.const.Status
 import com.example.pos.data.entity.CartItem
@@ -16,6 +18,7 @@ import java.util.*
 
 
 class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewModel() {
+
     val itemName = MutableLiveData<String>()
     val type = MutableLiveData<String>()
     val image = MutableLiveData<String>()
@@ -36,9 +39,6 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
     val deliveryMethod = MutableLiveData<String>()
     val paymentMethod = MutableLiveData<String>()
 
-    fun getAllOrders(): LiveData<List<Order>> {
-        return menuItemRepository.getAllOrders()
-    }
 
     fun updateOrder(order: Order) {
         viewModelScope.launch {
@@ -129,6 +129,7 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
     }
 
     fun insertToOrderCustomerList() {
+        Log.d(TAG, "selectedItems ${selectedItems.value?.toList()}")
         val cartItems = selectedItems.value
         val keys = cartItems?.keys?.toList()
         var foodRevenue = 0.0
@@ -186,7 +187,10 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
     }
 
     fun insertCustomer() {
-        val address = customerAddress.value + " Zip code: ${customerZipCode.value}"
+        var address = ""
+        if (deliveryMethod.value == "Delivery") {
+            address = customerAddress.value + " Zip code: ${customerZipCode.value}"
+        }
         viewModelScope.launch {
             menuItemRepository.insertCustomer(
                 Customer(
@@ -199,7 +203,6 @@ class MenuViewModel(private val menuItemRepository: MenuItemRepository) : ViewMo
             )
         }
     }
-
 
 
 }

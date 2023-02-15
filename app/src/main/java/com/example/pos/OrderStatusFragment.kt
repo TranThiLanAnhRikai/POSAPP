@@ -21,9 +21,7 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [PaymentStatusFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * オーダーはされたという通知を表示する
  */
 class OrderStatusFragment : Fragment() {
 

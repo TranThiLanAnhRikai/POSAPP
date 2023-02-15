@@ -35,16 +35,7 @@ class AddMenuFragment : Fragment() {
     private val cameraRequestId = 1
     private val uploadRequestId = 2
     private val itemTypes = arrayOf(ItemType.FOOD, ItemType.DESSERT, ItemType.DRINK)
-    private val menuViewModel: MenuViewModel by activityViewModels {
-        MenuViewModelFactory(
-            MenuItemRepository(
-                PosAdminRoomDatabase.getDatabase(requireContext()).menuItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).orderDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).cartItemDao(),
-                PosAdminRoomDatabase.getDatabase(requireContext()).customerDao()
-            )
-        )
-    }
+    private val menuViewModel: MenuViewModel by activityViewModels()
 
     private var binding: FragmentAddMenuBinding? = null
     override fun onCreateView(
@@ -174,7 +165,8 @@ class AddMenuFragment : Fragment() {
             val title = successDialogView.findViewById<TextView>(R.id.title)
             title.text = "NEW ITEM ADDED"
             val detail: TextView = successDialogView.findViewById(R.id.detail)
-            detail.text = "${menuViewModel.itemName.value} - Price $${menuViewModel._price.value} - Type ${menuViewModel.type.value}"
+            detail.text =
+                "${menuViewModel.itemName.value} - Price $${menuViewModel._price.value} - Type ${menuViewModel.type.value}"
             val continueBtn = successDialogView.findViewById<Button>(R.id.continue_button)
             val backBtn = successDialogView.findViewById<Button>(R.id.back_button)
             val successDialog: AlertDialog = builderAlert.create()

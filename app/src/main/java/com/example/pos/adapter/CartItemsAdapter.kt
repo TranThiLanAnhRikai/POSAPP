@@ -56,21 +56,23 @@ class CartItemsAdapter(
             .into(holder.image)
         holder.minusLayout.setOnClickListener {
             currentQuantity = currentQuantity!!.minus(1)
+            Log.d(TAG, "current quantity $currentQuantity")
             if (currentQuantity == 0) {
                 items.remove(id)
                 notifyDataSetChanged()
                 listener.removeFromCart(id)
             } else {
                 holder.quantity.text = currentQuantity.toString()
+                notifyDataSetChanged()
                 listener.decreaseQuantity(
                     id,
                     Item(
                         holder.name.text.toString(),
                         item.type,
-                        holder.quantity.text.toString().toIntOrNull(),
+                        currentQuantity,
                         item.price,
                         item.image,
-                        (item.price.toDouble() * holder.quantity.text.toString().toDouble())
+                        (item.price * holder.quantity.text.toString().toDouble())
                     )
                 )
             }
@@ -83,16 +85,18 @@ class CartItemsAdapter(
         }
         holder.plusLayout.setOnClickListener {
             currentQuantity = currentQuantity!!.plus(1)
+            Log.d(TAG, "current quantity $currentQuantity")
+            notifyDataSetChanged()
             holder.quantity.text = currentQuantity.toString()
             listener.increaseQuantity(
                 id,
                 Item(
                     holder.name.text.toString(),
                     item.type,
-                    holder.quantity.text.toString().toIntOrNull(),
+                    currentQuantity,
                     item.price,
                     item.image,
-                    (item.price.toDouble() * holder.quantity.text.toString().toDouble())
+                    (item.price * holder.quantity.text.toString().toDouble())
                 )
             )
         }

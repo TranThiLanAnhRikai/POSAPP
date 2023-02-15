@@ -16,22 +16,23 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel() {
+class ShiftsViewModel(private val shiftRepository: ShiftRepository) : ViewModel() {
 
     val inputName = MutableLiveData<String>()
     val _date = MutableLiveData<String>()
     val _shift = MutableLiveData<Int>()
     val currentStaff = MutableLiveData<MutableList<String>>()
-    val allUsers = MutableLiveData<MutableList<String>>()
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
+    val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"))
+        .format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
 
     fun getAllShifts(): LiveData<List<Shift>> {
-            return shiftRepository.shifts
+        return shiftRepository.shifts
     }
 
-   fun insertShift() {
+    fun insertShift() {
         val name = inputName.value!!
         viewModelScope.launch {
             shiftRepository.insert(Shift(0, name, _date.value!!, _shift.value!!))
@@ -53,11 +54,10 @@ class ShiftsViewModel(private val shiftRepository: ShiftRepository): ViewModel()
     }
 
 
-
-
 }
 
-class ShiftsViewModelFactory(private val shiftRepository: ShiftRepository): ViewModelProvider.Factory{
+class ShiftsViewModelFactory(private val shiftRepository: ShiftRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ShiftsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

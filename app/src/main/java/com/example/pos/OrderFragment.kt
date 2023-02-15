@@ -26,7 +26,9 @@ import com.example.pos_admin.const.ItemType
 import com.example.pos_admin.databinding.FragmentOrderBinding
 import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
-//Fragment for staff to make orders//
+/**
+ * オーダーをする
+ */
 
 class OrderFragment : Fragment(), OrderAdapter.OnClickListener {
     private var binding: FragmentOrderBinding? = null

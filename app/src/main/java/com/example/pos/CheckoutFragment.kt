@@ -27,8 +27,8 @@ import com.example.pos_admin.databinding.StaffCommonHeaderBinding
 
 
 /**
- *
- *
+ *　オーダーを払わせる
+ *　払われたオーダーと客の情報をテーブルに保存する
  *
  */
 class CheckoutFragment : Fragment() {
@@ -169,13 +169,7 @@ class CheckoutFragment : Fragment() {
             binding?.inputPickupTime?.text = null
             binding?.inputAddress?.text = null
             binding?.inputZip?.text = null
-            menuViewModel.selectedItems.value!!.clear()
-            menuViewModel.customerName.value = null
-            menuViewModel.customerAddress.value = null
-            menuViewModel.customerPhoneNumber.value = null
-            menuViewModel.deliveryMethod.value = null
-            menuViewModel.customerZipCode.value = null
-            menuViewModel.paymentMethod.value = null
+
         }
 
     }

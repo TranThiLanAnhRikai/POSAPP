@@ -17,14 +17,18 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MainMenuViewModel(private val orderRepository: OrderRepository, private val shiftRepository: ShiftRepository): ViewModel() {
+class MainMenuViewModel(
+    private val orderRepository: OrderRepository,
+    private val shiftRepository: ShiftRepository
+) : ViewModel() {
+
     val formattedDateTime = MutableLiveData<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDate() {
-         formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
+        formattedDateTime.value = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"))
+            .format(DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE"))
     }
-
 
 
     fun getShifts(date: String, shift: Int): LiveData<List<Shift>> {
@@ -32,6 +36,7 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
     }
 
     val result = MutableLiveData<WeatherInfo>()
+
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<String>()
 
@@ -41,9 +46,11 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTodayOrders(): LiveData<List<Order>> {
-        val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        val today = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"))
+            .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         return orderRepository.getTodayOrders(today)
     }
+
     fun getWeatherInfo(): MutableLiveData<WeatherInfo> {
         viewModelScope.launch {
             try {
@@ -58,7 +65,10 @@ class MainMenuViewModel(private val orderRepository: OrderRepository, private va
 
 }
 
-class MainMenuViewModelFactory(private val orderRepository: OrderRepository, private val shiftRepository: ShiftRepository): ViewModelProvider.Factory{
+class MainMenuViewModelFactory(
+    private val orderRepository: OrderRepository,
+    private val shiftRepository: ShiftRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

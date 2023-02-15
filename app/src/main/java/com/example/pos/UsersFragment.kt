@@ -18,7 +18,9 @@ import com.example.pos_admin.databinding.FragmentUsersBinding
 import com.example.pos_admin.model.UsersViewModel
 import com.example.pos_admin.model.UsersViewModelFactory
 
-/*Fragment to show users inside recyclerview*/
+/**
+ * RecyclerViewでユーザーリストを表示する
+ */
 
 class UsersFragment : Fragment() {
 

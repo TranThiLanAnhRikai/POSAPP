@@ -1,7 +1,9 @@
 package com.example.pos_admin
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,8 +42,6 @@ class FirstLoginFragment : Fragment() {
             )
         )
     }
-
-
 
 
     override fun onCreateView(
@@ -96,8 +96,9 @@ class FirstLoginFragment : Fragment() {
                         ?.apply()
                     loginViewModel.userSecondLoginCode.value = person.secondCode
                     val destination = loginViewModel.nextFragment()
+                    Log.d(TAG, "destination $destination")
                     binding?.loginEditText?.text = null
-                    if (destination == Destination.NON_STAFF) {
+                    if (destination == Destination.STAFF) {
                         val builderAlert = AlertDialog.Builder(requireContext())
                         val inflaterAlert = this.layoutInflater
                         val optionsDialogView =
@@ -118,7 +119,7 @@ class FirstLoginFragment : Fragment() {
                         }
                         optionsDialog.show()
 
-                    }else {
+                    } else {
                         findNavController().navigate(R.id.action_firstLoginFragment_to_secondLoginFragment)
                     }
                 }

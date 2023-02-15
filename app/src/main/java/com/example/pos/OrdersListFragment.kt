@@ -2,7 +2,9 @@ package com.example.pos
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +32,9 @@ import java.util.*
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [OrdersListFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * オーダーリストを表示する
+ * オーダー詳細を表示する
+ * オーダー状況を変更する
  */
 class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
     private var binding: FragmentOrdersListBinding? = null
@@ -115,6 +117,7 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
         val address = dialogView.findViewById<TextView>(R.id.customer_address)
         val request = dialogView.findViewById<TextView>(R.id.request)
         menuViewModel.getOrderByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            Log.d(TAG, "order $it")
             total.text = "Total: $${it.total}"
             paymentMethod.text = it.paymentMethod
             deliveryMethod.text = it.deliveryMethod
@@ -125,11 +128,13 @@ class OrdersListFragment : Fragment(), OrdersAdapter.SetOnClickListener {
         }
 
         menuViewModel.getCartItemsByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            Log.d(TAG, "cartItems $it")
             val itemsAdapter = OrderDetailsDialogAdapter(requireContext(), it)
             recyclerView.adapter = itemsAdapter
         }
 
         menuViewModel.getCustomerByOrderNumber(orderNumber).observe(viewLifecycleOwner) {
+            Log.d(TAG, "customer $it")
             customerName.text = it.customerName
             customerPhoneNumber.text = it.phoneNumber
             if (!it.address!!.contains("null")) {

@@ -26,9 +26,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [SalesAnalysisFragment.newInstance] factory method to
- * create an instance of this fragment.
+ *　セールはグラフで表示する
+ * 週と月の二つのオプション
  */
 class SalesAnalysisFragment : Fragment() {
     private var binding: FragmentSalesAnalysisBinding? = null

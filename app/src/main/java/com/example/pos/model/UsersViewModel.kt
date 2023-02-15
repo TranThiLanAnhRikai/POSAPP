@@ -19,9 +19,9 @@ class UsersViewModel(private val userRepository: UserRepository) : ViewModel() {
         return userRepository.getAllUsers()
     }
 
-    fun getUser(user_first_code: String): LiveData<User> {
+/*    fun getUser(user_first_code: String): LiveData<User> {
         return userRepository.getUser(user_first_code)
-    }
+    }*/
 
     fun insertNewUser() {
         viewModelScope.launch {
